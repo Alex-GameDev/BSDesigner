@@ -7,7 +7,7 @@ namespace BSDesigner.Core
     /// <summary>
     /// Behaviour system formed by nodes connected to each other forming a directed graph.
     /// </summary>
-    public abstract class BehaviourGraph
+    public abstract class BehaviourGraph : BehaviourEngine
     {
         /// <summary>
         /// A collection with all the nodes in this graph.
@@ -47,7 +47,7 @@ namespace BSDesigner.Core
         /// <param name="node">The node removed.</param>
         public void RemoveNode(Node node)
         {
-            if (node.InternalParents.Count > 0 || node.InternalChildren.Count > 0)
+            if (node.Parents.Count > 0 || node.Children.Count > 0)
                 throw new ArgumentException($"REMOVE ERROR: Can't remove a node with connections. Use {nameof(DisconnectAndRemove)} to delete the connections before remove the node.");
 
             _nodes.Remove(node);
@@ -100,10 +100,10 @@ namespace BSDesigner.Core
             if (!source.ChildType.IsInstanceOfType(target))
                 throw new ArgumentException($"CONNECTION ERROR: Source node child type({source.GetType()}) can handle target's type ({target.GetType()}) as a child. It should be {source.ChildType}.");
 
-            if (source.MaxOutputConnections != -1 && source.InternalChildren.Count >= source.MaxOutputConnections)
+            if (source.MaxOutputConnections != -1 && source.Children.Count >= source.MaxOutputConnections)
                 throw new ArgumentException($"CONNECTION ERROR: Maximum child count reached in {nameof(source)}");
 
-            if (target.MaxInputConnections != -1 && target.InternalParents.Count >= target.MaxInputConnections)
+            if (target.MaxInputConnections != -1 && target.Parents.Count >= target.MaxInputConnections)
                 throw new ArgumentException($"CONNECTION ERROR: Maximum parent count reached in {nameof(target)}");
 
             source.InternalChildList.Insert(childIndex == -1 ? source.InternalChildList.Count : childIndex, target);
@@ -180,7 +180,7 @@ namespace BSDesigner.Core
                 var n = unvisitedNodes.First();
                 unvisitedNodes.Remove(n);
                 visitedNodes.Add(n);
-                foreach (var child in n.InternalChildren)
+                foreach (var child in n.Children)
                 {
                     if (child == target)
                         return true;

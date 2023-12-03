@@ -17,6 +17,7 @@ namespace TestBSD.Core
             Assert.That(n1.MaxOutputConnections, Is.EqualTo(-1));
             Assert.That(n1.GraphType, Is.EqualTo(typeof(MockGraph)));
             Assert.That(n1.ChildType, Is.EqualTo(typeof(MockNode)));
+
         }
 
         [Test]
@@ -93,12 +94,12 @@ namespace TestBSD.Core
             var n1 = graph.CreateNode(-1, -1);
             var n2 = graph.CreateNode(-1, -1);
             graph.ConnectNodes(n1, n2);
-            Assert.That(n1.InternalChildren, Has.Count.EqualTo(1));
-            Assert.That(n1.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n1.InternalChildren[0], Is.EqualTo(n2));
-            Assert.That(n2.InternalParents, Has.Count.EqualTo(1));
-            Assert.That(n2.InternalChildren, Has.Count.EqualTo(0));
-            Assert.That(n2.InternalParents[0], Is.EqualTo(n1));
+            Assert.That(n1.Children, Has.Count.EqualTo(1));
+            Assert.That(n1.Parents, Has.Count.EqualTo(0));
+            Assert.That(n1.Children[0], Is.EqualTo(n2));
+            Assert.That(n2.Parents, Has.Count.EqualTo(1));
+            Assert.That(n2.Children, Has.Count.EqualTo(0));
+            Assert.That(n2.Parents[0], Is.EqualTo(n1));
         }
 
         [Test]
@@ -200,10 +201,10 @@ namespace TestBSD.Core
             var n2 = graph.CreateNode(-1, -1);
             graph.ConnectNodes(n1, n2);
             graph.Disconnect(n1, n2);
-            Assert.That(n1.InternalChildren, Has.Count.EqualTo(0));
-            Assert.That(n1.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n2.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n2.InternalChildren, Has.Count.EqualTo(0));
+            Assert.That(n1.Children, Has.Count.EqualTo(0));
+            Assert.That(n1.Parents, Has.Count.EqualTo(0));
+            Assert.That(n2.Parents, Has.Count.EqualTo(0));
+            Assert.That(n2.Children, Has.Count.EqualTo(0));
         }
 
         [Test]
@@ -216,16 +217,16 @@ namespace TestBSD.Core
             graph.ConnectNodes(n1, n2);
             graph.ConnectNodes(n1, n3);
             graph.DisconnectChild(n1, 0);
-            Assert.That(n1.InternalChildren, Has.Count.EqualTo(1));
-            Assert.That(n1.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n2.InternalChildren, Has.Count.EqualTo(0));
-            Assert.That(n2.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n3.InternalChildren, Has.Count.EqualTo(0));
-            Assert.That(n3.InternalParents, Has.Count.EqualTo(1));
-            Assert.That(n1.InternalChildren, Does.Contain(n3));
-            Assert.That(n3.InternalParents, Does.Contain(n1));
-            Assert.That(n1.InternalChildren, Does.Not.Contain(n2));
-            Assert.That(n2.InternalParents, Does.Not.Contain(n1));
+            Assert.That(n1.Children, Has.Count.EqualTo(1));
+            Assert.That(n1.Parents, Has.Count.EqualTo(0));
+            Assert.That(n2.Children, Has.Count.EqualTo(0));
+            Assert.That(n2.Parents, Has.Count.EqualTo(0));
+            Assert.That(n3.Children, Has.Count.EqualTo(0));
+            Assert.That(n3.Parents, Has.Count.EqualTo(1));
+            Assert.That(n1.Children, Does.Contain(n3));
+            Assert.That(n3.Parents, Does.Contain(n1));
+            Assert.That(n1.Children, Does.Not.Contain(n2));
+            Assert.That(n2.Parents, Does.Not.Contain(n1));
         }
 
         [Test]
@@ -239,16 +240,16 @@ namespace TestBSD.Core
             graph.ConnectNodes(n2, n3);
             graph.DisconnectParent(n3, 0);
 
-            Assert.That(n1.InternalChildren, Has.Count.EqualTo(0));
-            Assert.That(n1.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n2.InternalChildren, Has.Count.EqualTo(1));
-            Assert.That(n2.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n3.InternalChildren, Has.Count.EqualTo(0));
-            Assert.That(n3.InternalParents, Has.Count.EqualTo(1));
-            Assert.That(n1.InternalChildren, Does.Not.Contain(n3));
-            Assert.That(n3.InternalParents, Does.Not.Contain(n1));
-            Assert.That(n2.InternalChildren, Does.Contain(n3));
-            Assert.That(n3.InternalParents, Does.Contain(n2));
+            Assert.That(n1.Children, Has.Count.EqualTo(0));
+            Assert.That(n1.Parents, Has.Count.EqualTo(0));
+            Assert.That(n2.Children, Has.Count.EqualTo(1));
+            Assert.That(n2.Parents, Has.Count.EqualTo(0));
+            Assert.That(n3.Children, Has.Count.EqualTo(0));
+            Assert.That(n3.Parents, Has.Count.EqualTo(1));
+            Assert.That(n1.Children, Does.Not.Contain(n3));
+            Assert.That(n3.Parents, Does.Not.Contain(n1));
+            Assert.That(n2.Children, Does.Contain(n3));
+            Assert.That(n3.Parents, Does.Contain(n2));
         }
 
         [Test]
@@ -265,10 +266,10 @@ namespace TestBSD.Core
             Assert.That(graph.Nodes, Has.Count.EqualTo(2));
             Assert.That(graph.Nodes, Does.Not.Contain(n1));
 
-            Assert.That(n1.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n2.InternalChildren, Has.Count.EqualTo(0));
-            Assert.That(n2.InternalParents, Has.Count.EqualTo(0));
-            Assert.That(n3.InternalParents, Has.Count.EqualTo(0));
+            Assert.That(n1.Parents, Has.Count.EqualTo(0));
+            Assert.That(n2.Children, Has.Count.EqualTo(0));
+            Assert.That(n2.Parents, Has.Count.EqualTo(0));
+            Assert.That(n3.Parents, Has.Count.EqualTo(0));
         }
 
 
@@ -322,7 +323,7 @@ namespace TestBSD.Core
         public void GetNodeIdMap_NullOrEmptyNames_NotIncludeInMap()
         {
             var graph = new MockGraph();
-            var n1 = graph.CreateNode(-1, -1);
+            graph.CreateNode(-1, -1);
             var n2 = graph.CreateNode(-1, -1);
             n2.Name = "";
             var map = graph.GetNodeMap(ignoreRepeatedNames: true);

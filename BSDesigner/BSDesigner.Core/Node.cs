@@ -36,12 +36,12 @@ namespace BSDesigner.Core
         /// <summary>
         /// A collection with all the nodes connected to this one as output.
         /// </summary>
-        public IReadOnlyList<Node> InternalChildren => InternalChildList;
+        public IReadOnlyList<Node> Children => InternalChildList;
 
         /// <summary>
         /// A collection with all the nodes connected to this one as input.
         /// </summary>
-        public IReadOnlyList<Node> InternalParents => InternalParentList;
+        public IReadOnlyList<Node> Parents => InternalParentList;
 
         /// <summary>
         /// The type of graph that this node can belong.
@@ -54,12 +54,12 @@ namespace BSDesigner.Core
         public abstract Type ChildType { get; }
 
         /// <summary>
-        /// Maximum number of elements in <see cref="InternalParents"/>.
+        /// Maximum number of elements in <see cref="Parents"/>.
         /// </summary>
         public abstract int MaxInputConnections { get; }
 
         /// <summary>
-        /// Maximum number of elements in <see cref="InternalChildren"/>.
+        /// Maximum number of elements in <see cref="Children"/>.
         /// </summary>
         public abstract int MaxOutputConnections { get; }
 
