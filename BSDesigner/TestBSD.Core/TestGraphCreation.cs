@@ -163,6 +163,16 @@ namespace TestBSD.Core
         }
 
         [Test]
+        public void CreateConnection_NotCompatibleNodes_ThrowException()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            n1.SupportedChildType = typeof(int);
+            var n2 = graph.CreateNode(-1, -1);
+            Assert.That(() => graph.ConnectNodes(n1, n2), Throws.ArgumentException);
+        }
+
+        [Test]
         public void CheckConnections_IsParentOrChild_ReturnCorrectValue()
         {
             var graph = new MockGraph();
@@ -208,7 +218,16 @@ namespace TestBSD.Core
         }
 
         [Test]
-        public void DisconnectNodes_RemoveChildByIndex_RemovedToParentAndChildList()
+        public void DisconnectNodes_NotConnectedNodes_ThrowsException()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            var n2 = graph.CreateNode(-1, -1);
+            Assert.That(() => graph.Disconnect(n1, n2), Throws.Exception);
+        }
+
+        [Test]
+        public void DisconnectChildByIndex_ValidIndex_RemovedToParentAndChildList()
         {
             var graph = new MockGraph();
             var n1 = graph.CreateNode(-1, -1);
@@ -230,7 +249,17 @@ namespace TestBSD.Core
         }
 
         [Test]
-        public void DisconnectNodes_RemoveParentByIndex_RemovedToParentAndChildList()
+        public void DisconnectChildByIndex_IndexOutOfBounds_ThrowsArgumentException()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            var n2 = graph.CreateNode(-1, -1);
+            graph.ConnectNodes(n1, n2);
+            Assert.That(() => graph.DisconnectChild(n1, 1), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void DisconnectParentByIndex_ValidIndex_RemovedToParentAndChildList()
         {
             var graph = new MockGraph();
             var n1 = graph.CreateNode(-1, -1);
@@ -253,6 +282,16 @@ namespace TestBSD.Core
         }
 
         [Test]
+        public void DisconnectParentByIndex_IndexOutOfBounds_ThrowsArgumentException()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            var n2 = graph.CreateNode(-1, -1);
+            graph.ConnectNodes(n1, n2);
+            Assert.That(() => graph.DisconnectParent(n2, 1), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
         public void DisconnectNodes_DisconnectAndRemoveNode_UpdateNodeLists()
         {
             var graph = new MockGraph();
@@ -260,6 +299,7 @@ namespace TestBSD.Core
             var n2 = graph.CreateNode(-1, -1);
             var n3 = graph.CreateNode(-1, -1);
             graph.ConnectNodes(n1, n2);
+            graph.ConnectNodes(n2, n1);
             graph.ConnectNodes(n1, n3);
             graph.DisconnectAndRemove(n1);
 
@@ -305,6 +345,17 @@ namespace TestBSD.Core
             var map = graph.GetNodeMap();
             Assert.That(map["A"], Is.EqualTo(n1));
             Assert.That(map["B"], Is.EqualTo(n2));
+        }
+
+        [Test]
+        public void GetNodeIdMap_RepeatedNames_ThrowException()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            n1.Name = "A";
+            var n2 = graph.CreateNode(-1, -1);
+            n2.Name = "A";
+            Assert.That(() => graph.GetNodeMap(ignoreRepeatedNames: false), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]

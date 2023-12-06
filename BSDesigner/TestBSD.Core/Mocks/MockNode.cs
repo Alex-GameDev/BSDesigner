@@ -1,7 +1,9 @@
 ﻿using BSDesigner.Core;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TestBSD.Core.Mocks
 {
+    [ExcludeFromCodeCoverage]
     public class MockNode : Node
     {
         public override Type GraphType => SupportedGraphType;

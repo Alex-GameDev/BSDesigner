@@ -16,6 +16,6 @@ namespace BSDesigner.Core
         /// </summary>
         /// <value> The status changed event. </value>
 
-        event Action<Status, Status> StatusChanged;
+        event Action<Status> StatusChanged;
     }
 }

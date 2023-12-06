@@ -19,18 +19,22 @@ namespace BSDesigner.Core
             protected set
             {
                 if (_status == value) return;
-                var previousValue = _status;
                 _status = value;
-                StatusChanged?.Invoke(previousValue, value);
+                StatusChanged?.Invoke(_status);
             }
         }
 
         private Status _status;
 
         /// <summary>
+        /// The execution is currently paused?
+        /// </summary>
+        public bool IsPaused { get; protected set; }
+
+        /// <summary>
         /// Event called when the status changes
         /// </summary>
-        public event Action<Status, Status>? StatusChanged;
+        public event Action<Status>? StatusChanged;
 
         /// <summary>
         /// Starts the execution and set the status value to Running.
@@ -39,7 +43,7 @@ namespace BSDesigner.Core
         public void Start()
         {
             if (Status != Status.None)
-                throw new ExecutionStatusException(this, "ERROR: This behaviour engine is already been executed.");
+                throw new ExecutionStatusException(this, "This behaviour engine is already been executed.");
 
             Status = Status.Running;
             OnStarted();
@@ -50,7 +54,12 @@ namespace BSDesigner.Core
         /// </summary>
         public void Update()
         {
+            if(Status == Status.None)
+                throw new ExecutionStatusException(this, "This behaviour engine is not running.");
+
             if (Status != Status.Running) return;
+
+            IsPaused = false;
             OnUpdated();
         }
 
@@ -61,9 +70,10 @@ namespace BSDesigner.Core
         public void Stop()
         {
             if (Status == Status.None)
-                throw new ExecutionStatusException(this, "ERROR: This behaviour engine is not running.");
+                throw new ExecutionStatusException(this, "This behaviour engine already stopped.");
 
             Status = Status.None;
+            IsPaused = false;
             OnStopped();
         }
 
@@ -72,21 +82,10 @@ namespace BSDesigner.Core
         /// </summary>
         public void Pause()
         {
-            if (Status != Status.Running) return;
+            if (IsPaused || Status != Status.Running) return;
 
-            Status = Status.Paused;
+            IsPaused = true;
             OnPaused();
-        }
-
-        /// <summary>
-        /// Resumes the execution of the graph is was paused before.
-        /// </summary>
-        public void Resume()
-        {
-            if (Status != Status.Paused) return;
-
-            Status = Status.Running;
-            OnResumed();
         }
 
         /// <summary>
@@ -108,10 +107,5 @@ namespace BSDesigner.Core
         /// Called when the graph is paused.
         /// </summary>
         protected abstract void OnPaused();
-
-        /// <summary>
-        /// Called when the graph is resumed
-        /// </summary>
-        protected abstract void OnResumed();
     }
 }

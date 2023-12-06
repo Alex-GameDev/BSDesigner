@@ -16,18 +16,13 @@
         Running = 1,
 
         /// <summary>
-        /// The execution is currently paused.
-        /// </summary>
-        Paused = 2,
-
-        /// <summary>
         /// The element execution ended with success.
         /// </summary>
-        Success = 4,
+        Success = 2,
 
         /// <summary>
         /// The element execution ended with failure.
         /// </summary>
-        Failure = 8,
+        Failure = 4,
     }
 }
