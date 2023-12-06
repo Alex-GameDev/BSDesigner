@@ -89,6 +89,12 @@ namespace BSDesigner.Core
         }
 
         /// <summary>
+        /// Set the execution context of the behaviour system.
+        /// </summary>
+        /// <param name="context">The <see cref="ExecutionContext"/> provided.</param>
+        public abstract void SetContext(ExecutionContext context);
+
+        /// <summary>
         /// Called when the graph starts the execution.
         /// </summary>
         protected abstract void OnStarted();

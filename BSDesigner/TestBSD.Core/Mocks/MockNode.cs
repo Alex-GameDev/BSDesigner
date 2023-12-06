@@ -1,5 +1,6 @@
 ﻿using BSDesigner.Core;
 using System.Diagnostics.CodeAnalysis;
+using ExecutionContext = BSDesigner.Core.ExecutionContext;
 
 namespace TestBSD.Core.Mocks
 {
@@ -16,6 +17,8 @@ namespace TestBSD.Core.Mocks
         public Type SupportedGraphType = typeof(MockGraph);
         public Type SupportedChildType = typeof(MockNode);
 
+        public ExecutionContext Context { get; private set; } = null!;
+
         public MockNode() { }
 
         public MockNode(int maxParents, int maxChildren, Type supportedGraphType, Type supportedChildType)
@@ -24,6 +27,11 @@ namespace TestBSD.Core.Mocks
             MaxChildren = maxChildren;
             SupportedGraphType = supportedGraphType;
             SupportedChildType = supportedChildType;
+        }
+
+        public override void SetContext(ExecutionContext context)
+        {
+            Context = context;
         }
     }
 }

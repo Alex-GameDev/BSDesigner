@@ -43,8 +43,6 @@ namespace TestBSD.Core
             Assert.That(() => _behaviourEngine.Start(), Throws.TypeOf<ExecutionStatusException>());
         }
 
-
-
         [Test]
         public void StopBehaviour_WhenIsRunning_ChangeStatus()
         {
@@ -76,7 +74,6 @@ namespace TestBSD.Core
             _behaviourEngine.SetStatus(Status.None);
             Assert.That(() => _behaviourEngine.Stop(), Throws.TypeOf<ExecutionStatusException>());
         }
-
 
         [Test]
         public void UpdateBehaviour_WhenIsRunning_CallEvent()

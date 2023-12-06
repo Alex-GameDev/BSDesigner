@@ -82,5 +82,13 @@ namespace BSDesigner.Core
         {
             return InternalChildList.Contains(otherNode);
         }
+
+        /// <summary>
+        /// Override this method to define how it uses the execution context.
+        /// <param name="context">The context provided.</param>
+        /// </summary>
+        public virtual void SetContext(ExecutionContext context)
+        {
+        }
     }
 }

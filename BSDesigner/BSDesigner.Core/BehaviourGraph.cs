@@ -191,6 +191,20 @@ namespace BSDesigner.Core
             return false;
         }
 
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// Passes the context to all its nodes.
+        /// </summary>
+        public override void SetContext(ExecutionContext context)
+        {
+            foreach (var node in Nodes)
+            {
+                node.SetContext(context);
+            }
+        }
+
+
         /// <summary>
         /// Gets a map that allows you to search for nodes by name
         /// </summary>
