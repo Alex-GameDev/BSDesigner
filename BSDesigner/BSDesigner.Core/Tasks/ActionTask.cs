@@ -8,6 +8,7 @@
         /// Updates the action by calling <see cref="OnUpdateTask"/> and call <see cref="Task.OnEndTask"/> if returns Success or Failure.
         /// <para>If the action is paused, resumes the execution and call <see cref="Task.OnResumeTask"/> before update.</para>
         /// </summary>
+        /// <returns>The result of the action.</returns>
         public Status Update()
         {
             if (IsPaused)
