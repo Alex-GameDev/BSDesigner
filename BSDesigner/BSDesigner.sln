@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSDesigner.Core", "BSDesigner.Core\BSDesigner.Core.csproj", "{A2659A27-6621-4A49-AE75-1EB174B8286D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.Core", "BSDesigner.Core\BSDesigner.Core.csproj", "{A2659A27-6621-4A49-AE75-1EB174B8286D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBSD.Core", "TestBSD.Core\TestBSD.Core.csproj", "{C6E3C6D2-E487-4A64-9A34-1BBBCA92F010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.Core", "TestBSD.Core\TestBSD.Core.csproj", "{C6E3C6D2-E487-4A64-9A34-1BBBCA92F010}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
