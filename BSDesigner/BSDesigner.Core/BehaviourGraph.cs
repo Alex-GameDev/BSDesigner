@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BSDesigner.Core.Exceptions;
 
 namespace BSDesigner.Core
 {
@@ -29,13 +30,13 @@ namespace BSDesigner.Core
         public void AddNode(Node node)
         {
             if (node.Graph != null)
-                throw new ArgumentException($"ADD NODE ERROR: Can't add {nameof(node)} to the graph if already belongs to a graph.");
+                throw new NodeException($"Can't add {nameof(node)} to the graph if already belongs to a graph.");
 
             if (!NodeType.IsInstanceOfType(node))
-                throw new ArgumentException($"ADD NODE ERROR: An instance of type {node.GetType()} cannot be added, this graph only handles nodes of types derived from {NodeType}");
+                throw new NodeException($"An instance of type {node.GetType()} cannot be added, this graph only handles nodes of types derived from {NodeType}");
 
             if(!node.GraphType.IsInstanceOfType(this))
-                throw new ArgumentException($"ADD NODE ERROR: An instance of type {node.GetType()} cannot be added, this node can only belongs to a graph of types derived from {node.GraphType}");
+                throw new NodeException($"An instance of type {node.GetType()} cannot be added, this node can only belongs to a graph of types derived from {node.GraphType}");
 
             _nodes.Add(node);
             node.Graph = this;
@@ -48,7 +49,7 @@ namespace BSDesigner.Core
         public void RemoveNode(Node node)
         {
             if (node.Parents.Count > 0 || node.Children.Count > 0)
-                throw new ArgumentException($"REMOVE ERROR: Can't remove a node with connections. Use {nameof(DisconnectAndRemove)} to delete the connections before remove the node.");
+                throw new NodeException($"REMOVE ERROR: Can't remove a node with connections. Use {nameof(DisconnectAndRemove)} to delete the connections before remove the node.");
 
             _nodes.Remove(node);
             node.Graph = null;
@@ -86,25 +87,25 @@ namespace BSDesigner.Core
         public void ConnectNodes(Node source, Node target, int childIndex = -1, int parentIndex = -1)
         {
             if (source == null)
-                throw new ArgumentNullException($"CONNECTION ERROR: {nameof(source)} is null reference");
+                throw new ConnectionException($"CONNECTION ERROR: {nameof(source)} is null reference");
 
             if (target == null)
-                throw new ArgumentNullException($"CONNECTION ERROR: {nameof(target)} is null reference");
+                throw new ConnectionException($"CONNECTION ERROR: {nameof(target)} is null reference");
 
             if (source.Graph != this)
-                throw new ArgumentException($"CONNECTION ERROR: {nameof(source)} is not in the graph.");
+                throw new ConnectionException($"CONNECTION ERROR: {nameof(source)} is not in the graph.");
 
             if (target.Graph != this)
-                throw new ArgumentException($"CONNECTION ERROR: {nameof(target)} is not in the graph.");
+                throw new ConnectionException($"CONNECTION ERROR: {nameof(target)} is not in the graph.");
 
             if (!source.ChildType.IsInstanceOfType(target))
-                throw new ArgumentException($"CONNECTION ERROR: Source node child type({source.GetType()}) can handle target's type ({target.GetType()}) as a child. It should be {source.ChildType}.");
+                throw new ConnectionException($"CONNECTION ERROR: Source node child type({source.GetType()}) can handle target's type ({target.GetType()}) as a child. It should be {source.ChildType}.");
 
             if (source.MaxOutputConnections != -1 && source.Children.Count >= source.MaxOutputConnections)
-                throw new ArgumentException($"CONNECTION ERROR: Maximum child count reached in {nameof(source)}");
+                throw new ConnectionException($"CONNECTION ERROR: Maximum child count reached in {nameof(source)}");
 
             if (target.MaxInputConnections != -1 && target.Parents.Count >= target.MaxInputConnections)
-                throw new ArgumentException($"CONNECTION ERROR: Maximum parent count reached in {nameof(target)}");
+                throw new ConnectionException($"CONNECTION ERROR: Maximum parent count reached in {nameof(target)}");
 
             source.InternalChildList.Insert(childIndex == -1 ? source.InternalChildList.Count : childIndex, target);
             target.InternalParentList.Insert(parentIndex == -1 ? target.InternalParentList.Count : parentIndex, source);
@@ -122,7 +123,7 @@ namespace BSDesigner.Core
             var parentIndex = target.InternalParentList.IndexOf(source);
 
             if (childIndex == -1 || parentIndex == -1 || source.InternalChildList[childIndex] != target || target.InternalParentList[parentIndex] != source)
-                throw new Exception("Cant remove a connection if the indexes don't match both source and target nodes");
+                throw new ConnectionException("Cant remove a connection if the indexes don't match both source and target nodes");
 
             source.InternalChildList.RemoveAt(childIndex);
             target.InternalParentList.RemoveAt(parentIndex);
@@ -137,7 +138,7 @@ namespace BSDesigner.Core
         public void DisconnectChild(Node source, int childIndex)
         {
             if (childIndex < 0 || childIndex >= source.InternalChildList.Count)
-                throw new ArgumentException("ERROR: Index is out of bounds");
+                throw new ConnectionException("ERROR: Index is out of bounds");
 
             var target = source.InternalChildList[childIndex];
             var parentIndex = target.InternalParentList.IndexOf(source);
@@ -155,7 +156,7 @@ namespace BSDesigner.Core
         public void DisconnectParent(Node target, int parentIndex)
         {
             if (parentIndex < 0 || parentIndex >= target.InternalParentList.Count)
-                throw new ArgumentException($"ERROR: Index ({parentIndex}) is out of bounds (Count: {target.InternalParentList.Count})");
+                throw new ConnectionException($"ERROR: Index ({parentIndex}) is out of bounds (Count: {target.InternalParentList.Count})");
 
             var source = target.InternalParentList[parentIndex];
             var childIndex = source.InternalChildList.IndexOf(target);
@@ -203,7 +204,6 @@ namespace BSDesigner.Core
                 node.SetContext(context);
             }
         }
-
 
         /// <summary>
         /// Gets a map that allows you to search for nodes by name

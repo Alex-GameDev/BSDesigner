@@ -1,4 +1,5 @@
 using BSDesigner.Core;
+using BSDesigner.Core.Exceptions;
 using TestBSD.Core.Mocks;
 
 namespace TestBSD.Core
@@ -60,7 +61,7 @@ namespace TestBSD.Core
             var graph1 = new MockGraph(typeof(MockNode));
             var graph2 = new MockGraph(typeof(MockNode));
             var n1 = graph1.CreateNode(-1, -1);
-            Assert.That(() => graph2.AddNode(n1), Throws.ArgumentException);
+            Assert.That(() => graph2.AddNode(n1), Throws.InstanceOf<NodeException>());
         }
 
         [Test]
@@ -68,7 +69,7 @@ namespace TestBSD.Core
         {
             var graph1 = new MockGraph(typeof(MockNode));
             var n1 = graph1.CreateNode(-1, -1);
-            Assert.That(() => graph1.AddNode(n1), Throws.ArgumentException);
+            Assert.That(() => graph1.AddNode(n1), Throws.InstanceOf<NodeException>());
         }
 
         [Test]
@@ -76,7 +77,7 @@ namespace TestBSD.Core
         {
             var graph = new MockGraph(typeof(int));
             var node = new MockNode();
-            Assert.That(() => graph.AddNode(node), Throws.ArgumentException);
+            Assert.That(() => graph.AddNode(node), Throws.InstanceOf<NodeException>());
         }
 
         [Test]
@@ -84,7 +85,7 @@ namespace TestBSD.Core
         {
             var graph = new MockGraph();
             var node = new MockNode(-1, -1, typeof(int), typeof(MockNode));
-            Assert.That(() => graph.AddNode(node), Throws.ArgumentException);
+            Assert.That(() => graph.AddNode(node), Throws.InstanceOf<NodeException>());
         }
 
         [Test]
@@ -110,7 +111,7 @@ namespace TestBSD.Core
             var n2 = graph.CreateNode(+1, -1);
             var n3 = graph.CreateNode(-1, -1);
             graph.ConnectNodes(n1, n2);
-            Assert.That(() => graph.ConnectNodes(n3, n2), Throws.ArgumentException);
+            Assert.That(() => graph.ConnectNodes(n3, n2), Throws.InstanceOf<ConnectionException>());
         }
 
         [Test]
@@ -121,7 +122,7 @@ namespace TestBSD.Core
             var n2 = graph.CreateNode(-1, -1);
             var n3 = graph.CreateNode(-1, -1);
             graph.ConnectNodes(n1, n2);
-            Assert.That(() => graph.ConnectNodes(n1, n3), Throws.ArgumentException);
+            Assert.That(() => graph.ConnectNodes(n1, n3), Throws.InstanceOf<ConnectionException>());
         }
 
         [Test]
@@ -129,7 +130,7 @@ namespace TestBSD.Core
         {
             var graph = new MockGraph();
             var n1 = graph.CreateNode(-1, +1);
-            Assert.That(() => graph.ConnectNodes(null!, n1), Throws.ArgumentNullException);
+            Assert.That(() => graph.ConnectNodes(null!, n1), Throws.InstanceOf<ConnectionException>());
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace TestBSD.Core
         {
             var graph = new MockGraph();
             var n1 = graph.CreateNode(-1, +1);
-            Assert.That(() => graph.ConnectNodes(n1, null!), Throws.ArgumentNullException);
+            Assert.That(() => graph.ConnectNodes(n1, null!), Throws.InstanceOf<ConnectionException>());
         }
 
         [Test]
@@ -148,7 +149,7 @@ namespace TestBSD.Core
 
             var graph2 = new MockGraph();
             var n2 = graph2.CreateNode(-1, +1);
-            Assert.That(() => graph1.ConnectNodes(n1, n2), Throws.ArgumentException);
+            Assert.That(() => graph1.ConnectNodes(n1, n2), Throws.InstanceOf<ConnectionException>());
         }
 
         [Test]
@@ -159,7 +160,7 @@ namespace TestBSD.Core
 
             var graph2 = new MockGraph(typeof(MockNode));
             var n2 = graph2.CreateNode(-1, +1);
-            Assert.That(() => graph1.ConnectNodes(n2, n1), Throws.ArgumentException);
+            Assert.That(() => graph1.ConnectNodes(n2, n1), Throws.InstanceOf<ConnectionException>());
         }
 
         [Test]
@@ -169,7 +170,7 @@ namespace TestBSD.Core
             var n1 = graph.CreateNode(-1, -1);
             n1.SupportedChildType = typeof(int);
             var n2 = graph.CreateNode(-1, -1);
-            Assert.That(() => graph.ConnectNodes(n1, n2), Throws.ArgumentException);
+            Assert.That(() => graph.ConnectNodes(n1, n2), Throws.InstanceOf<ConnectionException>());
         }
 
         [Test]
@@ -255,7 +256,7 @@ namespace TestBSD.Core
             var n1 = graph.CreateNode(-1, -1);
             var n2 = graph.CreateNode(-1, -1);
             graph.ConnectNodes(n1, n2);
-            Assert.That(() => graph.DisconnectChild(n1, 1), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => graph.DisconnectChild(n1, 1), Throws.TypeOf<ConnectionException>());
         }
 
         [Test]
@@ -288,7 +289,7 @@ namespace TestBSD.Core
             var n1 = graph.CreateNode(-1, -1);
             var n2 = graph.CreateNode(-1, -1);
             graph.ConnectNodes(n1, n2);
-            Assert.That(() => graph.DisconnectParent(n2, 1), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => graph.DisconnectParent(n2, 1), Throws.TypeOf<ConnectionException>());
         }
 
         [Test]
@@ -331,7 +332,7 @@ namespace TestBSD.Core
             var n1 = graph.CreateNode(-1, -1);
             var n2 = graph.CreateNode(-1, -1);
             graph.ConnectNodes(n1, n2);
-            Assert.That(() => graph.RemoveNode(n1), Throws.ArgumentException);
+            Assert.That(() => graph.RemoveNode(n1), Throws.InstanceOf<NodeException>());
         }
 
         [Test]
