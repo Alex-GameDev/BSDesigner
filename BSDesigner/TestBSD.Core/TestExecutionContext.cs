@@ -14,7 +14,6 @@ namespace TestBSD.Core
             var n1 = behaviourEngine.CreateNode(-1, -1);
             behaviourEngine.SetContext(context);
             Assert.That(n1.Context, Is.EqualTo(context));
-
         }
     }
 }

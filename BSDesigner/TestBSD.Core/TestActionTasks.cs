@@ -1,5 +1,7 @@
 ﻿using BSDesigner.Core;
+using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
+using TestBSD.Core.Mocks;
 
 namespace TestBSD.Core
 {
@@ -140,6 +142,42 @@ namespace TestBSD.Core
             action.Start();
             Assert.That(lastEventCalled, Is.EqualTo("INIT"));
             Assert.That(action.Update(), Is.EqualTo(Status.Success));
+
+            Assert.That(() => action.Pause(), Throws.Nothing);
+            Assert.That(() => action.Update(), Throws.Nothing);
+            Assert.That(() => action.Stop(), Throws.Nothing);
+        }
+
+        [Test]
+        public void SubsystemAction_WithSubsystem_PropagateEvents()
+        {
+            var graph = new MockGraph();
+            var action = new SubsystemAction()
+            {
+                SubSystem = graph
+            };
+
+            Assert.That(action.GetInfo(), Is.Not.Null);
+            action.Start();
+            Assert.That(graph.Status, Is.EqualTo(Status.Running));
+            action.Pause();
+            Assert.That(graph.IsPaused, Is.EqualTo(true));
+            action.Update();
+            Assert.That(graph.IsPaused, Is.EqualTo(false));
+            action.Stop();
+            Assert.That(graph.Status, Is.EqualTo(Status.None));
+        }
+
+        [Test]
+        public void SubsystemAction_WithNoSubsystem_ThrowExceptions()
+        {
+            var graph = new MockGraph();
+            var action = new SubsystemAction();
+
+            Assert.That(() => action.Start(), Throws.TypeOf<MissingBehaviourSystemException>());
+            Assert.That(() => action.Update(), Throws.TypeOf<MissingBehaviourSystemException>());
+            Assert.That(() => action.Pause(), Throws.TypeOf<MissingBehaviourSystemException>());
+            Assert.That(() => action.Stop(), Throws.TypeOf<MissingBehaviourSystemException>());
         }
     }
 }

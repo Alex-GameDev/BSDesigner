@@ -1,4 +1,6 @@
-﻿namespace BSDesigner.Core.Tasks
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace BSDesigner.Core.Tasks
 {
     /// <summary>
     /// Action that executes a custom method when is started and always returns success.
@@ -9,7 +11,6 @@
         /// Delegate called when the Action is started.
         /// </summary>
         public System.Action? Action;
-
 
         public override string GetInfo() => "Simple Action";
 

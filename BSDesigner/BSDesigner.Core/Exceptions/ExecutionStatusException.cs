@@ -4,12 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 namespace BSDesigner.Core.Exceptions
 {
     /// <summary>
-    /// Exception that is thrown when a <see cref="IStatusHandler"/> tries to change 
+    /// Exception that is thrown when a <see cref="IStatusHandler"/> tries to change
     /// its <see cref="Status"/> in a wrong way.
     /// </summary>
-#pragma warning disable RCS1194
-    public class ExecutionStatusException : Exception
-#pragma warning restore RCS1194
+    [ExcludeFromCodeCoverage]
+    public class ExecutionStatusException : ExecutionException
     {
         /// <summary>
         /// The <see cref="IStatusHandler"/> that throws the exception.
@@ -20,7 +19,6 @@ namespace BSDesigner.Core.Exceptions
         /// Create a new <see cref="ExecutionStatusException"/> with the specified status handler.
         /// </summary>
         /// <param name="statusHandler">The <see cref="IStatusHandler"/> that throws the exception.</param>
-        [ExcludeFromCodeCoverage]
         public ExecutionStatusException(IStatusHandler statusHandler)
         {
             StatusHandler = statusHandler;
@@ -42,7 +40,6 @@ namespace BSDesigner.Core.Exceptions
         /// <param name="statusHandler">The <see cref="IStatusHandler"/> that throws the exception.</param>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
-        [ExcludeFromCodeCoverage]
         public ExecutionStatusException(IStatusHandler statusHandler, string message, Exception innerException) : base(message, innerException)
         {
             StatusHandler = statusHandler;
