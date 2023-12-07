@@ -128,5 +128,18 @@ namespace TestBSD.Core
             var action = new CustomActionTask();
             Assert.That(!string.IsNullOrWhiteSpace(action.GetInfo()), Is.True);
         }
+
+        [Test]
+        public void SimpleAction_OnStart_InvokeEvent()
+        {
+            var lastEventCalled = string.Empty;
+            var action = new SimpleActionTask
+            {
+                Action = () => lastEventCalled = "INIT"
+            };
+            action.Start();
+            Assert.That(lastEventCalled, Is.EqualTo("INIT"));
+            Assert.That(action.Update(), Is.EqualTo(Status.Success));
+        }
     }
 }

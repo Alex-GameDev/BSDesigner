@@ -24,9 +24,9 @@
         }
 
         /// <summary>
-        /// Event called when the action updates.
+        /// Event called when the perception us checked every frame.
         /// </summary>
-        /// <returns>The result of the action execution.</returns>
+        /// <returns>The result of the perception execution.</returns>
         protected abstract bool OnCheckPerception();
     }
 }

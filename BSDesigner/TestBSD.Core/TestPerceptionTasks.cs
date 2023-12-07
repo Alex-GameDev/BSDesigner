@@ -1,5 +1,4 @@
-﻿using BSDesigner.Core;
-using BSDesigner.Core.Tasks;
+﻿using BSDesigner.Core.Tasks;
 
 namespace TestBSD.Core
 {
@@ -108,8 +107,8 @@ namespace TestBSD.Core
         [Test]
         public void CustomPerception_GetInfo_GetString()
         {
-            var Perception = new CustomPerceptionTask();
-            Assert.That(!string.IsNullOrWhiteSpace(Perception.GetInfo()), Is.True);
+            var perception = new CustomPerceptionTask();
+            Assert.That(!string.IsNullOrWhiteSpace(perception.GetInfo()), Is.True);
         }
     }
 }

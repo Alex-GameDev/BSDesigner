@@ -10,7 +10,7 @@ namespace BSDesigner.Core.Tasks
         public Action? OnResume;
         public Func<bool>? OnCheck;
 
-        public override string GetInfo() => "Custom action";
+        public override string GetInfo() => "Custom perception";
 
         protected override void OnBeginTask() => OnBegin?.Invoke();
 
