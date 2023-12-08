@@ -13,9 +13,9 @@ namespace BSDesigner.Core
         /// <summary>
         /// A collection with all the nodes in this graph.
         /// </summary>
-        public IReadOnlyCollection<Node> Nodes => _nodes;
+        public IReadOnlyCollection<Node> Nodes => _nodeList;
 
-        private readonly HashSet<Node> _nodes = new HashSet<Node>();
+        private readonly List<Node> _nodeList = new List<Node>();
 
         /// <summary>
         /// The type of nodes that this graph supports
@@ -38,7 +38,7 @@ namespace BSDesigner.Core
             if(!node.GraphType.IsInstanceOfType(this))
                 throw new NodeException($"An instance of type {node.GetType()} cannot be added, this node can only belongs to a graph of types derived from {node.GraphType}");
 
-            _nodes.Add(node);
+            _nodeList.Add(node);
             node.Graph = this;
         }
 
@@ -51,10 +51,14 @@ namespace BSDesigner.Core
             if (node.Parents.Count > 0 || node.Children.Count > 0)
                 throw new NodeException($"REMOVE ERROR: Can't remove a node with connections. Use {nameof(DisconnectAndRemove)} to delete the connections before remove the node.");
 
-            _nodes.Remove(node);
+            _nodeList.Remove(node);
             node.Graph = null;
         }
 
+        /// <summary>
+        /// Remove all the connections of <paramref name="node"/> an then remove it from the graph.
+        /// </summary>
+        /// <param name="node">The node that will be removed.</param>
         public void DisconnectAndRemove(Node node)
         {
             foreach (var other in node.InternalChildList)
@@ -69,7 +73,7 @@ namespace BSDesigner.Core
 
             node.InternalChildList.Clear();
             node.InternalParentList.Clear();
-            _nodes.Remove(node);
+            _nodeList.Remove(node);
             node.Graph = null;
         }
 
@@ -112,11 +116,11 @@ namespace BSDesigner.Core
         }
 
         /// <summary>
-        /// Remove a connection from
+        /// Remove the first found connection from <paramref name="source"/> to <paramref name="target"/>
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="target"></param>
-        /// <exception cref="Exception"></exception>
+        /// <param name="source">The first node of the connection</param>
+        /// <param name="target">The last node of the connection</param>
+        /// <exception cref="ConnectionException">If the nodes are not connected.</exception>
         public void Disconnect(Node source, Node target)
         {
             var childIndex = source.InternalChildList.IndexOf(target);
@@ -134,7 +138,7 @@ namespace BSDesigner.Core
         /// </summary>
         /// <param name="source">The source node of the connection.</param>
         /// <param name="childIndex">The child index</param>
-        /// <exception cref="ArgumentException">Thrown if the index is out of bounds.</exception>
+        /// <exception cref="ConnectionException">Thrown if the index is out of bounds.</exception>
         public void DisconnectChild(Node source, int childIndex)
         {
             if (childIndex < 0 || childIndex >= source.InternalChildList.Count)
@@ -152,7 +156,7 @@ namespace BSDesigner.Core
         /// </summary>
         /// <param name="target">The target node of the connection.</param>
         /// <param name="parentIndex">The parent index</param>
-        /// <exception cref="ArgumentException">Thrown if the index is out of bounds.</exception>
+        /// <exception cref="ConnectionException">Thrown if the index is out of bounds.</exception>
         public void DisconnectParent(Node target, int parentIndex)
         {
             if (parentIndex < 0 || parentIndex >= target.InternalParentList.Count)
@@ -234,6 +238,27 @@ namespace BSDesigner.Core
             var node = new T();
             AddNode(node);
             return node;
+        }
+
+        /// <summary>
+        /// Change the index of a node in the graph.
+        /// </summary>
+        /// <param name="node">The reordered node.</param>
+        /// <param name="index">The new index of the node in the node list.</param>
+        /// <exception cref="NodeException">If the node cannot be reordered to the given index.</exception>
+        protected void ReorderNode(Node node, int index)
+        {
+            if (node == null)
+                throw new NodeException("Cannot reorder a node that is null.");
+
+            if (!Nodes.Contains(node))
+                throw new NodeException("Cannot reorder a node that don't belong to this graph.");
+
+            if(index < 0 || index >= Nodes.Count)
+                throw new NodeException("Cannot reorder a node to a index that is out of bounds.");
+
+            _nodeList.Remove(node);
+            _nodeList.Insert(index, node);
         }
     }
 }

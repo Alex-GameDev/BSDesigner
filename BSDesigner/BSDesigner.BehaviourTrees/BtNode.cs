@@ -40,7 +40,7 @@ namespace BSDesigner.BehaviourTrees
         }
 
         /// <summary>
-        /// Stop the node execution, changing <see cref="Status"/> to None. 
+        /// Stop the node execution, changing <see cref="Status"/> to None.
         /// </summary>
         /// <exception cref="Exception">If was already stopped.</exception>
         public virtual void Stop()

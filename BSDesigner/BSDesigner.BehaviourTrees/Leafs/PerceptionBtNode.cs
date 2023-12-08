@@ -54,6 +54,7 @@ namespace BSDesigner.BehaviourTrees
             if(statusResult == Status.None)
                 throw new ExecutionStatusException(this, "Leaf node cannot return Status.Node, check valueOnTrue and valueOnFalse values");
 
+            Status = statusResult;
             return Status;
         }
     }

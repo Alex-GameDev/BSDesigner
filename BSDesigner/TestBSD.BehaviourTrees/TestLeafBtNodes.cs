@@ -35,7 +35,37 @@ namespace TestBSD.BehaviourTrees
         }
 
         [Test]
-        public void LeafBTNode_ConnectParent_ThrowException()
+        public void BTNode_StartWhenIsAlreadyRunning_ThrowException()
+        {
+            var bt = new BehaviourTree();
+            bt.CreateActionNode(_action);
+            bt.Start();
+            Assert.That(bt.Start, Throws.InstanceOf<ExecutionStatusException>());
+        }
+
+        [Test]
+        public void BTNode_StopWhenIsNotRunning_ThrowException()
+        {
+            var bt = new BehaviourTree();
+            bt.CreateActionNode(_action);
+            Assert.That(bt.Stop, Throws.InstanceOf<ExecutionStatusException>());
+        }
+
+        [Test]
+        public void BTNode_UpdateWhenIsFinished_NotChangeStatus()
+        {
+            Status returnedStatus = Status.Success;
+            var bt = new BehaviourTree();
+            bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => returnedStatus});
+            bt.Start();
+            bt.Update();
+            returnedStatus = Status.Failure;
+            bt.Update();
+            Assert.That(bt.Status, Is.EqualTo(Status.Success));
+        }
+
+        [Test]
+        public void LeafBTNode_ConnectChild_ThrowException()
         {
             var bt = new BehaviourTree();
             var node1 = bt.CreateActionNode(_action);
@@ -44,7 +74,16 @@ namespace TestBSD.BehaviourTrees
         }
 
         [Test]
-        public void LeafBtNode_NullAction_ThrowException()
+        public void LeafBTNode_ConnectMultipleParents_ThrowException()
+        {
+            var bt = new BehaviourTree();
+            var node1 = bt.CreateActionNode(_action);
+            var node2 = bt.CreateDecorator<InverterNode>(node1);
+            Assert.That(() => bt.CreateDecorator<InverterNode>(node1), Throws.InstanceOf<ConnectionException>());
+        }
+
+        [Test]
+        public void ActionBtNode_NullAction_ThrowException()
         {
             var bt = new BehaviourTree();
             bt.CreateLeafNode<ActionBtNode>();
@@ -67,6 +106,14 @@ namespace TestBSD.BehaviourTrees
         }
 
         [Test]
+        public void LeafBtNode_NullAction_ThrowException()
+        {
+            var bt = new BehaviourTree();
+            bt.CreateLeafNode<PerceptionBtNode>();
+            Assert.That(() => bt.Start(), Throws.InstanceOf<MissingTaskException>());
+        }
+
+        [Test]
         public void PerceptionBtNode_AssignPerception_LaunchEvents()
         {
             var bt = new BehaviourTree();
@@ -79,6 +126,35 @@ namespace TestBSD.BehaviourTrees
             Assert.That(_lastEvent, Is.EqualTo("CHECK"));
             bt.Stop();
             Assert.That(_lastEvent, Is.EqualTo("END"));
+        }
+
+        [Test]
+        [TestCase(Status.Success, Status.Failure, false, Status.Failure)]
+        [TestCase(Status.Success, Status.Failure, true, Status.Success)]
+        [TestCase(Status.Success, Status.Running, false, Status.Running)]
+        [TestCase(Status.Success, Status.Running, true, Status.Success)]
+        [TestCase(Status.Running, Status.Failure, false, Status.Failure)]
+        [TestCase(Status.Running, Status.Failure, true, Status.Running)]
+        public void PerceptionBtNode_BoolToStatus_ReturnCorrectStatus(Status trueValue, Status falseValue, bool perceptionResult, Status expectedResult)
+        {
+            var bt = new BehaviourTree();
+            var leaf = bt.CreatePerceptionNode(new CustomPerceptionTask() { OnCheck = () => perceptionResult});
+            leaf.ValueOnTrue = trueValue;
+            leaf.ValueOnFalse = falseValue;
+            bt.Start();
+            bt.Update();
+            Assert.That(bt.Status, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void PerceptionBtNode_NotValidResult_ThrowException()
+        {
+            var bt = new BehaviourTree();
+            var leaf = bt.CreatePerceptionNode(_perception);
+            leaf.ValueOnFalse = Status.None;
+            bt.Start();
+
+            Assert.That(() => bt.Update(), Throws.InstanceOf<ExecutionStatusException>());
         }
     }
 }
