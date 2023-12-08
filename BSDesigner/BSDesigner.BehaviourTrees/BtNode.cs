@@ -73,4 +73,6 @@ namespace BSDesigner.BehaviourTrees
 
         protected abstract void OnNodePaused();
     }
+
+    //TODO: Add reset event
 }

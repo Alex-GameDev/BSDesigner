@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
@@ -43,6 +44,30 @@ namespace BSDesigner.BehaviourTrees
         {
             var node = CreateNode<T>();
             ConnectNodes(node, child);
+            return node;
+        }
+
+        /// <summary>
+        /// Create a new composite node of type <typeparamref name="T"/>  in this <see cref="BehaviourTree"/> that have <paramref name="children"/> as children.
+        /// </summary>
+        /// <typeparam name="T">The type of composite.</typeparam>
+        /// <param name="children">The children nodes.</param>
+        /// <returns>The <typeparamref name="T"/> created.</returns>
+        public T CreateComposite<T>(params BtNode[] children) where T : CompositeNode, new() => CreateComposite<T>(children.ToList());
+
+        /// <summary>
+        /// Create a new composite node of type <typeparamref name="T"/>  in this <see cref="BehaviourTree"/> that have <paramref name="children"/> as children.
+        /// </summary>
+        /// <typeparam name="T">The type of composite.</typeparam>
+        /// <param name="children">The children nodes.</param>
+        /// <returns>The <typeparamref name="T"/> created.</returns>
+        public T CreateComposite<T>(IEnumerable<BtNode> children) where T : CompositeNode, new()
+        {
+            var node = CreateNode<T>();
+            foreach (var child in children)
+            {
+                ConnectNodes(node, child);
+            }
             return node;
         }
 
