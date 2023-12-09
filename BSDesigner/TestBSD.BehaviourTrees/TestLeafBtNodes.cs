@@ -54,7 +54,7 @@ namespace TestBSD.BehaviourTrees
         [Test]
         public void BTNode_UpdateWhenIsFinished_NotChangeStatus()
         {
-            Status returnedStatus = Status.Success;
+            var returnedStatus = Status.Success;
             var bt = new BehaviourTree();
             bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => returnedStatus});
             bt.Start();
@@ -78,7 +78,7 @@ namespace TestBSD.BehaviourTrees
         {
             var bt = new BehaviourTree();
             var node1 = bt.CreateActionNode(_action);
-            var node2 = bt.CreateDecorator<InverterNode>(node1);
+            bt.CreateDecorator<InverterNode>(node1);
             Assert.That(() => bt.CreateDecorator<InverterNode>(node1), Throws.InstanceOf<ConnectionException>());
         }
 
