@@ -94,9 +94,9 @@ namespace TestBSD.BehaviourTrees
             var bt = new BehaviourTree();
             var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
-            var dec = bt.CreateComposite<FunctionBranchSelectionNode>(leaf1, leaf2);
-            dec.NodeIndexFunction = () => 1;
-            bt.ChangeRootNode(dec);
+            var comp = bt.CreateComposite<FunctionBranchSelectionNode>(leaf1, leaf2);
+            comp.NodeIndexFunction = () => 1;
+            bt.ChangeRootNode(comp);
 
             bt.Start();
             bt.Update();
@@ -110,8 +110,8 @@ namespace TestBSD.BehaviourTrees
             var bt = new BehaviourTree();
             var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
-            var dec = bt.CreateComposite<FunctionBranchSelectionNode>(leaf1, leaf2);
-            bt.ChangeRootNode(dec);
+            var comp = bt.CreateComposite<FunctionBranchSelectionNode>(leaf1, leaf2);
+            bt.ChangeRootNode(comp);
 
             bt.Start();
             bt.Update();
@@ -129,9 +129,9 @@ namespace TestBSD.BehaviourTrees
             var bt = new BehaviourTree();
             var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
-            var dec = bt.CreateComposite<FunctionBranchSelectionNode>(leaf1, leaf2);
-            bt.ChangeRootNode(dec);
-            dec.NodeIndexFunction = () => functionResult;
+            var comp = bt.CreateComposite<FunctionBranchSelectionNode>(leaf1, leaf2);
+            bt.ChangeRootNode(comp);
+            comp.NodeIndexFunction = () => functionResult;
 
             Assert.That(() => bt.Start(), Throws.InstanceOf<MissingConnectionException>());
         }
@@ -145,11 +145,11 @@ namespace TestBSD.BehaviourTrees
             var bt = new BehaviourTree();
             var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
-            var dec = bt.CreateComposite<RandomBranchSelectionNode>(leaf1, leaf2);
-            dec.Random = new MockedRandom { DoubleValue = randomValue };
-            dec.Probabilities[leaf1] = prob1;
-            dec.Probabilities[leaf2] = prob2;
-            bt.ChangeRootNode(dec);
+            var comp = bt.CreateComposite<RandomBranchSelectionNode>(leaf1, leaf2);
+            comp.Random = new MockedRandom { DoubleValue = randomValue };
+            comp.Probabilities[leaf1] = prob1;
+            comp.Probabilities[leaf2] = prob2;
+            bt.ChangeRootNode(comp);
             bt.Start();
             Assert.That(leaf1.Status, Is.EqualTo(expectedSelectedBranch == 0 ? Status.Running : Status.None));
             Assert.That(leaf2.Status, Is.EqualTo(expectedSelectedBranch == 1 ? Status.Running : Status.None));
@@ -163,12 +163,60 @@ namespace TestBSD.BehaviourTrees
             var bt = new BehaviourTree();
             var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
-            var dec = bt.CreateComposite<RandomBranchSelectionNode>(leaf1, leaf2);
-            dec.Random = new MockedRandom { IntValue = expectedSelectedBranch};
-            bt.ChangeRootNode(dec);
+            var comp = bt.CreateComposite<RandomBranchSelectionNode>(leaf1, leaf2);
+            comp.Random = new MockedRandom { IntValue = expectedSelectedBranch};
+            bt.ChangeRootNode(comp);
             bt.Start();
             Assert.That(leaf1.Status, Is.EqualTo(expectedSelectedBranch == 0 ? Status.Running : Status.None));
             Assert.That(leaf2.Status, Is.EqualTo(expectedSelectedBranch == 1 ? Status.Running : Status.None));
+        }
+
+        [Test]
+        [TestCase(true, true, Status.Success, Status.Running, Status.Success)]
+        [TestCase(true, true, Status.Failure, Status.Running, Status.Failure)]
+        [TestCase(true, true, Status.Running, Status.Running, Status.Running)]
+        [TestCase(true, false, Status.Running, Status.Success, Status.Success)]
+        [TestCase(true, false, Status.Running, Status.Failure, Status.Running)]
+        [TestCase(true, false, Status.Failure, Status.Failure, Status.Failure)]
+        [TestCase(false, true, Status.Running, Status.Failure, Status.Failure)]
+        [TestCase(false, true, Status.Running, Status.Success, Status.Running)]
+        [TestCase(false, true, Status.Success, Status.Success, Status.Success)]
+        [TestCase(false, false, Status.Success, Status.Success, Status.Success)]
+        [TestCase(false, false, Status.Success, Status.Running, Status.Running)]
+        [TestCase(false, false, Status.Running, Status.Running, Status.Running)]
+        [TestCase(false, false, Status.Success, Status.Failure, Status.Failure)]
+        [TestCase(false, false, Status.Failure, Status.Success, Status.Success)]
+        public void ParallelCompositeNode_ConfigureFlags_CorrectResult(bool finishAnySuccess, bool finishAnyFailure, Status firstResult, Status secondResult, Status expectedResult)
+        {
+            var bt = new BehaviourTree();
+            var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => firstResult});
+            var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => secondResult});
+            var comp = bt.CreateComposite<ParallelCompositeNode>(leaf1, leaf2);
+            comp.finishOnAnySuccess = finishAnySuccess;
+            comp.finishOnAnyFailure = finishAnyFailure;
+            bt.ChangeRootNode(comp);
+            bt.Start();
+            bt.Update();
+            Assert.That(bt.Status, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void ParallelCompositeNode_Execute_LaunchEvents()
+        {
+            var pauseCount = 0;
+            var bt = new BehaviourTree();
+            var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Running, OnPause = () => pauseCount++, OnResume = () => pauseCount-- });
+            var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success, OnPause = () => pauseCount++, OnResume = () => pauseCount-- });
+            var comp = bt.CreateComposite<ParallelCompositeNode>(leaf1, leaf2);
+            bt.ChangeRootNode(comp);
+            bt.Start();
+            bt.Pause();
+            Assert.That(pauseCount, Is.EqualTo(2));
+            bt.Update();
+            Assert.That(pauseCount, Is.EqualTo(0));
+            bt.Stop();
+            Assert.That(leaf1.Status, Is.EqualTo(Status.None));
+            Assert.That(leaf2.Status, Is.EqualTo(Status.None));
         }
     }
 }
