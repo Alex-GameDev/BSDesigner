@@ -2,6 +2,7 @@
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Utils;
 
 namespace TestBSD.BehaviourTrees
 {
@@ -255,6 +256,88 @@ namespace TestBSD.BehaviourTrees
             bt.Pause();
             Assert.That(bt.IsPaused, Is.True);
             Assert.That(pauseFlag, Is.EqualTo(childWillPause));
+        }
+
+        [Test]
+        public void TimerDecoratorNode_test()
+        {
+            var childResult = Status.Running;
+            bool pauseFlag = false;
+            var bt = new BehaviourTree();
+            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
+            var dec = bt.CreateDecorator<TimerDecoratorNode>(leaf);
+            MockedTimer timer = new MockedTimer();
+            dec.Timer = timer;
+            dec.Time = 1f;
+            bt.ChangeRootNode(dec);
+
+            bt.Start();
+            bt.Update();
+            Assert.That(dec.Status, Is.EqualTo(Status.Running));
+            Assert.That(leaf.Status, Is.EqualTo(Status.None));
+            bt.Pause();
+            Assert.That(pauseFlag, Is.False);
+            timer.CurrentTime = 2f;
+            bt.Update();
+            Assert.That(timer.IsTimeout, Is.True);
+            Assert.That(dec.Status, Is.EqualTo(Status.Running));
+            Assert.That(leaf.Status, Is.EqualTo(Status.Running));
+            bt.Pause();
+            Assert.That(pauseFlag, Is.True);
+            childResult = Status.Success;
+            bt.Update();
+            Assert.That(dec.Status, Is.EqualTo(Status.Success));
+            Assert.That(leaf.Status, Is.EqualTo(Status.Success));
+            bt.Stop();
+            Assert.That(dec.Status, Is.EqualTo(Status.None));
+            Assert.That(leaf.Status, Is.EqualTo(Status.None));
+        }
+
+        [Test]
+        public void RushDecoratorNode_ChildFinishBeforeTimeout_ChildResults()
+        {
+            var childResult = Status.Running;
+            bool pauseFlag = false;
+            var bt = new BehaviourTree();
+            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
+            var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
+            dec.Timer = new MockedTimer();
+            dec.Time = 1f;
+            bt.ChangeRootNode(dec);
+
+            bt.Start();
+            bt.Update();
+            Assert.That(dec.Status, Is.EqualTo(Status.Running));
+            Assert.That(leaf.Status, Is.EqualTo(Status.Running));
+            bt.Pause();
+            Assert.That(pauseFlag, Is.True);
+            childResult = Status.Success;
+            bt.Update();
+            Assert.That(dec.Status, Is.EqualTo(Status.Success));
+            Assert.That(leaf.Status, Is.EqualTo(Status.Success));
+            bt.Stop();
+            Assert.That(dec.Status, Is.EqualTo(Status.None));
+            Assert.That(leaf.Status, Is.EqualTo(Status.None));
+        }
+
+        [Test]
+        public void RushDecoratorNode_Timeout_ReturnFailure()
+        {
+            var childResult = Status.Running;
+            bool pauseFlag = false;
+            var bt = new BehaviourTree();
+            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
+            var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
+            MockedTimer timer = new MockedTimer();
+            dec.Timer = timer;
+            dec.Time = 1f;
+            bt.ChangeRootNode(dec);
+
+            bt.Start();
+            timer.CurrentTime = 2f;
+            bt.Update();
+            Assert.That(dec.Status, Is.EqualTo(Status.Failure));
+            Assert.That(leaf.Status, Is.EqualTo(Status.None));
         }
     }
 }
