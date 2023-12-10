@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
@@ -105,6 +106,38 @@ namespace BSDesigner.StateMachines
         {
             var transition = CreateInternalTransition<ExitTransition>(from, perception, flags);
             transition.FinalStatus = finalStatus;
+            return transition;
+        }
+
+        /// <summary>
+        /// Create a new probability transition in <paramref name="from"/> that can transit to any state in <paramref name="targetStates"/> .
+        /// This transition will check <paramref name="perception"/> every frame if <paramref name="from"/> is the current state and its status matches with <paramref name="flags"/>.
+        /// If perception is null, the check method always returns true.
+        /// </summary>
+        /// <param name="from">The source state of the transition.</param>
+        /// <param name="perception">The perception assigned to the transition.</param>
+        /// <param name="flags">The status that <paramref name="from"/> should have to check the transition.</param>
+        /// <param name="targetStates">The target states for the transition.</param>
+        /// <returns>The probability transition created.</returns>
+        public ProbabilityTransition CreateProbabilityTransition(State from, PerceptionTask? perception = null, StatusFlags flags = StatusFlags.Active, params State[] targetStates) => CreateProbabilityTransition(from, targetStates, perception, flags);
+
+        /// <summary>
+        /// Create a new probability transition in <paramref name="from"/> that can transit to any state in <paramref name="targetStates"/> .
+        /// This transition will check <paramref name="perception"/> every frame if <paramref name="from"/> is the current state and its status matches with <paramref name="flags"/>.
+        /// If perception is null, the check method always returns true.
+        /// </summary>
+        /// <param name="from">The source state of the transition.</param>
+        /// <param name="perception">The perception assigned to the transition.</param>
+        /// <param name="flags">The status that <paramref name="from"/> should have to check the transition.</param>
+        /// <param name="targetStates">The target states for the transition.</param>
+        /// <returns>The probability transition created.</returns>
+        public ProbabilityTransition CreateProbabilityTransition(State from, IEnumerable<State> targetStates, PerceptionTask? perception = null, StatusFlags flags = StatusFlags.Active)
+        {
+            var transition = CreateInternalTransition<ProbabilityTransition>(from, perception, flags);
+            foreach (var child in targetStates)
+            {
+                ConnectNodes(transition, child);
+            }
             return transition;
         }
 

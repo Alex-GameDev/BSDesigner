@@ -3,6 +3,7 @@ using BSDesigner.Core.Tasks;
 using BSDesigner.StateMachines;
 using System;
 using BSDesigner.Core.Exceptions;
+using BSDesigner.Core.Utils;
 
 namespace TestBSD.StateMachines
 {
@@ -126,6 +127,55 @@ namespace TestBSD.StateMachines
             var state2 = fsm.CreateState<ActionState>();
             var et = fsm.CreateTransition(state2, state1);
             Assert.That(() => et.Perform(), Throws.InstanceOf<InvalidTransitionException>());
+        }
+
+        [Test]
+        [TestCase(0.5f, 0.5f, 0.3f, 0)]
+        [TestCase(0.5f, 0.5f, 0.5f, 1)]
+        [TestCase(0.5f, 0.5f, 0.6f, 1)]
+        public void ProbabilityTransition_NoProbabilitiesAssigned_SelectState(float prob1, float prob2, float randomValue, int expectedSelectedState)
+        {
+            var fsm = new StateMachine();
+            var state1 = fsm.CreateState<ActionState>();
+            var state2 = fsm.CreateState<ActionState>();
+            var state3 = fsm.CreateState<ActionState>();
+            var t = fsm.CreateProbabilityTransition(state1, perception: null, StatusFlags.Active, state2, state3);
+            t.Random = new MockedRandom { DoubleValue = randomValue };
+            t.Probabilities[state2] = prob1;
+            t.Probabilities[state3] = prob2;
+            fsm.Start();
+            fsm.Update();
+            Assert.That(state2.Status, Is.EqualTo(expectedSelectedState == 0 ? Status.Running : Status.None));
+            Assert.That(state3.Status, Is.EqualTo(expectedSelectedState == 1 ? Status.Running : Status.None));
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        public void ProbabilityTransition_ProbabilitiesAssigned_SelectState(int expectedSelectedState)
+        {
+            var fsm = new StateMachine();
+            var state1 = fsm.CreateState<ActionState>();
+            var state2 = fsm.CreateState<ActionState>();
+            var state3 = fsm.CreateState<ActionState>();
+            var t = fsm.CreateProbabilityTransition(state1, perception: null, StatusFlags.Active, state2, state3);
+            t.Random = new MockedRandom { IntValue = expectedSelectedState };
+            fsm.Start();
+            fsm.Update();
+            Assert.That(state2.Status, Is.EqualTo(expectedSelectedState == 0 ? Status.Running : Status.None));
+            Assert.That(state3.Status, Is.EqualTo(expectedSelectedState == 1 ? Status.Running : Status.None));
+        }
+
+        [Test]
+        public void ProbabilityTransition_NoTargetStates_ThrowException()
+        {
+            var fsm = new StateMachine();
+            var state1 = fsm.CreateState<ActionState>();
+            var state2 = fsm.CreateState<ActionState>();
+            var state3 = fsm.CreateState<ActionState>();
+            var et = fsm.CreateProbabilityTransition(state1);
+            fsm.Start();
+            Assert.That(() => fsm.Update(), Throws.InstanceOf<MissingConnectionException>());
         }
     }
 }
