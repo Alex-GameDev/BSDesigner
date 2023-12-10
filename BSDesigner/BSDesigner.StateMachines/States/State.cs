@@ -11,7 +11,6 @@ namespace BSDesigner.StateMachines
     public abstract class State : FsmNode, IStatusHandler
     {
         public override Type ChildType => typeof(Transition);
-        public override int MaxInputConnections => -1;
         public override int MaxOutputConnections => -1;
 
         /// <summary>

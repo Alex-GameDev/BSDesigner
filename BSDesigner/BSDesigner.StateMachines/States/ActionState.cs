@@ -8,6 +8,8 @@ namespace BSDesigner.StateMachines
     /// </summary>
     public class ActionState : State
     {
+        public override int MaxInputConnections => -1;
+
         /// <summary>
         /// The action that this state executes.
         /// </summary>
@@ -36,6 +38,6 @@ namespace BSDesigner.StateMachines
         /// Updates the action and returns its result.
         /// </summary>
         /// <returns>The result of the action</returns>
-        protected override Status OnUpdated() => Action?.Update() ?? Status.None;
+        protected override Status OnUpdated() => Action?.Update() ?? Status.Running;
     }
 }

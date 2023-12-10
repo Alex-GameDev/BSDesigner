@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
@@ -27,18 +28,18 @@ namespace BSDesigner.StateMachines
         {
             get
             {
-                if (_cachedTargetState == null)
+                if (_cachedStateMachine == null)
                 {
                     if (Graph is StateMachine stateMachine)
-                        _cachedTargetState = stateMachine;
+                        _cachedStateMachine = stateMachine;
                     else
                         throw new MissingBehaviourSystemException();
                 }
-                return _cachedTargetState;
+                return _cachedStateMachine;
             }
         }
 
-        private StateMachine? _cachedTargetState;
+        private StateMachine? _cachedStateMachine;
 
         /// <summary>
         /// Starts the perception.
@@ -51,11 +52,23 @@ namespace BSDesigner.StateMachines
         /// </summary>
         public void Reset() => Perception?.Stop();
 
+        /// <summary>
+        /// Perform the transition, invoking OnTransitionPerformed event.
+        /// </summary>
+        /// <exception cref="InvalidTransitionException">Thrown if the source of the transition is not the current state.</exception>
+        public void Perform()
+        {
+            var sourceNode = Parents.FirstOrDefault();
+            if (sourceNode != null && StateMachine.CurrentState != sourceNode)
+                throw new InvalidTransitionException(this, "The source state of the transition is not the current state of the machine");
+
+            OnTransitionPerformed();
+        }
 
         /// <summary>
         /// Called when the transition is checked and performed.
         /// </summary>
-        public abstract void Perform();
+        protected abstract void OnTransitionPerformed();
 
         /// <summary>
         /// Gets if the transition should be performed from the source state.

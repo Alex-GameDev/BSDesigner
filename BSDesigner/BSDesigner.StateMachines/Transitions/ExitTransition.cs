@@ -18,6 +18,6 @@ namespace BSDesigner.StateMachines
         /// <inheritdoc/>
         /// Finish the execution of the state machine with the value specified in <see cref="FinalStatus"/>
         /// </summary>
-        public override void Perform() => StateMachine.FinishExecution(FinalStatus);
+        protected override void OnTransitionPerformed() => StateMachine.FinishExecution(FinalStatus);
     }
 }

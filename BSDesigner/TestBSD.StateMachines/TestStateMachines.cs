@@ -117,5 +117,15 @@ namespace TestBSD.StateMachines
             var et = fsm.CreateExitTransition(state, Status.Success, flags: StatusFlags.Success);
             Assert.That(() => fsm.ConnectNodes(et, state), Throws.InstanceOf<ConnectionException>());
         }
+
+        [Test]
+        public void Transition_PerformWhenIsNotValid_ThrowException()
+        {
+            var fsm = new StateMachine();
+            var state1 = fsm.CreateState<ActionState>();
+            var state2 = fsm.CreateState<ActionState>();
+            var et = fsm.CreateTransition(state2, state1);
+            Assert.That(() => et.Perform(), Throws.InstanceOf<InvalidTransitionException>());
+        }
     }
 }

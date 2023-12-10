@@ -1,11 +1,11 @@
 ﻿using BSDesigner.Core.Exceptions;
 
-namespace BSDesigner.StateMachines
+namespace BSDesigner.StateMachines.StackStateMachines
 {
     /// <summary>
-    /// Transition between two states.
+    /// Stack transition between two states that saves the source state in the stack when is performed.
     /// </summary>
-    public class StateTransition : Transition
+    public class PushTransition : StackTransition
     {
         public override int MaxOutputConnections => 1;
 
@@ -18,7 +18,8 @@ namespace BSDesigner.StateMachines
             {
                 if (_cachedTargetState == null)
                 {
-                    if (Children.Count == 0) throw new MissingConnectionException("Can't find the child node if the children list is empty");
+                    if (Children.Count == 0) 
+                        throw new MissingConnectionException("Can't find the child node if the children list is empty");
                     _cachedTargetState = (State)Children[0];
                 }
                 return _cachedTargetState;
@@ -29,8 +30,8 @@ namespace BSDesigner.StateMachines
 
         /// <summary>
         /// <inheritdoc/>
-        /// Set the target state to the current state of the machine.
+        /// Set target state to the current state of the fsm and push source state in the stack.
         /// </summary>
-        protected override void OnTransitionPerformed() => StateMachine.ChangeState(TargetState);
+        protected override void OnTransitionPerformed() => StackStateMachine.PushState(TargetState);
     }
 }

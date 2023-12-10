@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
@@ -21,17 +23,17 @@ namespace BSDesigner.StateMachines
         {
             get
             {
-                if (_cachedRootNode == null)
+                if (_cachedEntryState == null)
                 {
                     if (Nodes.Count == 0) throw new EmptyGraphException("Can't find the entry state if graph is empty");
 
-                    _cachedRootNode = (State)Nodes.First();
+                    _cachedEntryState = (State)Nodes.First();
                 }
-                return _cachedRootNode;
+                return _cachedEntryState;
             }
         }
 
-        private State? _cachedRootNode;
+        private State? _cachedEntryState;
 
         /// <summary>
         /// The current state being executed
