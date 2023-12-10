@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.Core", "BSDesign
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.Core", "TestBSD.Core\TestBSD.Core.csproj", "{C6E3C6D2-E487-4A64-9A34-1BBBCA92F010}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSDesigner.BehaviourTrees", "BSDesigner.BehaviourTrees\BSDesigner.BehaviourTrees.csproj", "{8F407F3A-46EF-43C3-B742-E588D2E6E222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.BehaviourTrees", "BSDesigner.BehaviourTrees\BSDesigner.BehaviourTrees.csproj", "{8F407F3A-46EF-43C3-B742-E588D2E6E222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBSD.BehaviourTrees", "TestBSD.BehaviourTrees\TestBSD.BehaviourTrees.csproj", "{F1CE7E8B-ED1E-405A-973C-1484888751F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.BehaviourTrees", "TestBSD.BehaviourTrees\TestBSD.BehaviourTrees.csproj", "{F1CE7E8B-ED1E-405A-973C-1484888751F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSDesigner.StateMachines", "BSDesigner.StateMachines\BSDesigner.StateMachines.csproj", "{6237F0C0-E4B2-4492-A071-71BBBB9AAE01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBSD.StateMachines", "TestBSD.StateMachines\TestBSD.StateMachines.csproj", "{37D2F913-C965-4235-910C-F4186F7B0513}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{F1CE7E8B-ED1E-405A-973C-1484888751F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1CE7E8B-ED1E-405A-973C-1484888751F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1CE7E8B-ED1E-405A-973C-1484888751F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6237F0C0-E4B2-4492-A071-71BBBB9AAE01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6237F0C0-E4B2-4492-A071-71BBBB9AAE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6237F0C0-E4B2-4492-A071-71BBBB9AAE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6237F0C0-E4B2-4492-A071-71BBBB9AAE01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D2F913-C965-4235-910C-F4186F7B0513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D2F913-C965-4235-910C-F4186F7B0513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D2F913-C965-4235-910C-F4186F7B0513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D2F913-C965-4235-910C-F4186F7B0513}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
