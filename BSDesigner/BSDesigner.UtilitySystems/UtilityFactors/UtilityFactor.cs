@@ -4,9 +4,9 @@ using System.Text;
 
 namespace BSDesigner.UtilitySystems
 {
-    public abstract class Factor : UtilityNode
+    public abstract class UtilityFactor : UtilityNode
     {
-        public override Type ChildType => typeof(Factor);
+        public override Type ChildType => typeof(UtilityFactor);
         public override int MaxInputConnections => -1;
 
         /// <summary>

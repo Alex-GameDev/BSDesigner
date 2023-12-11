@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
@@ -68,7 +69,7 @@ namespace BSDesigner.UtilitySystems
         /// <param name="action">The action executed.</param>
         /// <param name="finishOnComplete">true of the execution of the utility system must finish when the action finish.</param>
         /// <returns>The created utility action</returns>
-        public UtilityAction CreateAction(Factor factor, ActionTask? action = null, bool finishOnComplete = false)
+        public UtilityAction CreateAction(UtilityFactor factor, ActionTask? action = null, bool finishOnComplete = false)
         {
             var utilityAction = CreateNode<UtilityAction>();
             utilityAction.Action = action;
@@ -78,13 +79,50 @@ namespace BSDesigner.UtilitySystems
         }
 
         /// <summary>
-        /// Create a new <see cref="ConstantFactor"/> in this <see cref="ConstantFactor"/> with a constant utility value.
+        /// Create a new fusion factor of type <typeparamref name="T"/> that combines the utility of <paramref name="factors"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the factor.</typeparam>
+        /// <param name="factors">The list of child factors.</param>
+        /// <returns>The <typeparamref name="T"/> created.</returns>
+        public T CreateFusion<T>(params UtilityFactor[] factors) where T : UtilityFusion, new() => CreateFusion<T>((IEnumerable<UtilityFactor>) factors);
+
+        /// <summary>
+        /// Create a new fusion factor of type <typeparamref name="T"/> that combines the utility of <paramref name="factors"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the factor.</typeparam>
+        /// <param name="factors">The list of child factors.</param>
+        /// <returns>The <typeparamref name="T"/> created.</returns>
+        public T CreateFusion<T>(IEnumerable<UtilityFactor> factors) where T : UtilityFusion, new()
+        {
+            var fusionFactor = CreateNode<T>();
+            foreach(var factor in factors)
+            {
+                ConnectNodes(fusionFactor, factor);
+            }
+            return fusionFactor;
+        }
+
+        /// <summary>
+        /// Create a new function factor of type <typeparamref name="T"/> that computes its utility value modifying the utility of <paramref name="child"/> factor.
+        /// </summary>
+        /// <typeparam name="T">The type of the factor.</typeparam>
+        /// <param name="child">The child factor.</param>
+        /// <returns>The <typeparamref name="T"/> created.</returns>
+        public T CreateCurve<T>(UtilityFactor child) where T : UtilityCurve, new()
+        {
+            var curveFactor = CreateNode<T>();
+            ConnectNodes(curveFactor, child);
+            return curveFactor;
+        }
+
+        /// <summary>
+        /// Create a new <see cref="ConstantUtilityLeaf"/> in this <see cref="ConstantUtilityLeaf"/> with a constant utility value.
         /// </summary>
         /// <param name="value">The utility value</param>
-        /// <returns>The <see cref="ConstantFactor"/> created.</returns>
-        public ConstantFactor CreateConstantFactor(float value)
+        /// <returns>The <see cref="ConstantUtilityLeaf"/> created.</returns>
+        public ConstantUtilityLeaf CreateConstantFactor(float value)
         {
-            var constantFactor = CreateNode<ConstantFactor>();
+            var constantFactor = CreateNode<ConstantUtilityLeaf>();
             constantFactor.Value = value;
             return constantFactor;
         }

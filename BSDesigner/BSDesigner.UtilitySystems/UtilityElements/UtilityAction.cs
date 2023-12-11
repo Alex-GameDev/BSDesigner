@@ -7,7 +7,7 @@ namespace BSDesigner.UtilitySystems.UtilityElements
 {
     public class UtilityAction : UtilityElement
     {
-        public override Type ChildType => typeof(Factor);
+        public override Type ChildType => typeof(UtilityFactor);
         public override int MaxOutputConnections => 1;
 
         /// <summary>
@@ -15,20 +15,20 @@ namespace BSDesigner.UtilitySystems.UtilityElements
         /// </summary>
         public ActionTask? Action;
 
-        protected Factor Factor
+        protected UtilityFactor Factor
         {
             get
             {
                 if (_cachedFactor == null)
                 {
                     if (Children.Count == 0) throw new MissingConnectionException("Can't find the child node if the children list is empty");
-                    _cachedFactor = (Factor)Children[0];
+                    _cachedFactor = (UtilityFactor)Children[0];
                 }
                 return _cachedFactor;
             }
         }
 
-        private Factor? _cachedFactor;
+        private UtilityFactor? _cachedFactor;
 
         public bool FinishSystemOnComplete;
 

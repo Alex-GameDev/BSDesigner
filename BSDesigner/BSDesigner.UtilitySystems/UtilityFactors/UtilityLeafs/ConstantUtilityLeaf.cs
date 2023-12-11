@@ -3,7 +3,7 @@
     /// <summary>
     /// Leaf factor which have a constant utility value
     /// </summary>
-    public class ConstantFactor : LeafFactor
+    public class ConstantUtilityLeaf : UtilityLeaf
     {
         /// <summary>
         /// The utility Value.

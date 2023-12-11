@@ -9,4 +9,8 @@
     <ProjectReference Include="..\BSDesigner.Core\BSDesigner.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UtilityFactors\UtilityFusions\" />
+  </ItemGroup>
+
 </Project>
