@@ -89,6 +89,18 @@ namespace BSDesigner.Core
         }
 
         /// <summary>
+        /// Finish the execution of the engine giving it a final status value.
+        /// </summary>
+        /// <param name="status">The result of the engine execution.</param>
+        /// <exception cref="ExecutionStatusException">If the given value is not Success or Failure.</exception>
+        public void Finish(Status status)
+        {
+            if (((uint)status & (uint)StatusFlags.Finished) == 0)
+                throw new ExecutionStatusException(this,$"Cannot finish execution with the given value ({status}), the value must be Success or Failure.");
+            Status = status;
+        }
+
+        /// <summary>
         /// Set the execution context of the behaviour system.
         /// </summary>
         /// <param name="context">The <see cref="ExecutionContext"/> provided.</param>

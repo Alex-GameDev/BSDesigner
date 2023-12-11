@@ -11,9 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.BehaviourTrees",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.BehaviourTrees", "TestBSD.BehaviourTrees\TestBSD.BehaviourTrees.csproj", "{F1CE7E8B-ED1E-405A-973C-1484888751F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSDesigner.StateMachines", "BSDesigner.StateMachines\BSDesigner.StateMachines.csproj", "{6237F0C0-E4B2-4492-A071-71BBBB9AAE01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.StateMachines", "BSDesigner.StateMachines\BSDesigner.StateMachines.csproj", "{6237F0C0-E4B2-4492-A071-71BBBB9AAE01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBSD.StateMachines", "TestBSD.StateMachines\TestBSD.StateMachines.csproj", "{37D2F913-C965-4235-910C-F4186F7B0513}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.StateMachines", "TestBSD.StateMachines\TestBSD.StateMachines.csproj", "{37D2F913-C965-4235-910C-F4186F7B0513}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.UtilitySystems", "BSDesigner.UtilitySystems\BSDesigner.UtilitySystems.csproj", "{859827FA-E1D4-4ED5-AA29-3A59578B53A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBSD.UtilitySystems", "TestBSD.UtilitySystems\TestBSD.UtilitySystems.csproj", "{88C4B68F-90AD-4B58-9522-B47C21A74F2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{37D2F913-C965-4235-910C-F4186F7B0513}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37D2F913-C965-4235-910C-F4186F7B0513}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37D2F913-C965-4235-910C-F4186F7B0513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{859827FA-E1D4-4ED5-AA29-3A59578B53A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{859827FA-E1D4-4ED5-AA29-3A59578B53A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{859827FA-E1D4-4ED5-AA29-3A59578B53A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{859827FA-E1D4-4ED5-AA29-3A59578B53A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88C4B68F-90AD-4B58-9522-B47C21A74F2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88C4B68F-90AD-4B58-9522-B47C21A74F2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88C4B68F-90AD-4B58-9522-B47C21A74F2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88C4B68F-90AD-4B58-9522-B47C21A74F2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
