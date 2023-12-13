@@ -1,46 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
-using BSDesigner.UtilitySystems.UtilityElements;
 
 namespace BSDesigner.UtilitySystems
 {
     /// <summary>
-    /// Behaviour graph that choose between different nodes by an utility value and executes it.
+    /// Behaviour graph that allows you to select an action in a tree based on a utility value.
     /// </summary>
     public class UtilitySystem : BehaviourGraph
     {
         public override Type NodeType => typeof(UtilityNode);
-
-        /// <summary>
-        /// The utility multiplier of the selected element and prevents it from fluctuations.
-        /// </summary>
-        public float Inertia = 1.3f;
-
-        /// <summary>
-        /// The nodes in the system that can be selected as best candidate.
-        /// </summary>
-        protected List<UtilityElement> Candidates
-        {
-            get
-            {
-                if (_candidates == null)
-                {
-                    _candidates = new List<UtilityElement>();
-                    foreach (Node node in Nodes)
-                    {
-                        if (node is UtilityElement { Parents: { Count: 0 } } selectableNode)
-                            _candidates.Add(selectableNode);
-                    }
-                }
-
-                return _candidates;
-            }
-        }
 
         /// <summary>
         /// The elements of the system as utility nodes.
@@ -55,10 +27,49 @@ namespace BSDesigner.UtilitySystems
             }
         }
 
-        private List<UtilityElement>? _candidates;
         private List<UtilityNode>? _utilityNodes;
 
-        private UtilityElement? _currentBestElement;
+        /// <summary>
+        /// The element that this system will execute.
+        /// </summary>
+        protected UtilityElement MainElement
+        {
+            get
+            {
+                if (_cachedMainElement == null)
+                {
+                    var firstState = Nodes.OfType<UtilityElement>().FirstOrDefault();
+                    _cachedMainElement = firstState ?? throw new EmptyGraphException("Can't find the root element if graph is empty");
+                }
+                return _cachedMainElement;
+            }
+        }
+
+        private UtilityElement? _cachedMainElement;
+
+        /// <summary>
+        /// Create a new bucket of type <typeparamref name="T"/> that will select between the elements in <paramref name="candidates"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the bucket created.</typeparam>
+        /// <param name="candidates">The list of candidates of the bucket. They are also its children.</param>
+        /// <returns>The bucket created.</returns>
+        public T CreateBucket<T>(IEnumerable<UtilityElement> candidates) where T : UtilityBucket, new()
+        {
+            var bucket = CreateNode<T>();
+            foreach (var candidate in candidates)
+            {
+                ConnectNodes(bucket, candidate);
+            }
+            return bucket;
+        }
+
+        /// <summary>
+        /// Create a new bucket of type <typeparamref name="T"/> that will select between the elements in <paramref name="candidates"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the bucket created.</typeparam>
+        /// <param name="candidates">The list of candidates of the bucket. They are also its children.</param>
+        /// <returns>The bucket created.</returns>
+        public T CreateBucket<T>(params UtilityElement[] candidates) where T : UtilityBucket, new() => CreateBucket<T>((IEnumerable<UtilityElement>)candidates);
 
         /// <summary>
         /// Create a new <see cref="UtilityAction"/> that computes its utility using <paramref name="factor"/> and executes the action specified in <paramref name="action"/>.
@@ -128,14 +139,23 @@ namespace BSDesigner.UtilitySystems
         }
 
         /// <summary>
+        /// Specify a new root node.
+        /// </summary>
+        /// <param name="node">The new root node of the behaviour tree.</param>
+        public void ChangeRootNode(UtilityElement node)
+        {
+            ReorderNode(node, 0);
+            _cachedMainElement = node;
+        }
+
+        /// <summary>
         /// <inheritdoc/>
         /// </summary>
         protected override void OnStarted()
         {
             foreach (var node in UtilityNodes) node.MarkUtilityAsDirty();
-
-            _currentBestElement = ComputeCurrentBestElement();
-            _currentBestElement.Start();
+            MainElement.UpdateUtility();
+            MainElement.Start();
         }
 
         /// <summary>
@@ -145,58 +165,21 @@ namespace BSDesigner.UtilitySystems
         /// </summary>
         protected override void OnUpdated()
         {
-            _currentBestElement?.Update();
-
             foreach (var node in UtilityNodes) node.MarkUtilityAsDirty();
-
-            var newBestAction = ComputeCurrentBestElement();
-
-            if (newBestAction == _currentBestElement) return;
-
-            _currentBestElement?.Stop();
-            _currentBestElement = newBestAction;
-            _currentBestElement.Start();
+            MainElement.UpdateUtility();
+            MainElement.Update();
         }
 
         /// <summary>
         /// <inheritdoc/>
         /// Stops the current best element execution.
         /// </summary>
-        protected override void OnStopped()
-        {
-            _currentBestElement?.Stop();
-            _currentBestElement = null;
-        }
+        protected override void OnStopped() => MainElement.Stop();
 
         /// <summary>
         /// <inheritdoc/>
         /// Pauses the current best element execution.
         /// </summary>
-        protected override void OnPaused()
-        {
-            _currentBestElement?.Pause();
-        }
-
-        private UtilityElement ComputeCurrentBestElement()
-        {
-            var currentHigherUtility = float.MinValue;
-            UtilityElement? newBestElement = null;
-            foreach (var candidate in Candidates)
-            {
-                candidate.UpdateUtility();
-                var utility = candidate.Utility * (candidate == _currentBestElement ? Inertia : 1f);
-
-                if (utility > currentHigherUtility)
-                {
-                    currentHigherUtility = utility;
-                    newBestElement = candidate;
-                }
-            }
-
-            if (newBestElement == null)
-                throw new EmptyGraphException("Can't find the best candidate, the list is empty.");
-
-            return newBestElement;
-        }
+        protected override void OnPaused() => MainElement.Pause();
     }
 }

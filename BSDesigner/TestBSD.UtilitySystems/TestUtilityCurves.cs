@@ -14,7 +14,7 @@ namespace TestBSD.UtilitySystems
             var factor = new LinearCurve();
             us.AddNode(factor);
             us.CreateAction(factor);
-            Assert.That(() => us.Start(), Throws.InstanceOf<MissingConnectionException>());
+            Assert.That(us.Start, Throws.InstanceOf<MissingConnectionException>());
         }
 
         [Test]

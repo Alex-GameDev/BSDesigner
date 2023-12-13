@@ -114,7 +114,7 @@ namespace TestBSD.StateMachines
         public void ExitTransition_ConnectTarget_ThrowException()
         {
             var fsm = new StateMachine();
-            var state = fsm.CreateState(new CustomActionTask { OnUpdate = () => Status.Success });
+            var state = fsm.CreateState<ActionState>();
             var et = fsm.CreateExitTransition(state, Status.Success, flags: StatusFlags.Success);
             Assert.That(() => fsm.ConnectNodes(et, state), Throws.InstanceOf<ConnectionException>());
         }

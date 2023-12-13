@@ -32,7 +32,11 @@ namespace BSDesigner.BehaviourTrees
         /// Specify a new root node.
         /// </summary>
         /// <param name="node">The new root node of the behaviour tree.</param>
-        public void ChangeRootNode(BtNode node) => ReorderNode(node, 0);
+        public void ChangeRootNode(BtNode node)
+        {
+            ReorderNode(node, 0);
+            _cachedRootNode = node;
+        }
 
         /// <summary>
         /// Create a new decorator node of type <typeparamref name="T"/>  in this <see cref="BehaviourTree"/> that have <paramref name="child"/> as a child.

@@ -26,9 +26,8 @@ namespace BSDesigner.StateMachines
             {
                 if (_cachedEntryState == null)
                 {
-                    if (Nodes.Count == 0) throw new EmptyGraphException("Can't find the entry state if graph is empty");
-
-                    _cachedEntryState = (State)Nodes.First();
+                    var firstState = Nodes.OfType<State>().FirstOrDefault();
+                    _cachedEntryState = firstState ?? throw new EmptyGraphException("Can't find the entry state if graph is empty");
                 }
                 return _cachedEntryState;
             }

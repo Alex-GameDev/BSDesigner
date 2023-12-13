@@ -2,7 +2,7 @@
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 
-namespace BSDesigner.UtilitySystems.UtilityElements
+namespace BSDesigner.UtilitySystems
 {
     /// <summary>
     /// Utility node that can be selected and executed by a utility system.
@@ -34,6 +34,11 @@ namespace BSDesigner.UtilitySystems.UtilityElements
         public event Action<Status> StatusChanged;
 
         /// <summary>
+        /// Does this element have priority over elements that are checked later even if they have higher utility?
+        /// </summary>
+        public abstract bool HasPriority { get; }
+
+        /// <summary>
         /// Starts the execution of the node when the utility system selects it.
         /// </summary>
         /// <exception cref="ExecutionStatusException">If it's already running.</exception>
@@ -43,7 +48,7 @@ namespace BSDesigner.UtilitySystems.UtilityElements
                 throw new ExecutionStatusException(this, $"ERROR: This node ({Name}) is already been executed");
 
             Status = Status.Running;
-            OnNodeStarted();
+            OnElementStarted();
         }
 
         /// <summary>
@@ -56,7 +61,7 @@ namespace BSDesigner.UtilitySystems.UtilityElements
 
             if (Status != Status.Running) return;
 
-            Status = OnNodeUpdated();
+            Status = OnElementUpdated();
         }
 
         /// <summary>
@@ -69,25 +74,38 @@ namespace BSDesigner.UtilitySystems.UtilityElements
                 throw new ExecutionStatusException(this, $"ERROR: This node ({Name}) is already been stopped");
 
             Status = Status.None;
-            OnNodeStopped();
+            OnElementStopped();
         }
 
         /// <summary>
         /// Called when the node is being selected and the graph is paused.
         /// </summary>
-        public virtual void Pause()
+        public void Pause()
         {
             if (Status == Status.Running)
-                OnNodePaused();
+                OnElementPaused();
         }
 
-        protected abstract void OnNodeStarted();
+        /// <summary>
+        /// Called when the element starts its execution.
+        /// </summary>
+        protected abstract void OnElementStarted();
 
-        protected abstract void OnNodeStopped();
+        /// <summary>
+        /// Called when the element stops its execution.
+        /// </summary>
+        protected abstract void OnElementStopped();
 
-        protected abstract Status OnNodeUpdated();
+        /// <summary>
+        /// Called every tick the element is being executed
+        /// </summary>
+        /// <returns>The execution status of the element.</returns>
+        protected abstract Status OnElementUpdated();
 
-        protected abstract void OnNodePaused();
+        /// <summary>
+        /// Called when the element is paused.
+        /// </summary>
+        protected abstract void OnElementPaused();
 
     }
 }

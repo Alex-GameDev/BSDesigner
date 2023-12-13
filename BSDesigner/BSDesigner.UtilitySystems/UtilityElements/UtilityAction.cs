@@ -3,17 +3,22 @@ using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
 
-namespace BSDesigner.UtilitySystems.UtilityElements
+namespace BSDesigner.UtilitySystems
 {
     public class UtilityAction : UtilityElement
     {
-        public override Type ChildType => typeof(UtilityFactor);
-        public override int MaxOutputConnections => 1;
-
         /// <summary>
         /// The <see cref="Action"/> that this <see cref="UtilityAction"/> executes when is selected.
         /// </summary>
         public ActionTask? Action;
+
+        /// <summary>
+        /// The utility system should end when the action finish the execution?
+        /// </summary>
+        public bool FinishSystemOnComplete;
+
+        public override Type ChildType => typeof(UtilityFactor);
+        public override int MaxOutputConnections => 1;
 
         protected UtilityFactor Factor
         {
@@ -30,30 +35,53 @@ namespace BSDesigner.UtilitySystems.UtilityElements
 
         private UtilityFactor? _cachedFactor;
 
-        public bool FinishSystemOnComplete;
+        public override bool HasPriority => false;
 
+        /// <summary>
+        /// <inheritdoc/>
+        /// Updates the utility of the factor and gets it.
+        /// </summary>
+        /// <returns>The utility of the factor</returns>
         protected override float GetUtility()
         {
-            Factor?.UpdateUtility();
-            return Factor?.Utility ?? 0f;
+            Factor.UpdateUtility();
+            return Factor.Utility;
         }
 
-        protected override void OnNodeStarted() => Action?.Start();
+        /// <summary>
+        /// <inheritdoc/>
+        /// Starts the execution of the action.
+        /// </summary>
+        protected override void OnElementStarted() => Action?.Start();
 
-        protected override void OnNodeStopped() => Action?.Stop();
+        /// <summary>
+        /// <inheritdoc/>
+        /// Stops the execution of the action.
+        /// </summary>
+        protected override void OnElementStopped() => Action?.Stop();
 
-        protected override Status OnNodeUpdated()
+        /// <summary>
+        /// <inheritdoc/>
+        /// Updates the execution of the action.
+        /// If the action finish and <see cref="FinishSystemOnComplete"/> is true,
+        /// finish the execution of the system with the same result.
+        /// </summary>
+        protected override Status OnElementUpdated()
         {
             var actionResult = Action?.Update() ?? Status.Running;
 
             if (FinishSystemOnComplete && actionResult != Status.Running)
             {
-                Graph.Finish(actionResult);
+                Graph?.Finish(actionResult);
             }
 
             return actionResult;
         }
 
-        protected override void OnNodePaused() => Action?.Pause();
+        /// <summary>
+        /// <inheritdoc/>
+        /// Pauses the execution of the action.
+        /// </summary>
+        protected override void OnElementPaused() => Action?.Pause();
     }
 }

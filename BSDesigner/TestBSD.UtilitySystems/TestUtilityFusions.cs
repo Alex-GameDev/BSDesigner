@@ -12,7 +12,7 @@ namespace TestBSD.UtilitySystems
             var us = new UtilitySystem();
             var factor = us.CreateFusion<MaxFusion>();
             us.CreateAction(factor);
-            Assert.That(() => us.Start(), Throws.InstanceOf<MissingConnectionException>());
+            Assert.That(us.Start, Throws.InstanceOf<MissingConnectionException>());
         }
 
         [Test]
@@ -24,6 +24,7 @@ namespace TestBSD.UtilitySystems
             var factor = us.CreateFusion<MinFusion>(leaf1, leaf2);
             var action = us.CreateAction(factor);
             us.Start();
+            us.Update();
             Assert.That(action.Utility, Is.EqualTo(0.1f));
         }
 
@@ -36,6 +37,7 @@ namespace TestBSD.UtilitySystems
             var factor = us.CreateFusion<MaxFusion>(leaf1, leaf2);
             var action = us.CreateAction(factor);
             us.Start();
+            us.Update();
             Assert.That(action.Utility, Is.EqualTo(0.2f));
         }
 
@@ -49,6 +51,7 @@ namespace TestBSD.UtilitySystems
             factor.Weights = new[] { 0.5f, 0.3f };
             var action = us.CreateAction(factor);
             us.Start();
+            us.Update();
             Assert.That(action.Utility, Is.EqualTo(0.44f));
         }
 
@@ -62,6 +65,7 @@ namespace TestBSD.UtilitySystems
             factor.Weights = new[] { 0.5f };
             var action = us.CreateAction(factor);
             us.Start();
+            us.Update();
             Assert.That(action.Utility, Is.EqualTo(0.2f));
         }
 
@@ -75,6 +79,7 @@ namespace TestBSD.UtilitySystems
             factor.Weights = new[] { 0.5f, 0.3f, 0.2f, 0.1f };
             var action = us.CreateAction(factor);
             us.Start();
+            us.Update();
             Assert.That(action.Utility, Is.EqualTo(0.44f));
         }
     }

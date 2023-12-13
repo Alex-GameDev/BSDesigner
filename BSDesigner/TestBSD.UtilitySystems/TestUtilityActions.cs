@@ -2,7 +2,6 @@ using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
 using BSDesigner.UtilitySystems;
-using BSDesigner.UtilitySystems.UtilityElements;
 
 namespace TestBSD.UtilitySystems
 {
@@ -15,7 +14,7 @@ namespace TestBSD.UtilitySystems
             var us = new UtilitySystem();
             var action1 = new UtilityAction();
             us.AddNode(action1);
-            Assert.That(() => us.Start(), Throws.InstanceOf<MissingConnectionException>());
+            Assert.That(us.Start, Throws.InstanceOf<MissingConnectionException>());
         }
 
         [Test]
