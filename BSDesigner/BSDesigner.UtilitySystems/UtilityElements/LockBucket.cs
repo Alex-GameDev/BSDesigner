@@ -1,32 +1,24 @@
-﻿using System;
-using System.Linq;
+﻿using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 
 namespace BSDesigner.UtilitySystems
 {
-    public class InertiaBucket : UtilityBucket
+    /// <summary>
+    /// Bucket that locks the selected action until ends
+    /// </summary>
+    public class LockBucket : UtilityBucket
     {
-        public static readonly float DefaultInertia = 1.3f;
-
-        /// <summary>
-        /// A multiplier applied to the utility of the last selected element in order to
-        /// avoid the fluctuations in the selected element computation.
-        /// </summary>
-        public float Inertia = DefaultInertia;
-
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="EmptyGraphException"></exception>
         protected override UtilityElement ComputeCurrentBestElement()
         {
+            if (SelectedElement is { Status: Status.Running })
+                return SelectedElement;
+
             var currentHigherUtility = float.MinValue;
             UtilityElement? newBestElement = null;
             foreach (var candidate in Candidates)
             {
                 candidate.UpdateUtility();
-                var utility = candidate.Utility * (candidate == SelectedElement ? Inertia : 1f);
+                var utility = candidate.Utility;
 
                 if (utility > currentHigherUtility)
                 {

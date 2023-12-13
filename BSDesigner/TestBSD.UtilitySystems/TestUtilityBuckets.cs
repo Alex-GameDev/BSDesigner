@@ -122,4 +122,30 @@ public class TestUtilityBuckets
         Assert.That(action1.Status, Is.EqualTo(executePriorityBucket ? Status.Running : Status.None));
         Assert.That(action2.Status, Is.EqualTo(!executePriorityBucket ? Status.Running : Status.None));
     }
+
+    [Test]
+    public void LockBucket_ExecuteLockCandidateUntilFinish()
+    {
+        var status = Status.Running;
+        var us = new UtilitySystem();
+        var factor1 = us.CreateConstantFactor(1f);
+        var factor2 = us.CreateConstantFactor(0f);
+        var action1 = us.CreateAction(factor1, new CustomActionTask {OnUpdate = () => status});
+        var action2 = us.CreateAction(factor2);
+        var bucket = us.CreateBucket<LockBucket>(action1, action2);
+        us.ChangeRootNode(bucket);
+        us.Start();
+        us.Update();
+        Assert.That(action1.Status, Is.EqualTo(Status.Running));
+        Assert.That(action2.Status, Is.EqualTo(Status.None));
+        factor1.Value = 0f;
+        factor2.Value = 1f;
+        status = Status.Success;
+        us.Update();
+        Assert.That(action1.Status, Is.EqualTo(Status.Success));
+        Assert.That(action2.Status, Is.EqualTo(Status.None));
+        us.Update();
+        Assert.That(action1.Status, Is.EqualTo(Status.None));
+        Assert.That(action2.Status, Is.EqualTo(Status.Running));
+    }
 }

@@ -68,6 +68,8 @@ namespace BSDesigner.UtilitySystems
         /// </summary>
         protected override Status OnElementUpdated()
         {
+            if (Status != Status.Running) return Status;
+
             var actionResult = Action?.Update() ?? Status.Running;
 
             if (FinishSystemOnComplete && actionResult != Status.Running)

@@ -10,6 +10,18 @@ namespace BSDesigner.UtilitySystems
     /// </summary>
     public abstract class UtilityBucket : UtilityElement
     {
+        /// <summary>
+        /// The utility value that any action in this bucket should reach to be selected.
+        /// </summary>
+        public float BucketThreshold;
+
+        /// <summary>
+        /// The utility value that the selected element in this bucket should reach to
+        /// enable the bucket priority. If is lower than the bucket threshold, the higher value
+        /// will be used.
+        /// </summary>
+        public float PriorityThreshold;
+
         public override Type ChildType => typeof(UtilityElement);
         public override int MaxOutputConnections => -1;
 
@@ -38,7 +50,7 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// The current selected element of the candidates in this bucket.
         /// </summary>
-        public UtilityElement SelectedElement { get; private set; } = null!;
+        public UtilityElement? SelectedElement { get; private set; }
 
         /// <summary>
         /// The last executed element in this bucket.
@@ -49,11 +61,11 @@ namespace BSDesigner.UtilitySystems
         /// <inheritdoc/>
         /// Use the selected element to compute the utility.
         /// </summary>
-        /// <returns>The utility of the selected element.</returns>
+        /// <returns>The utility of the selected element, or -inf if the bucket threshold is not reached.</returns>
         protected sealed override float GetUtility()
         {
             SelectedElement = ComputeCurrentBestElement();
-            return GetComputedUtility();
+            return SelectedElement.Utility >= BucketThreshold ? SelectedElement.Utility : float.MinValue;
         }
 
         /// <summary>
@@ -117,9 +129,8 @@ namespace BSDesigner.UtilitySystems
         protected abstract UtilityElement ComputeCurrentBestElement();
 
         /// <summary>
-        /// Override this method to specify how the utility is computed for this bucket.
+        /// Priority is enabled only if the utility of the selected element is higher than the priority threshold and bucket threshold.
         /// </summary>
-        /// <returns>The computed utility of the bucket.</returns>
-        public virtual float GetComputedUtility() => SelectedElement.Utility;
+        public override bool HasPriority => SelectedElement?.Utility >= PriorityThreshold && SelectedElement.Utility >= BucketThreshold;
     }
 }

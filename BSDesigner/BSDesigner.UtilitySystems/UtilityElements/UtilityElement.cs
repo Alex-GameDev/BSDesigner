@@ -59,8 +59,6 @@ namespace BSDesigner.UtilitySystems
             if (Status == Status.None)
                 throw new ExecutionStatusException(this, $"This node ({Name}) must be started before update.");
 
-            if (Status != Status.Running) return;
-
             Status = OnElementUpdated();
         }
 
