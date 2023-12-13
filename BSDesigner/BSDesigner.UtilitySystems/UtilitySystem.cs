@@ -51,11 +51,15 @@ namespace BSDesigner.UtilitySystems
         /// Create a new bucket of type <typeparamref name="T"/> that will select between the elements in <paramref name="candidates"/>.
         /// </summary>
         /// <typeparam name="T">The type of the bucket created.</typeparam>
+        /// <param name="bucketThreshold">The minimum utility value for a candidate to be selected.</param>
+        /// <param name="priorityThreshold">The minimum utility value for a the selected candidate to enable the priority.</param>
         /// <param name="candidates">The list of candidates of the bucket. They are also its children.</param>
         /// <returns>The bucket created.</returns>
-        public T CreateBucket<T>(IEnumerable<UtilityElement> candidates) where T : UtilityBucket, new()
+        public T CreateBucket<T>(IEnumerable<UtilityElement> candidates, float bucketThreshold = 0f, float priorityThreshold = 0f) where T : UtilityBucket, new()
         {
             var bucket = CreateNode<T>();
+            bucket.BucketThreshold = bucketThreshold;
+            bucket.PriorityThreshold = priorityThreshold;
             foreach (var candidate in candidates)
             {
                 ConnectNodes(bucket, candidate);
@@ -67,9 +71,19 @@ namespace BSDesigner.UtilitySystems
         /// Create a new bucket of type <typeparamref name="T"/> that will select between the elements in <paramref name="candidates"/>.
         /// </summary>
         /// <typeparam name="T">The type of the bucket created.</typeparam>
+        /// <param name="bucketThreshold">The minimum utility value for a candidate to be selected.</param>
+        /// <param name="priorityThreshold">The minimum utility value for a the selected candidate to enable the priority.</param>
         /// <param name="candidates">The list of candidates of the bucket. They are also its children.</param>
         /// <returns>The bucket created.</returns>
-        public T CreateBucket<T>(params UtilityElement[] candidates) where T : UtilityBucket, new() => CreateBucket<T>((IEnumerable<UtilityElement>)candidates);
+        public T CreateBucket<T>(float bucketThreshold, float priorityThreshold, params UtilityElement[] candidates) where T : UtilityBucket, new() => CreateBucket<T>(candidates, bucketThreshold, priorityThreshold);
+
+        /// <summary>
+        /// Create a new bucket of type <typeparamref name="T"/> that will select between the elements in <paramref name="candidates"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the bucket created.</typeparam>
+        /// <param name="candidates">The list of candidates of the bucket. They are also its children.</param>
+        /// <returns>The bucket created.</returns>
+        public T CreateBucket<T>(params UtilityElement[] candidates) where T : UtilityBucket, new() => CreateBucket<T>(candidates, 0f);
 
         /// <summary>
         /// Create a new <see cref="UtilityAction"/> that computes its utility using <paramref name="factor"/> and executes the action specified in <paramref name="action"/>.
