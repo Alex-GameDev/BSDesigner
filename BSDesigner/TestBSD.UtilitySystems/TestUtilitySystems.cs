@@ -32,40 +32,32 @@ public class TestUtilitySystems
         Assert.That(() => us.Start(), Throws.InstanceOf<EmptyGraphException>());
     }
 
-    //[Test]
-    //[TestCase(0.9f, 0.1f, 0)]
-    //[TestCase(0.1f, 0.9f, 1)]
-    //[TestCase(0.1f, 0.1f, 0)]
-    //public void UtilitySystem_Execute_SelectBestAction(float u1, float u2, int expectedSelectedIndex)
-    //{
-    //    var us = new UtilitySystem();
-    //    var factor1 = us.CreateConstantFactor(u1);
-    //    var factor2 = us.CreateConstantFactor(u2);
-    //    var action1 = us.CreateAction(factor1);
-    //    var action2 = us.CreateAction(factor2);
-    //    us.Start();
-    //    us.Update();
-    //    Assert.That(action1.Status, Is.EqualTo(expectedSelectedIndex == 0 ? Status.Running : Status.None));
-    //    Assert.That(action2.Status, Is.EqualTo(expectedSelectedIndex == 1 ? Status.Running : Status.None));
-    //}
+    [Test]
+    public void UtilitySystem_DisablePulling_IgnoreUpdates()
+    {
+        var us = new UtilitySystem();
 
-    //[Test]
-    //[TestCase(0.1f, 0.5f, 0.70f, 1.5f, 1)]
-    //[TestCase(0.1f, 0.5f, 0.75f, 1.5f, 0)]
-    //[TestCase(0.1f, 0.5f, 0.80f, 1.5f, 0)]
-    //public void UtilitySystem_SetInertia_SelectBestAction(float u1, float u2, float u1_2, float inertia, int expectedSelectedIndex)
-    //{
-    //    var us = new UtilitySystem();
-    //    var factor1 = us.CreateConstantFactor(u1);
-    //    var factor2 = us.CreateConstantFactor(u2);
-    //    var action1 = us.CreateAction(factor1);
-    //    var action2 = us.CreateAction(factor2);
-    //    us.Inertia = inertia;
-    //    us.Start();
-    //    us.Update();
-    //    factor1.Value = u1_2;
-    //    us.Update();
-    //    Assert.That(action1.Status, Is.EqualTo(expectedSelectedIndex == 0 ? Status.Running : Status.None));
-    //    Assert.That(action2.Status, Is.EqualTo(expectedSelectedIndex == 1 ? Status.Running : Status.None));
-    //}
+        var factor1 = us.CreateConstantFactor(0f);
+        var factor2 = us.CreateConstantFactor(0f);
+        var curve = us.CreateCurve<CustomCurve>(factor1);
+        curve.Function = x => x;
+        var fusion = us.CreateFusion<MaxFusion>(curve, factor2);
+        var action = us.CreateAction(fusion);
+        us.Start();
+        us.Update();
+        Assert.That(factor1.Utility, Is.EqualTo(0f));
+        Assert.That(factor2.Utility, Is.EqualTo(0f));
+        Assert.That(curve.Utility, Is.EqualTo(0f));
+        Assert.That(fusion.Utility, Is.EqualTo(0f));
+        Assert.That(action.Utility, Is.EqualTo(0f));
+        factor1.Value = 0.5f;
+        factor2.Value = 0.2f;
+        curve.EnableUtilityUpdating = false;
+        us.Update();
+        Assert.That(factor1.Utility, Is.EqualTo(0f));
+        Assert.That(factor2.Utility, Is.EqualTo(0.2f));
+        Assert.That(curve.Utility, Is.EqualTo(0f));
+        Assert.That(fusion.Utility, Is.EqualTo(0.2f));
+        Assert.That(action.Utility, Is.EqualTo(0.2f));
+    }
 }
