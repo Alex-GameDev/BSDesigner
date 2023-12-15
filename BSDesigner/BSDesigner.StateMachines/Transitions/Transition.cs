@@ -59,7 +59,7 @@ namespace BSDesigner.StateMachines
         public void Perform()
         {
             var sourceNode = Parents.FirstOrDefault();
-            if (sourceNode != null && StateMachine.CurrentState != sourceNode)
+            if (sourceNode != null && StateMachine.CurrentState != sourceNode && !StateMachine.AnyStates.Contains(sourceNode))
                 throw new InvalidTransitionException(this, "The source state of the transition is not the current state of the machine");
 
             OnTransitionPerformed();

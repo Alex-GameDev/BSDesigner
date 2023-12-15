@@ -47,6 +47,40 @@ namespace TestBSD.StateMachines
         }
 
         [Test]
+        public void AnyState_ExecuteEvents_PropagateEvents()
+        {
+            var fsm = new StateMachine();
+            var state1 = fsm.CreateState<ActionState>();
+            var anyState = fsm.CreateAnyState();
+            var state2 = fsm.CreateState<ActionState>();
+            fsm.CreateTransition(anyState, state2);
+
+            fsm.Start();
+            Assert.That(state1.Status, Is.EqualTo(Status.Running));
+            Assert.That(state2.Status, Is.EqualTo(Status.None));
+            Assert.That(anyState.Status, Is.EqualTo(Status.Running));
+            fsm.Update();
+            Assert.That(state1.Status, Is.EqualTo(Status.None));
+            Assert.That(state2.Status, Is.EqualTo(Status.Running));
+            Assert.That(anyState.Status, Is.EqualTo(Status.Running));
+            fsm.Stop();
+            Assert.That(state1.Status, Is.EqualTo(Status.None));
+            Assert.That(state2.Status, Is.EqualTo(Status.None));
+            Assert.That(anyState.Status, Is.EqualTo(Status.None));
+        }
+
+
+        [Test]
+        public void AnyState_ConnectInputTransition_ThrowException()
+        {
+            var fsm = new StateMachine();
+            var anyState = fsm.CreateAnyState();
+            var transition = new StateTransition();
+            fsm.AddNode(transition);
+            Assert.That(() => fsm.ConnectNodes(transition, anyState), Throws.InstanceOf<ConnectionException>());
+        }
+
+        [Test]
         public void Transition_ExecuteEvents_PropagateEvents()
         {
             bool paused = false;

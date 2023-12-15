@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
@@ -38,16 +36,21 @@ namespace BSDesigner.StateMachines
         private State? _cachedEntryState;
 
         /// <summary>
+        /// The first state that will be executed when the machine started
+        /// </summary>
+        public IEnumerable<AnyState> AnyStates
+        {
+            get { return _cachedAnyStates = _cachedAnyStates ?? Nodes.OfType<AnyState>(); }
+        }
+
+        private IEnumerable<AnyState>? _cachedAnyStates;
+
+        /// <summary>
         /// The current state being executed
         /// </summary>
         public State CurrentState
         {
-            get
-            {
-                if (_cachedCurrentState == null)
-                    _cachedCurrentState = EntryState;
-                return _cachedCurrentState;
-            }
+            get { return _cachedCurrentState = _cachedCurrentState ?? EntryState; }
             private set
             {
                 if(value.Graph != this)
@@ -75,6 +78,12 @@ namespace BSDesigner.StateMachines
             actionState.Action = action;
             return actionState;
         }
+
+        /// <summary>
+        /// Create a new <see cref="AnyState"/> in this state machine.
+        /// </summary>
+        /// <returns>The <see cref="AnyState"/> created.</returns>
+        public AnyState CreateAnyState() => CreateNode<AnyState>();
 
         /// <summary>
         /// Create a new transition that connect <paramref name="from"/> with <paramref name="to"/>.
@@ -167,6 +176,7 @@ namespace BSDesigner.StateMachines
         {
             CurrentState = EntryState;
             CurrentState.Enter();
+            foreach (var anyState in AnyStates) anyState.Enter();
         }
 
         /// <summary>
@@ -176,6 +186,7 @@ namespace BSDesigner.StateMachines
         protected override void OnUpdated()
         {
             CurrentState.Update();
+            foreach (var anyState in AnyStates) anyState.Update();
         }
 
         /// <summary>
@@ -185,6 +196,7 @@ namespace BSDesigner.StateMachines
         protected override void OnStopped()
         {
             CurrentState.Exit();
+            foreach (var anyState in AnyStates) anyState.Exit();
             _cachedCurrentState = null;
         }
 
@@ -195,6 +207,7 @@ namespace BSDesigner.StateMachines
         protected override void OnPaused()
         {
             CurrentState.Pause();
+            foreach (var anyState in AnyStates) anyState.Pause();
         }
 
         /// <summary>
