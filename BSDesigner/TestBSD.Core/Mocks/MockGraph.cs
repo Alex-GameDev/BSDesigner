@@ -22,6 +22,10 @@ namespace TestBSD.Core.Mocks
         public event Action<string> OnEvent = delegate { };
 
         public override Type NodeType => SupportedNodeType;
+        public override bool CanCreateLoops => LoopsEnabled;
+
+
+        public bool LoopsEnabled = true;
 
         public Type SupportedNodeType = typeof(MockNode);
 

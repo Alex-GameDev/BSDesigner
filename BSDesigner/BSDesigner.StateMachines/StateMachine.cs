@@ -17,6 +17,8 @@ namespace BSDesigner.StateMachines
     {
         public override Type NodeType => typeof(FsmNode);
 
+        public override bool CanCreateLoops => true;
+
         /// <summary>
         /// The first state that will be executed when the machine started
         /// </summary>

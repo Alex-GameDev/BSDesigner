@@ -12,6 +12,8 @@ namespace BSDesigner.BehaviourTrees
     {
         public override Type NodeType => typeof(BtNode);
 
+        public override bool CanCreateLoops => false;
+
         protected BtNode RootNode
         {
             get

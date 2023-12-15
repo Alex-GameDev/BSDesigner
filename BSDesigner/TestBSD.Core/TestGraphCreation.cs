@@ -205,6 +205,19 @@ namespace TestBSD.Core
         }
 
         [Test]
+        public void CreateConnection_CreateLoopWhenIsDisabled_ThrowException()
+        {
+            var graph = new MockGraph
+            {
+                LoopsEnabled = false
+            };
+            var n1 = graph.CreateNode(-1, -1);
+            var n2 = graph.CreateNode(-1, -1);
+            graph.ConnectNodes(n1, n2);
+            Assert.That(() => graph.ConnectNodes(n2, n1), Throws.InstanceOf<ConnectionException>());
+        }
+
+        [Test]
         public void DisconnectNodes_RemoveConnection_RemovedToParentAndChildList()
         {
             var graph = new MockGraph();

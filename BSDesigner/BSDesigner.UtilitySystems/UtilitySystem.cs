@@ -14,6 +14,8 @@ namespace BSDesigner.UtilitySystems
     {
         public override Type NodeType => typeof(UtilityNode);
 
+        public override bool CanCreateLoops => false;
+
         /// <summary>
         /// The elements of the system as utility nodes.
         /// </summary>

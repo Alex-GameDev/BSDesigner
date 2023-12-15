@@ -23,6 +23,11 @@ namespace BSDesigner.Core
         public abstract Type NodeType { get; }
 
         /// <summary>
+        /// This graph allows loops when connections are created?
+        /// </summary>
+        public abstract bool CanCreateLoops { get; }
+
+        /// <summary>
         /// Add a new node to the graph.
         /// </summary>
         /// <param name="node">The node added.</param>
@@ -91,10 +96,13 @@ namespace BSDesigner.Core
         public void ConnectNodes(Node source, Node target, int childIndex = -1, int parentIndex = -1)
         {
             if (source == null)
-                throw new ConnectionException($"CONNECTION ERROR: {nameof(source)} is null reference");
+                throw new ConnectionException($"CONNECTION ERROR: {nameof(source)} is null reference.");
 
             if (target == null)
-                throw new ConnectionException($"CONNECTION ERROR: {nameof(target)} is null reference");
+                throw new ConnectionException($"CONNECTION ERROR: {nameof(target)} is null reference.");
+
+            if (source == target)
+                throw new ConnectionException($"CONNECTION ERROR: {nameof(source)} cannot create a connection with itself.");
 
             if (source.Graph != this)
                 throw new ConnectionException($"CONNECTION ERROR: {nameof(source)} is not in the graph.");
@@ -110,6 +118,12 @@ namespace BSDesigner.Core
 
             if (target.MaxInputConnections != -1 && target.Parents.Count >= target.MaxInputConnections)
                 throw new ConnectionException($"CONNECTION ERROR: Maximum parent count reached in {nameof(target)}");
+
+            if (source.IsParentOf(target))
+                throw new ConnectionException($"CONNECTION ERROR: {nameof(source)} and {nameof(target)} are already connected");
+
+            if (!CanCreateLoops && AreNodesConnected(target, source))
+                throw new ConnectionException($"CONNECTION ERROR: Cant connect nodes because loops are disabled for this type of graph.");
 
             source.InternalChildList.Insert(childIndex == -1 ? source.InternalChildList.Count : childIndex, target);
             target.InternalParentList.Insert(parentIndex == -1 ? target.InternalParentList.Count : parentIndex, source);
@@ -179,18 +193,19 @@ namespace BSDesigner.Core
         {
             var unvisitedNodes = new HashSet<Node>();
             var visitedNodes = new HashSet<Node>();
-            unvisitedNodes.Add(source);
+
+            unvisitedNodes.Add(target);
             while (unvisitedNodes.Count > 0)
             {
                 var n = unvisitedNodes.First();
                 unvisitedNodes.Remove(n);
                 visitedNodes.Add(n);
-                foreach (var child in n.Children)
+                foreach (var parent in n.Parents)
                 {
-                    if (child == target)
+                    if (parent == source)
                         return true;
-                    if (!visitedNodes.Contains(child))
-                        unvisitedNodes.Add(child);
+                    if (!visitedNodes.Contains(parent))
+                        unvisitedNodes.Add(parent);
                 }
             }
             return false;
