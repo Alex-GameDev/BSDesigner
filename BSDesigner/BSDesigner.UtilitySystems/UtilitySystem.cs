@@ -143,15 +143,38 @@ namespace BSDesigner.UtilitySystems
         }
 
         /// <summary>
+        /// Use this method to instantiate custom types of leaf factors.
+        /// </summary>
+        /// <typeparam name="T">The type of the leaf factor.</typeparam>
+        /// <returns>The factor of type <typeparamref name="T"/> created.</returns>
+        public T CreateLeaf<T>() where T : UtilityLeaf, new() => CreateNode<T>();
+
+        /// <summary>
         /// Create a new <see cref="ConstantUtilityLeaf"/> in this <see cref="ConstantUtilityLeaf"/> with a constant utility value.
         /// </summary>
         /// <param name="value">The utility value</param>
         /// <returns>The <see cref="ConstantUtilityLeaf"/> created.</returns>
-        public ConstantUtilityLeaf CreateConstantFactor(float value)
+        public ConstantUtilityLeaf CreateConstantLeaf(float value)
         {
-            var constantFactor = CreateNode<ConstantUtilityLeaf>();
+            var constantFactor = CreateLeaf<ConstantUtilityLeaf>();
             constantFactor.Value = value;
             return constantFactor;
+        }
+
+        /// <summary>
+        /// Create a new <see cref="VariableUtilityLeaf"/> in this <see cref="VariableUtilityLeaf"/> with a constant utility value.
+        /// </summary>
+        /// <param name="valueFunction">The function delegate that executes this factor.</param>
+        /// <param name="min">The minimum expected value of the result of <paramref name="valueFunction"/></param>
+        /// <param name="max">The maximum expected value of the result of <paramref name="valueFunction"/></param>
+        /// <returns>The <see cref="VariableUtilityLeaf"/> created.</returns>
+        public VariableUtilityLeaf CreateVariableLeaf(Func<float> valueFunction, float min, float max)
+        {
+            var variableFactor = CreateLeaf<VariableUtilityLeaf>();
+            variableFactor.ValueFunction = valueFunction;
+            variableFactor.Min = min;
+            variableFactor.Max = max;
+            return variableFactor;
         }
 
         /// <summary>

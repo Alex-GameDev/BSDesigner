@@ -13,7 +13,7 @@ public class TestUtilitySystems
     {
         var isPaused = false;
         var us = new UtilitySystem();
-        var factor = us.CreateConstantFactor(1f);
+        var factor = us.CreateConstantLeaf(1f);
         var action = us.CreateAction(factor, new CustomActionTask { OnPause = () => isPaused = true, OnResume = () => isPaused = false });
         us.Start();
         Assert.That(action.Status, Is.EqualTo(Status.Running));
@@ -37,8 +37,8 @@ public class TestUtilitySystems
     {
         var us = new UtilitySystem();
 
-        var factor1 = us.CreateConstantFactor(0f);
-        var factor2 = us.CreateConstantFactor(0f);
+        var factor1 = us.CreateConstantLeaf(0f);
+        var factor2 = us.CreateConstantLeaf(0f);
         var curve = us.CreateCurve<CustomCurve>(factor1);
         curve.Function = x => x;
         var fusion = us.CreateFusion<MaxFusion>(curve, factor2);

@@ -21,7 +21,7 @@ namespace TestBSD.UtilitySystems
         public void UtilityAction_FinishOnComplete_FinishSystem()
         {
             var us = new UtilitySystem();
-            var factor = us.CreateConstantFactor(1f);
+            var factor = us.CreateConstantLeaf(1f);
             us.CreateAction(factor, new CustomActionTask{ OnUpdate = () => Status.Success}, finishOnComplete: true);
             us.Start();
             us.Update();

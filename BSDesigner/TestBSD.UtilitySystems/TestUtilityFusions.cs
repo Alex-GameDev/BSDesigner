@@ -19,8 +19,8 @@ namespace TestBSD.UtilitySystems
         public void Min_Curve_ComputeUtility_CorrectValue()
         {
             var us = new UtilitySystem();
-            var leaf1 = us.CreateConstantFactor(0.1f);
-            var leaf2 = us.CreateConstantFactor(0.2f);
+            var leaf1 = us.CreateConstantLeaf(0.1f);
+            var leaf2 = us.CreateConstantLeaf(0.2f);
             var factor = us.CreateFusion<MinFusion>(leaf1, leaf2);
             var action = us.CreateAction(factor);
             us.Start();
@@ -32,8 +32,8 @@ namespace TestBSD.UtilitySystems
         public void MaxCurve_ComputeUtility_CorrectValue()
         {
             var us = new UtilitySystem();
-            var leaf1 = us.CreateConstantFactor(0.1f);
-            var leaf2 = us.CreateConstantFactor(0.2f);
+            var leaf1 = us.CreateConstantLeaf(0.1f);
+            var leaf2 = us.CreateConstantLeaf(0.2f);
             var factor = us.CreateFusion<MaxFusion>(leaf1, leaf2);
             var action = us.CreateAction(factor);
             us.Start();
@@ -45,8 +45,8 @@ namespace TestBSD.UtilitySystems
         public void WeightedCurve_SameWeightsThanChildren_CorrectValue()
         {
             var us = new UtilitySystem();
-            var leaf1 = us.CreateConstantFactor(0.4f);
-            var leaf2 = us.CreateConstantFactor(0.8f);
+            var leaf1 = us.CreateConstantLeaf(0.4f);
+            var leaf2 = us.CreateConstantLeaf(0.8f);
             var factor = us.CreateFusion<WeightedFusion>(leaf1, leaf2);
             factor.Weights = new[] { 0.5f, 0.3f };
             var action = us.CreateAction(factor);
@@ -59,8 +59,8 @@ namespace TestBSD.UtilitySystems
         public void WeightedCurve_LessWeightsThanChildren_RestChildIsZero()
         {
             var us = new UtilitySystem();
-            var leaf1 = us.CreateConstantFactor(0.4f);
-            var leaf2 = us.CreateConstantFactor(0.8f);
+            var leaf1 = us.CreateConstantLeaf(0.4f);
+            var leaf2 = us.CreateConstantLeaf(0.8f);
             var factor = us.CreateFusion<WeightedFusion>(leaf1, leaf2);
             factor.Weights = new[] { 0.5f };
             var action = us.CreateAction(factor);
@@ -73,8 +73,8 @@ namespace TestBSD.UtilitySystems
         public void WeightedCurve_MoreWeightsThanChildren_IgnoreLeftoverWeight()
         {
             var us = new UtilitySystem();
-            var leaf1 = us.CreateConstantFactor(0.4f);
-            var leaf2 = us.CreateConstantFactor(0.8f);
+            var leaf1 = us.CreateConstantLeaf(0.4f);
+            var leaf2 = us.CreateConstantLeaf(0.8f);
             var factor = us.CreateFusion<WeightedFusion>(leaf1, leaf2);
             factor.Weights = new[] { 0.5f, 0.3f, 0.2f, 0.1f };
             var action = us.CreateAction(factor);

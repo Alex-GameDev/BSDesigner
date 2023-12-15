@@ -23,7 +23,7 @@ public class TestUtilityBuckets
     {
         var isPaused = false;
         var us = new UtilitySystem();
-        var factor = us.CreateConstantFactor(1f);
+        var factor = us.CreateConstantLeaf(1f);
         var action = us.CreateAction(factor, new CustomActionTask { OnPause = () => isPaused = true, OnResume = () => isPaused = false });
         var bucket = us.CreateBucket<InertiaBucket>(action);
         us.ChangeRootNode(bucket);
@@ -45,8 +45,8 @@ public class TestUtilityBuckets
     public void InertiaBucket_Execute_SelectBestAction(float u1, float u2, int expectedSelectedIndex)
     {
         var us = new UtilitySystem();
-        var factor1 = us.CreateConstantFactor(u1);
-        var factor2 = us.CreateConstantFactor(u2);
+        var factor1 = us.CreateConstantLeaf(u1);
+        var factor2 = us.CreateConstantLeaf(u2);
         var action1 = us.CreateAction(factor1);
         var action2 = us.CreateAction(factor2);
         var bucket = us.CreateBucket<InertiaBucket>(action1, action2);
@@ -64,8 +64,8 @@ public class TestUtilityBuckets
     public void InertiaBucket_SetInertia_SelectBestAction(float u1, float u2, float u1_2, float inertia, int expectedSelectedIndex)
     {
         var us = new UtilitySystem();
-        var factor1 = us.CreateConstantFactor(u1);
-        var factor2 = us.CreateConstantFactor(u2);
+        var factor1 = us.CreateConstantLeaf(u1);
+        var factor2 = us.CreateConstantLeaf(u2);
         var action1 = us.CreateAction(factor1);
         var action2 = us.CreateAction(factor2);
         var bucket = us.CreateBucket<InertiaBucket>(action1, action2);
@@ -85,8 +85,8 @@ public class TestUtilityBuckets
     public void InertiaBucket_SetBucketThreshold_IgnoreBucket(float u1, float u2, float bucketThreshold, bool ignoreBucket)
     {
         var us = new UtilitySystem();
-        var factor1 = us.CreateConstantFactor(u1);
-        var factor2 = us.CreateConstantFactor(u2);
+        var factor1 = us.CreateConstantLeaf(u1);
+        var factor2 = us.CreateConstantLeaf(u2);
         var action1 = us.CreateAction(factor1);
         var action2 = us.CreateAction(factor2);
         var priorityBucket = us.CreateBucket<InertiaBucket>(action1);
@@ -108,8 +108,8 @@ public class TestUtilityBuckets
     public void InertiaBucket_SetPriorityThreshold_EnablePriority(float u1, float u2, float bucketThreshold, float priorityThreshold, bool executePriorityBucket)
     {
         var us = new UtilitySystem();
-        var factor1 = us.CreateConstantFactor(u1);
-        var factor2 = us.CreateConstantFactor(u2);
+        var factor1 = us.CreateConstantLeaf(u1);
+        var factor2 = us.CreateConstantLeaf(u2);
         var action1 = us.CreateAction(factor1);
         var action2 = us.CreateAction(factor2);
         var priorityBucket = us.CreateBucket<InertiaBucket>(action1);
@@ -128,8 +128,8 @@ public class TestUtilityBuckets
     {
         var status = Status.Running;
         var us = new UtilitySystem();
-        var factor1 = us.CreateConstantFactor(1f);
-        var factor2 = us.CreateConstantFactor(0f);
+        var factor1 = us.CreateConstantLeaf(1f);
+        var factor2 = us.CreateConstantLeaf(0f);
         var action1 = us.CreateAction(factor1, new CustomActionTask {OnUpdate = () => status});
         var action2 = us.CreateAction(factor2);
         var bucket = us.CreateBucket<LockBucket>(action1, action2);

@@ -25,7 +25,7 @@ namespace TestBSD.UtilitySystems
         public void LinearCurve_ComputeUtility_CorrectValue(float m, float n, float childValue, float expectedResult)
         {
             var us = new UtilitySystem();
-            var leaf = us.CreateConstantFactor(childValue);
+            var leaf = us.CreateConstantLeaf(childValue);
             var factor = us.CreateCurve<LinearCurve>(leaf);
             factor.Slope = m;
             factor.YIntercept = n;
@@ -43,7 +43,7 @@ namespace TestBSD.UtilitySystems
         public void ExponentialCurve_ComputeUtility_CorrectValue(float exp, float dx, float dy, float childValue, float expectedResult)
         {
             var us = new UtilitySystem();
-            var leaf = us.CreateConstantFactor(childValue);
+            var leaf = us.CreateConstantLeaf(childValue);
             var factor = us.CreateCurve<ExponentialCurve>(leaf);
             factor.Exponent = exp;
             factor.DespX = dx;
@@ -62,7 +62,7 @@ namespace TestBSD.UtilitySystems
         public void SigmoidCurve_ComputeUtility_CorrectValue(float midpoint, float grownRate, float childValue, float expectedResult)
         {
             var us = new UtilitySystem();
-            var leaf = us.CreateConstantFactor(childValue);
+            var leaf = us.CreateConstantLeaf(childValue);
             var factor = us.CreateCurve<SigmoidCurve>(leaf);
             factor.GrownRate = grownRate;
             factor.Midpoint = midpoint;
@@ -75,7 +75,7 @@ namespace TestBSD.UtilitySystems
         public void CustomCurve_ValidFunction_CorrectValue()
         {
             var us = new UtilitySystem();
-            var leaf = us.CreateConstantFactor(0.5f);
+            var leaf = us.CreateConstantLeaf(0.5f);
             var factor = us.CreateCurve<CustomCurve>(leaf);
             factor.Function = (x) => x * x;
             var action = us.CreateAction(factor);
@@ -87,7 +87,7 @@ namespace TestBSD.UtilitySystems
         public void CustomCurve_NoFunction_ReturnChildValue()
         {
             var us = new UtilitySystem();
-            var leaf = us.CreateConstantFactor(0.5f);
+            var leaf = us.CreateConstantLeaf(0.5f);
             var factor = us.CreateCurve<CustomCurve>(leaf);
             var action = us.CreateAction(factor);
             us.Start();
@@ -98,7 +98,7 @@ namespace TestBSD.UtilitySystems
         public void DashedCurve_NoPoints_ReturnZero()
         {
             var us = new UtilitySystem();
-            var leaf = us.CreateConstantFactor(0.5f);
+            var leaf = us.CreateConstantLeaf(0.5f);
             var factor = us.CreateCurve<DashedCurve>(leaf);
             var action = us.CreateAction(factor);
             us.Start();
@@ -112,7 +112,7 @@ namespace TestBSD.UtilitySystems
         public void DashedCurve_OnePoint_ReturnPointValue(float childValue)
         {
             var us = new UtilitySystem();
-            var leaf = us.CreateConstantFactor(childValue);
+            var leaf = us.CreateConstantLeaf(childValue);
             var factor = us.CreateCurve<DashedCurve>(leaf);
             factor.Points.Add(new Vector2(0.5f, 0.5f));
             var action = us.CreateAction(factor);
@@ -127,7 +127,7 @@ namespace TestBSD.UtilitySystems
         public void DashedCurve_FewPoints_ReturnValue(float childValue, float expectedValue)
         {
             var us = new UtilitySystem();
-            var leaf = us.CreateConstantFactor(childValue);
+            var leaf = us.CreateConstantLeaf(childValue);
             var factor = us.CreateCurve<DashedCurve>(leaf);
             factor.Points.Add(new Vector2(0.2f, 0.7f));
             factor.Points.Add(new Vector2(0.6f, 0.1f));
