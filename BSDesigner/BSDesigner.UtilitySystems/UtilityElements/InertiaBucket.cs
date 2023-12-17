@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 
 namespace BSDesigner.UtilitySystems
@@ -12,7 +13,7 @@ namespace BSDesigner.UtilitySystems
         /// A multiplier applied to the utility of the last selected element in order to
         /// avoid the fluctuations in the selected element computation.
         /// </summary>
-        public float Inertia = DefaultInertia;
+        public Parameter<float> Inertia = DefaultInertia;
 
         /// <summary>
         /// <inheritdoc/>
@@ -26,7 +27,7 @@ namespace BSDesigner.UtilitySystems
             foreach (var candidate in Candidates)
             {
                 candidate.UpdateUtility();
-                var utility = candidate.Utility * (candidate == SelectedElement ? Inertia : 1f);
+                var utility = candidate.Utility * (candidate == SelectedElement ? Inertia.Value : 1f);
 
                 if (utility > currentHigherUtility)
                 {

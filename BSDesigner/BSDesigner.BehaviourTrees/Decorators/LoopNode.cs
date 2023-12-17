@@ -11,7 +11,7 @@ namespace BSDesigner.BehaviourTrees
         /// The number of times that the child node should end its execution to end the decorator.
         /// if its value is -1 this number is infinite.
         /// </summary>
-        public int Iterations = -1;
+        public Parameter<int> Iterations = -1;
 
         private int _currentIterations;
 

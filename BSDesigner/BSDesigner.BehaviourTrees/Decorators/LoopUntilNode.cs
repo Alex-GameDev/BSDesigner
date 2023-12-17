@@ -11,12 +11,12 @@ namespace BSDesigner.BehaviourTrees
         /// The maximum number of times that the child node can end its execution without end the decorator.
         /// if its value is -1 this number is infinite.
         /// </summary>
-        public int MaxIterations = -1;
+        public Parameter<int> MaxIterations = -1;
 
         /// <summary>
         /// The status that the child node must reach to end the loop.
         /// </summary>
-        public Status TargetStatus = Core.Status.Success;
+        public Parameter<Status> TargetStatus = Status.Success;
 
         private int _currentIterations;
 

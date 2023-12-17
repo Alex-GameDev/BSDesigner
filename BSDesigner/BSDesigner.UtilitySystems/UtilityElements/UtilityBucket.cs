@@ -13,14 +13,14 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// The utility value that any action in this bucket should reach to be selected.
         /// </summary>
-        public float BucketThreshold;
+        public Parameter<float> BucketThreshold = 0f;
 
         /// <summary>
         /// The utility value that the selected element in this bucket should reach to
         /// enable the bucket priority. If is lower than the bucket threshold, the higher value
         /// will be used.
         /// </summary>
-        public float PriorityThreshold;
+        public Parameter<float> PriorityThreshold= 0f;
 
         public override Type ChildType => typeof(UtilityElement);
         public override int MaxOutputConnections => -1;

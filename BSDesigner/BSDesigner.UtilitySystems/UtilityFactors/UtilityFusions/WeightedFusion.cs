@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BSDesigner.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// The weights applied to each utility.
         /// </summary>
-        public float[] Weights = Array.Empty<float>();
+        public Parameter<float>[] Weights = Array.Empty<Parameter<float>>();
 
         /// <summary>
         /// Returns the weighted average of the utilities in <paramref name="utilities"/>

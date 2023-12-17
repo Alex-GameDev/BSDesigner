@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BSDesigner.Core;
+using System;
 
 namespace BSDesigner.UtilitySystems
 {
@@ -10,12 +11,12 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// The grown rate of the function.
         /// </summary>
-        public float GrownRate = 1f;
+        public Parameter<float> GrownRate = 1f;
 
         /// <summary>
         /// The mid point of the function.
         /// </summary>
-        public float Midpoint = 0.5f;
+        public Parameter<float> Midpoint = 0.5f;
 
         /// <summary>
         /// Compute the utility using a exponential function [y = (1 / (1 + e^(-grownRate * (x - midPoint)))]

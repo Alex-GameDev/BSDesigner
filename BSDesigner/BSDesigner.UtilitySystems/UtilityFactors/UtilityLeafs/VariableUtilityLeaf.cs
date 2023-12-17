@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BSDesigner.Core;
+using System;
 
 namespace BSDesigner.UtilitySystems
 {
@@ -15,12 +16,12 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// The minimum value that <see cref="ValueFunction"/> returns.
         /// </summary>
-        public float Min = 0f;
+        public Parameter<float> Min = 0f;
 
         /// <summary>
         /// The maximum variable that <see cref="ValueFunction"/> returns.
         /// </summary>
-        public float Max = 1f;
+        public Parameter<float> Max = 1f;
 
         /// <summary>
         /// Calculates the utility by normalizing the result of <see cref="ValueFunction"/> 

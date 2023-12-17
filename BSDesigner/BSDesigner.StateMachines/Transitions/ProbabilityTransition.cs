@@ -16,7 +16,7 @@ namespace BSDesigner.StateMachines
         /// <summary>
         /// The list of probabilities assigned to each state.
         /// </summary>
-        public IDictionary<Node, float> Probabilities = new Dictionary<Node, float>();
+        public IDictionary<Node, Parameter<float>> Probabilities = new Dictionary<Node, Parameter<float>>();
 
         /// <summary>
         /// Value used to mock the probability generations
@@ -53,7 +53,7 @@ namespace BSDesigner.StateMachines
 
         private int GetSelectedTransitionIndex()
         {
-            var totalProb = Probabilities.Values.Where(v => v > 0).Sum();
+            var totalProb = Probabilities.Values.Where(v => v > 0).Sum(v => v.Value);
 
             if (totalProb == 0) return Random.NextInt(0, Children.Count);
 
