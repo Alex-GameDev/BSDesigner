@@ -13,7 +13,7 @@ namespace BSDesigner.Core
         /// <summary>
         /// A collection with all the nodes in this graph.
         /// </summary>
-        public IReadOnlyCollection<Node> Nodes => _nodeList;
+        public IReadOnlyList<Node> Nodes => _nodeList;
 
         private readonly List<Node> _nodeList = new List<Node>();
 

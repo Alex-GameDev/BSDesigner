@@ -7,11 +7,11 @@ namespace BSDesigner.Core.Tasks
     /// </summary>
     public class SubsystemAction : ActionTask
     {
-        public BehaviourEngine? SubSystem;
+        public Subsystem SubSystem;
 
         public override string GetInfo()
         {
-            return $"Subsystem Action {{{SubSystem?.Name ?? "No subsystem"}}}";
+            return $"Subsystem Action {{{SubSystem.Engine?.Name ?? "No subsystem"}}}";
         }
 
         /// <summary>
@@ -21,10 +21,10 @@ namespace BSDesigner.Core.Tasks
         /// <exception cref="MissingBehaviourSystemException">Thrown if <see cref="SubSystem"/> is null.</exception>
         protected override void OnBeginTask()
         {
-            if (SubSystem == null)
+            if (SubSystem.Engine == null)
                 throw new MissingBehaviourSystemException("Subsystem cannot be null");
 
-            SubSystem.Start();
+            SubSystem.Engine?.Start();
         }
 
         /// <summary>
@@ -34,10 +34,10 @@ namespace BSDesigner.Core.Tasks
         /// <exception cref="MissingBehaviourSystemException"></exception>
         protected override void OnEndTask()
         {
-            if (SubSystem == null)
+            if (SubSystem.Engine == null)
                 throw new MissingBehaviourSystemException("Subsystem cannot be null");
 
-            SubSystem.Stop();
+            SubSystem.Engine.Stop();
         }
 
         /// <summary>
@@ -47,10 +47,10 @@ namespace BSDesigner.Core.Tasks
         /// <exception cref="MissingBehaviourSystemException">Thrown if <see cref="SubSystem"/> is null.</exception>
         protected override void OnPauseTask()
         {
-            if (SubSystem == null)
+            if (SubSystem.Engine == null)
                 throw new MissingBehaviourSystemException("Subsystem cannot be null");
 
-            SubSystem.Pause();
+            SubSystem.Engine.Pause();
         }
 
         /// <summary>
@@ -67,11 +67,11 @@ namespace BSDesigner.Core.Tasks
         /// <exception cref="MissingBehaviourSystemException">Thrown if <see cref="SubSystem"/> is null.</exception>
         protected override Status OnUpdateTask()
         {
-            if (SubSystem == null)
+            if (SubSystem.Engine == null)
                 throw new MissingBehaviourSystemException("Subsystem cannot be null");
 
-            SubSystem.Update();
-            return SubSystem.Status;
+            SubSystem.Engine.Update();
+            return SubSystem.Engine.Status;
         }
     }
 }
