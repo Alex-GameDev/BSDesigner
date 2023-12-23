@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace BSDesigner.Core
 {
@@ -12,11 +13,13 @@ namespace BSDesigner.Core
         /// <summary>
         /// The name of the node used to identify it.
         /// </summary>
+        [DefaultValue("")]
         public string Name = string.Empty;
 
         /// <summary>
         /// The description of the node behaviour or purpose
         /// </summary>
+        [DefaultValue("")]
         public string Description = string.Empty;
 
         /// <summary>
