@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BehaviourDesigner.JsonSerialization.Converters;
+using BehaviourDesigner.JsonSerialization.Model;
 using BSDesigner.Core;
 using Newtonsoft.Json;
 
@@ -18,9 +19,8 @@ namespace BehaviourDesigner.JsonSerialization
         /// <returns>The json string</returns>
         public static string Serialize(BehaviourEngine graph)
         {
-            var settings = CreateSerializerSettings();
-            var result = JsonConvert.SerializeObject(graph, settings);
-            return result;
+            var engines = new List<BehaviourEngine> { graph };
+            return Serialize(engines);
         }
 
         /// <summary>
@@ -28,32 +28,52 @@ namespace BehaviourDesigner.JsonSerialization
         /// </summary>
         /// <param name="engines">The serialized engines</param>
         /// <returns>The json string</returns>
-        public static string SerializeList(IEnumerable<BehaviourEngine> engines)
+        public static string Serialize(IEnumerable<BehaviourEngine> engines)
         {
-            var settings = CreateSerializerSettings();
-            return JsonConvert.SerializeObject(engines, settings);
-        }
+            var dto = new BehaviourSystemDto
+            {
+                Engines = engines.Select(DtoConversion.FromEngineToDto).ToList()
+            };
 
-        /// <summary>
-        /// Serialize a collection of behaviour engines in json format
-        /// </summary>
-        /// <param name="engines">The serialized engines</param>
-        /// <returns>The json string</returns>
-        public static string Serialize(params BehaviourEngine[] engines) => SerializeList(engines);
+            var context = new JsonSerializationContext
+            {
+                Engines = engines.ToList()
+            };
+            return SerializeDto(dto, context);
+        }
         
         /// <summary>
         /// Deserialize a collection of behaviour engines
         /// </summary>
-        /// <param name="jsonData"></param>
-        /// <returns></returns>
+        /// <param name="jsonData">The json string deserialized.</param>
+        /// <returns>The list of behaviour engines deserialized</returns>
         public static List<BehaviourEngine> Deserialize(string jsonData)
         {
-            var settings = CreateSerializerSettings();
-            var data = JsonConvert.DeserializeObject<IEnumerable<BehaviourEngine>>(jsonData, settings);
-            return data.ToList();
+            var context = new JsonSerializationContext();
+            var dto = DeserializeDto(jsonData, context);
+            var engines = dto.Engines.Select(DtoConversion.FromDtoToEngine).ToList();
+
+            foreach (var (subsystem, index) in context.SubsystemMap)
+            {
+                subsystem.Engine = engines[index];
+            }
+
+            return engines;
         }
 
-        private static JsonSerializerSettings CreateSerializerSettings()
+        private static string SerializeDto(BehaviourSystemDto? dto, JsonSerializationContext context)
+        {
+            var settings = CreateSerializerSettings(context);
+            return JsonConvert.SerializeObject(dto, settings);
+        }
+
+        private static BehaviourSystemDto? DeserializeDto(string jsonData, JsonSerializationContext context)
+        {
+            var settings = CreateSerializerSettings(context);
+            return JsonConvert.DeserializeObject<BehaviourSystemDto>(jsonData, settings);
+        }
+
+        private static JsonSerializerSettings CreateSerializerSettings(JsonSerializationContext context)
         {
             var settings = new JsonSerializerSettings
             {
@@ -61,13 +81,10 @@ namespace BehaviourDesigner.JsonSerialization
                 TypeNameHandling = TypeNameHandling.Auto,
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
-            settings.Converters.Add(new BehaviourEngineConverter());
-            //settings.Converters.Add(new BehaviourGraphConverter());
-            settings.Converters.Add(new SubsystemConverter());
-            //settings.Converters.Add(new DefaultEmptyStringConverter());
-
+            //settings.Converters.Add(new NodeConnectionConverter());
+            settings.Converters.Add(new SubsystemConverter { Context = context });
             return settings;
         }
     }

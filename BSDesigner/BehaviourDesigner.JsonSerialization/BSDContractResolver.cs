@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Reflection;
-using BSDesigner.Core;
 
 namespace BehaviourDesigner.JsonSerialization
 {
