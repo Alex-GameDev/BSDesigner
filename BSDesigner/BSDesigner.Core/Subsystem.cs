@@ -1,12 +1,16 @@
 ﻿namespace BSDesigner.Core
 {
-    public struct Subsystem
+    public class Subsystem
     {
         public BehaviourEngine? Engine;
 
         public Subsystem(BehaviourEngine? engine)
         {
             Engine = engine;
+        }
+
+        public Subsystem()
+        {
         }
 
         public static implicit operator Subsystem(BehaviourEngine engine) => new Subsystem(engine);

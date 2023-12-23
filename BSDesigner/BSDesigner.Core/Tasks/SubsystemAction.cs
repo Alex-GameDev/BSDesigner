@@ -7,8 +7,6 @@ namespace BSDesigner.Core.Tasks
     /// </summary>
     public class SubsystemAction : ActionTask
     {
-
-        [Subsystem]
         public Subsystem SubSystem;
 
         public override string GetInfo()
