@@ -1,9 +1,9 @@
 using BSDesigner.Core;
 using BSDesigner.Core.Tasks;
 using BSDesigner.StateMachines;
-using System;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Utils;
+using TestBSD.StateMachines.Mocks;
+using ExecutionContext = BSDesigner.Core.ExecutionContext;
 
 namespace TestBSD.StateMachines
 {
@@ -174,7 +174,15 @@ namespace TestBSD.StateMachines
             var state2 = fsm.CreateState<ActionState>();
             var state3 = fsm.CreateState<ActionState>();
             var t = fsm.CreateProbabilityTransition(state1, perception: null, StatusFlags.Active, state2, state3);
-            t.Random = new MockedRandom { DoubleValue = randomValue };
+            var context = new ExecutionContext
+            {
+                RandomProvider = new MockedRandom()
+                {
+                    DoubleValue = randomValue
+                }
+            };
+            fsm.SetContext(context);
+
             t.Probabilities[state2] = prob1;
             t.Probabilities[state3] = prob2;
             fsm.Start();
@@ -193,7 +201,14 @@ namespace TestBSD.StateMachines
             var state2 = fsm.CreateState<ActionState>();
             var state3 = fsm.CreateState<ActionState>();
             var t = fsm.CreateProbabilityTransition(state1, perception: null, StatusFlags.Active, state2, state3);
-            t.Random = new MockedRandom { IntValue = expectedSelectedState };
+            var context = new ExecutionContext
+            {
+                RandomProvider = new MockedRandom()
+                {
+                    IntValue = expectedSelectedState
+                }
+            };
+            fsm.SetContext(context);
             fsm.Start();
             fsm.Update();
             Assert.That(state2.Status, Is.EqualTo(expectedSelectedState == 0 ? Status.Running : Status.None));

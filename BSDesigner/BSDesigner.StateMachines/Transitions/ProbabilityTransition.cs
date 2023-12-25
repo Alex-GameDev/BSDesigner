@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Utils;
 
 namespace BSDesigner.StateMachines
 {
@@ -19,9 +19,18 @@ namespace BSDesigner.StateMachines
         public IDictionary<Node, float> Probabilities = new Dictionary<Node, float>();
 
         /// <summary>
-        /// Value used to mock the probability generations
+        /// Value used to generate the probabilities.
         /// </summary>
-        public IRandom Random = new DefaultRandom();
+        protected IRandom Random => _random ??= new DefaultRandom();
+        private IRandom? _random = new DefaultRandom();
+
+        public override void SetContext(ExecutionContext context)
+        {
+            if (context.RandomProvider == null)
+                throw new NullReferenceException("The execution context has no random provider.");
+
+            _random = context.RandomProvider.CreateRandom();
+        }
 
         /// <summary>
         /// The target states of the transition

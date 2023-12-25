@@ -1,4 +1,4 @@
-﻿namespace BSDesigner.Core.Utils
+﻿namespace BSDesigner.Core
 {
     public interface IRandom
     {

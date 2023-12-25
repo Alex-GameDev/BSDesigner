@@ -2,7 +2,8 @@
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
-using BSDesigner.Core.Utils;
+using TestBSD.BehaviourTrees.Mocks;
+using ExecutionContext = BSDesigner.Core.ExecutionContext;
 
 namespace TestBSD.BehaviourTrees
 {
@@ -262,13 +263,19 @@ namespace TestBSD.BehaviourTrees
         public void TimerDecoratorNode_test()
         {
             var childResult = Status.Running;
-            bool pauseFlag = false;
+            var pauseFlag = false;
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<TimerDecoratorNode>(leaf);
-            MockedTimer timer = new MockedTimer();
-            dec.Timer = timer;
             dec.Time = 1f;
+            var timer = new MockedTimerProvider();
+
+            var context = new ExecutionContext
+            {
+                TimerProvider = timer
+            };
+            bt.SetContext(context);
+
             bt.ChangeRootNode(dec);
 
             bt.Start();
@@ -277,9 +284,9 @@ namespace TestBSD.BehaviourTrees
             Assert.That(leaf.Status, Is.EqualTo(Status.None));
             bt.Pause();
             Assert.That(pauseFlag, Is.False);
-            timer.CurrentTime = 2f;
+
+            timer.CurrentTime = 1f;
             bt.Update();
-            Assert.That(timer.IsTimeout, Is.True);
             Assert.That(dec.Status, Is.EqualTo(Status.Running));
             Assert.That(leaf.Status, Is.EqualTo(Status.Running));
             bt.Pause();
@@ -301,8 +308,15 @@ namespace TestBSD.BehaviourTrees
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
-            dec.Timer = new MockedTimer();
+            
             dec.Time = 1f;
+            var timer = new MockedTimerProvider();
+            var context = new ExecutionContext
+            {
+                TimerProvider = timer
+            };
+            bt.SetContext(context);
+
             bt.ChangeRootNode(dec);
 
             bt.Start();
@@ -324,17 +338,22 @@ namespace TestBSD.BehaviourTrees
         public void RushDecoratorNode_Timeout_ReturnFailure()
         {
             var childResult = Status.Running;
-            bool pauseFlag = false;
+            var pauseFlag = false;
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
-            MockedTimer timer = new MockedTimer();
-            dec.Timer = timer;
+            var timerProvider = new MockedTimerProvider();
+
+            var context = new ExecutionContext
+            {
+                TimerProvider = timerProvider
+            };
+            bt.SetContext(context);
             dec.Time = 1f;
             bt.ChangeRootNode(dec);
 
             bt.Start();
-            timer.CurrentTime = 2f;
+            timerProvider.CurrentTime = 2f;
             bt.Update();
             Assert.That(dec.Status, Is.EqualTo(Status.Failure));
             Assert.That(leaf.Status, Is.EqualTo(Status.None));

@@ -2,7 +2,8 @@
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Tasks;
-using BSDesigner.Core.Utils;
+using TestBSD.BehaviourTrees.Mocks;
+using ExecutionContext = BSDesigner.Core.ExecutionContext;
 
 namespace TestBSD.BehaviourTrees
 {
@@ -146,7 +147,16 @@ namespace TestBSD.BehaviourTrees
             var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var comp = bt.CreateComposite<RandomBranchSelectionNode>(leaf1, leaf2);
-            comp.Random = new MockedRandom { DoubleValue = randomValue };
+
+            var context = new ExecutionContext
+            {
+                RandomProvider = new MockedRandom()
+                {
+                    DoubleValue = randomValue
+                }
+            };
+            bt.SetContext(context);
+
             comp.Probabilities[leaf1] = prob1;
             comp.Probabilities[leaf2] = prob2;
             bt.ChangeRootNode(comp);
@@ -164,7 +174,14 @@ namespace TestBSD.BehaviourTrees
             var leaf1 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var leaf2 = bt.CreateActionNode(new CustomActionTask() { OnUpdate = () => Status.Success });
             var comp = bt.CreateComposite<RandomBranchSelectionNode>(leaf1, leaf2);
-            comp.Random = new MockedRandom { IntValue = expectedSelectedBranch};
+            var context = new ExecutionContext
+            {
+                RandomProvider = new MockedRandom()
+                {
+                    IntValue = expectedSelectedBranch
+                }
+            };
+            bt.SetContext(context);
             bt.ChangeRootNode(comp);
             bt.Start();
             Assert.That(leaf1.Status, Is.EqualTo(expectedSelectedBranch == 0 ? Status.Running : Status.None));

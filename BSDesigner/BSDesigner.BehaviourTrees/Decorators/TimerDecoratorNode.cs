@@ -1,5 +1,5 @@
-﻿using BSDesigner.Core;
-using BSDesigner.Core.Utils;
+﻿using System;
+using BSDesigner.Core;
 
 namespace BSDesigner.BehaviourTrees
 {
@@ -10,7 +10,19 @@ namespace BSDesigner.BehaviourTrees
         /// </summary>
         public float Time;
 
-        public ITimer Timer = new DefaultTimer();
+        /// <summary>
+        /// Value used to generate the probabilities.
+        /// </summary>
+        protected ITimer Timer => _timer ??= new DefaultTimer();
+        private ITimer? _timer = new DefaultTimer();
+
+        public override void SetContext(ExecutionContext context)
+        {
+            if (context.TimerProvider == null)
+                throw new NullReferenceException("The execution context has no timer provider.");
+
+            _timer = context.TimerProvider.CreateTimer();
+        }
 
         protected override Status UpdateStatus()
         {

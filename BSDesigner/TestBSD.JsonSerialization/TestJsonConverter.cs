@@ -2,7 +2,6 @@ using BehaviourDesigner.JsonSerialization;
 using BSDesigner.BehaviourTrees;
 using BSDesigner.Core;
 using BSDesigner.Core.Tasks;
-using Newtonsoft.Json.Serialization;
 
 namespace TestBSD.JsonSerialization
 {
