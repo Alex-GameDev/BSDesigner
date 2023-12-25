@@ -1,5 +1,6 @@
 using BSDesigner.Core;
-using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Actions;
+using BSDesigner.Core.Perceptions;
 using BSDesigner.StateMachines;
 using BSDesigner.Core.Exceptions;
 using TestBSD.StateMachines.Mocks;

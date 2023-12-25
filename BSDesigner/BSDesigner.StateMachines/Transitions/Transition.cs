@@ -2,7 +2,6 @@
 using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Tasks;
 
 namespace BSDesigner.StateMachines
 {

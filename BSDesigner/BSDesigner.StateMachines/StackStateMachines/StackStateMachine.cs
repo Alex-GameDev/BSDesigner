@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using BSDesigner.Core;
-using BSDesigner.Core.Tasks;
 
 namespace BSDesigner.StateMachines.StackStateMachines
 {

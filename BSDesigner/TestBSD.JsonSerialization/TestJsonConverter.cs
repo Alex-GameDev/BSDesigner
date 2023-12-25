@@ -1,7 +1,7 @@
 using BehaviourDesigner.JsonSerialization;
 using BSDesigner.BehaviourTrees;
 using BSDesigner.Core;
-using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Actions;
 
 namespace TestBSD.JsonSerialization
 {

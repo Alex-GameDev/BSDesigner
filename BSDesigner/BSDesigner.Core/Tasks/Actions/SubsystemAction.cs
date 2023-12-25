@@ -1,6 +1,6 @@
 ﻿using BSDesigner.Core.Exceptions;
 
-namespace BSDesigner.Core.Tasks
+namespace BSDesigner.Core.Actions
 {
     /// <summary>
     /// Action that executes a behaviour engine in.

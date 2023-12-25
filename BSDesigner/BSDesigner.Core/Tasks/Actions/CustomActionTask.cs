@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace BSDesigner.Core.Tasks
+namespace BSDesigner.Core.Actions
 {
-    public class CustomPerceptionTask : PerceptionTask
+    public class CustomActionTask : ActionTask
     {
         public Action? OnBegin;
         public Action? OnEnd;
         public Action? OnPause;
         public Action? OnResume;
-        public Func<bool>? OnCheck;
+        public Func<Status>? OnUpdate;
 
-        public override string GetInfo() => "Custom perception";
+        public override string GetInfo() => "Custom action";
 
         protected override void OnBeginTask() => OnBegin?.Invoke();
 
@@ -20,6 +20,6 @@ namespace BSDesigner.Core.Tasks
 
         protected override void OnResumeTask() => OnResume?.Invoke();
 
-        protected override bool OnCheckPerception() => OnCheck?.Invoke() ?? false;
+        protected override Status OnUpdateTask() => OnUpdate?.Invoke() ?? Status.Failure;
     }
 }

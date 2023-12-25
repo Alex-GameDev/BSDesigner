@@ -1,5 +1,4 @@
 ﻿using BSDesigner.Core;
-using BSDesigner.Core.Tasks;
 using BSDesigner.Core.Exceptions;
 
 namespace BSDesigner.BehaviourTrees

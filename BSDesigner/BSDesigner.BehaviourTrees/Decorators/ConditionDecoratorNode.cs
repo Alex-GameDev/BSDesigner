@@ -1,6 +1,6 @@
 ﻿using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Perceptions;
 
 namespace BSDesigner.BehaviourTrees
 {

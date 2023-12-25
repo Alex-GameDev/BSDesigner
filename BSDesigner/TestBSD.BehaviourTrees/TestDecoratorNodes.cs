@@ -1,7 +1,8 @@
 ﻿using BSDesigner.BehaviourTrees;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Actions;
+using BSDesigner.Core.Perceptions;
 using TestBSD.BehaviourTrees.Mocks;
 using ExecutionContext = BSDesigner.Core.ExecutionContext;
 
@@ -245,7 +246,6 @@ namespace TestBSD.BehaviourTrees
         {
             var pauseFlag = false;
             var childResult = Status.Success;
-            var perceptionValue = true;
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<ConditionDecoratorNode>(leaf);
@@ -338,9 +338,9 @@ namespace TestBSD.BehaviourTrees
         public void RushDecoratorNode_Timeout_ReturnFailure()
         {
             var childResult = Status.Running;
-            var pauseFlag = false;
+
             var bt = new BehaviourTree();
-            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
+            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult });
             var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
             var timerProvider = new MockedTimer();
 
