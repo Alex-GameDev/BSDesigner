@@ -268,7 +268,7 @@ namespace TestBSD.BehaviourTrees
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<TimerDecoratorNode>(leaf);
             dec.Time = 1f;
-            var timer = new MockedTimerProvider();
+            var timer = new MockedTimer();
 
             var context = new ExecutionContext
             {
@@ -310,7 +310,7 @@ namespace TestBSD.BehaviourTrees
             var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
             
             dec.Time = 1f;
-            var timer = new MockedTimerProvider();
+            var timer = new MockedTimer();
             var context = new ExecutionContext
             {
                 TimerProvider = timer
@@ -342,7 +342,7 @@ namespace TestBSD.BehaviourTrees
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
-            var timerProvider = new MockedTimerProvider();
+            var timerProvider = new MockedTimer();
 
             var context = new ExecutionContext
             {

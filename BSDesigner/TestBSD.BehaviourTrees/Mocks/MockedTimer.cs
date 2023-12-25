@@ -2,7 +2,7 @@
 
 namespace TestBSD.BehaviourTrees.Mocks
 {
-    public class MockedTimerProvider : ITimerProvider, ITimer
+    public class MockedTimer : ITimerProvider, ITimer
     {
         public float CurrentTime;
 
