@@ -13,6 +13,11 @@ namespace BSDesigner.UtilitySystems
         public ActionTask? Action;
 
         /// <summary>
+        /// Should the action execute forever keeping the status on running until another element is selected? (This flag has priority to <see cref="FinishSystemOnComplete"/>)
+        /// </summary>
+        public bool ExecuteInLoop;
+
+        /// <summary>
         /// The utility system should end when the action finish the execution?
         /// </summary>
         public bool FinishSystemOnComplete;
@@ -71,6 +76,13 @@ namespace BSDesigner.UtilitySystems
             if (Status != Status.Running) return Status;
 
             var actionResult = Action?.Update() ?? Status.Running;
+
+            if (ExecuteInLoop && actionResult != Status.Running)
+            {
+                Action?.Stop();
+                Action?.Start();
+                actionResult = Status.Running;
+            }
 
             if (FinishSystemOnComplete && actionResult != Status.Running)
             {
