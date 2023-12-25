@@ -71,11 +71,13 @@ namespace BSDesigner.StateMachines
         /// Create a new <see cref="ActionState"/> that executes <paramref name="action"/> when is the current state.
         /// </summary>
         /// <param name="action">The action this state executes.</param>
+        /// <param name="executeOnLoop">True if the state executes the action forever until a transition is triggered.</param>
         /// <returns>The <see cref="ActionState"/> created.</returns>
-        public ActionState CreateState(ActionTask action)
+        public ActionState CreateState(ActionTask action, bool executeOnLoop = false)
         {
             var actionState = CreateNode<ActionState>();
             actionState.Action = action;
+            actionState.ExecuteInLoop = executeOnLoop;
             return actionState;
         }
 

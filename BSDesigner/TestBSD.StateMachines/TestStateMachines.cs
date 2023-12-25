@@ -47,6 +47,22 @@ namespace TestBSD.StateMachines
         }
 
         [Test]
+        public void ActionState_ExecuteOnLoop_KeepStatusOnRunning()
+        {
+            var fsm = new StateMachine();
+            var action = new CustomActionTask
+            {
+                OnUpdate = () => Status.Success,
+            };
+
+            var state = fsm.CreateState(action, executeOnLoop: true);
+            fsm.Start();
+            Assert.That(state.Status, Is.EqualTo(Status.Running));
+            fsm.Update();
+            Assert.That(state.Status, Is.EqualTo(Status.Running));
+        }
+
+        [Test]
         public void AnyState_ExecuteEvents_PropagateEvents()
         {
             var fsm = new StateMachine();
