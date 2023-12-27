@@ -23,6 +23,8 @@ namespace BSDesigner.StateMachines
         /// </summary>
         public StatusFlags StatusFlags;
 
+        public event Action? TransitionPerformed;
+
         protected StateMachine StateMachine
         {
             get
@@ -61,6 +63,7 @@ namespace BSDesigner.StateMachines
             if (sourceNode != null && StateMachine.CurrentState != sourceNode && !StateMachine.AnyStates.Contains(sourceNode))
                 throw new InvalidTransitionException(this, "The source state of the transition is not the current state of the machine");
 
+            TransitionPerformed?.Invoke();
             OnTransitionPerformed();
         }
 

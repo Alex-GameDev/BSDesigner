@@ -5,6 +5,7 @@ using BSDesigner.StateMachines;
 using BSDesigner.Core.Exceptions;
 using TestBSD.StateMachines.Mocks;
 using ExecutionContext = BSDesigner.Core.ExecutionContext;
+using System;
 
 namespace TestBSD.StateMachines
 {
@@ -100,7 +101,7 @@ namespace TestBSD.StateMachines
         [Test]
         public void Transition_ExecuteEvents_PropagateEvents()
         {
-            bool paused = false;
+            var paused = false;
             var lastEvent = string.Empty;
             var fsm = new StateMachine();
             ActionTask action = new CustomActionTask
@@ -127,6 +128,20 @@ namespace TestBSD.StateMachines
             Assert.That(paused, Is.False);
             fsm.Stop();
             Assert.That(lastEvent, Is.EqualTo("END"));
+        }
+
+        [Test]
+        public void Transition_PerformEvent_RaiseCallback()
+        {
+            var flag = false;
+            var fsm = new StateMachine();
+            var state = fsm.CreateState(new CustomActionTask());
+            var state2 = fsm.CreateState(new CustomActionTask());
+            var transition = fsm.CreateTransition(state, state2);
+            transition.TransitionPerformed += () => flag = true;
+            fsm.Start();
+            fsm.Update();
+            Assert.That(flag, Is.True);
         }
 
         [Test]
