@@ -85,13 +85,13 @@ namespace TestBSD.BehaviourTrees
             var decorator = bt.CreateDecorator<LoopNode>(leaf);
             bt.ChangeRootNode(decorator);
 
-            decorator.Iterations = -1;
+            decorator.MaxIterations = -1;
             bt.Start();
             bt.Update();
             Assert.That(bt.Status, Is.EqualTo(Status.Running));
             bt.Stop();
 
-            decorator.Iterations = 1;
+            decorator.MaxIterations = 1;
             bt.Start();
             bt.Update();
             Assert.That(bt.Status, Is.EqualTo(Status.Success));
@@ -102,11 +102,11 @@ namespace TestBSD.BehaviourTrees
         [TestCase(Status.Success, Status.Failure, -1, Status.Running)]
         [TestCase(Status.Success, Status.Failure, +1, Status.Success)]
         [TestCase(Status.Failure, Status.Failure, +1, Status.Failure)]
-        public void LoopUntilNode_Execute_ReturnCorrectValue(Status returnedStatus, Status targetStatus, int maxIterations, Status expectedStatus)
+        public void LoopNode_Execute_ReturnCorrectValue(Status returnedStatus, Status targetStatus, int maxIterations, Status expectedStatus)
         {
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => returnedStatus });
-            var decorator = bt.CreateDecorator<LoopUntilNode>(leaf);
+            var decorator = bt.CreateDecorator<LoopNode>(leaf);
             bt.ChangeRootNode(decorator);
 
             decorator.MaxIterations = maxIterations;
@@ -114,6 +114,32 @@ namespace TestBSD.BehaviourTrees
             bt.Start();
             bt.Update();
             Assert.That(bt.Status, Is.EqualTo(expectedStatus));
+        }
+
+        [Test]
+        public void LoopNode_IterationEvent_RaiseCallback()
+        {
+            var iterationIdx = -1;
+            var statusResult = Status.None;
+
+            var bt = new BehaviourTree();
+            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => Status.Success });
+            var decorator = bt.CreateDecorator<LoopNode>(leaf);
+            bt.ChangeRootNode(decorator);
+
+            decorator.IterationCompleted += (i, s) => (iterationIdx, statusResult) = (i, s);
+            decorator.MaxIterations = -1;
+
+            bt.Start();
+            bt.Update();
+            Assert.That(iterationIdx, Is.EqualTo(0));
+            Assert.That(statusResult, Is.EqualTo(Status.Success));
+            bt.Update();
+            Assert.That(iterationIdx, Is.EqualTo(1));
+            bt.Stop();
+            bt.Start();
+            bt.Update();
+            Assert.That(iterationIdx, Is.EqualTo(0));
         }
 
         [Test]
