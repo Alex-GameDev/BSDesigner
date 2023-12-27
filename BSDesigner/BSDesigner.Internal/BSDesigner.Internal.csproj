@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BehaviourDesigner.JsonSerialization\BSDesigner.JsonSerialization.csproj" />
+    <ProjectReference Include="..\BSDesigner.BehaviourTrees\BSDesigner.BehaviourTrees.csproj" />
+    <ProjectReference Include="..\BSDesigner.Core\BSDesigner.Core.csproj" />
+    <ProjectReference Include="..\BSDesigner.StateMachines\BSDesigner.StateMachines.csproj" />
+    <ProjectReference Include="..\BSDesigner.UtilitySystems\BSDesigner.UtilitySystems.csproj" />
+  </ItemGroup>
+
+</Project>
