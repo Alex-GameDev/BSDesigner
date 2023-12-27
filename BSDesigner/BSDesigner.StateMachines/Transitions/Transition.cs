@@ -82,5 +82,7 @@ namespace BSDesigner.StateMachines
         /// Pause the perception
         /// </summary>
         public void Pause() => Perception?.Pause();
+
+        public override void SetContext(ExecutionContext context) => Perception?.SetContext(context);
     }
 }

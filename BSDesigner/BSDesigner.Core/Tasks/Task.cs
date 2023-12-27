@@ -55,5 +55,13 @@
         protected abstract void OnPauseTask();
 
         protected abstract void OnResumeTask();
+
+        /// <summary>
+        /// Override this method to use the execution context.
+        /// </summary>
+        /// <param name="context">The context passed.</param>
+        public virtual void SetContext(ExecutionContext context)
+        {
+        }
     }
 }

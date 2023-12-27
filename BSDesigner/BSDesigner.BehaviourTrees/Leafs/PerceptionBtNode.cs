@@ -1,5 +1,6 @@
 ﻿using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
+using System;
 
 namespace BSDesigner.BehaviourTrees
 {
@@ -56,5 +57,7 @@ namespace BSDesigner.BehaviourTrees
             Status = statusResult;
             return Status;
         }
+
+        public override void SetContext(ExecutionContext context) => Perception?.SetContext(context);
     }
 }

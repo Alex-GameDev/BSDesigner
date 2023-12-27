@@ -2,6 +2,7 @@
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Actions;
+using BSDesigner.Core.Perceptions;
 
 namespace BSDesigner.UtilitySystems
 {
@@ -97,5 +98,7 @@ namespace BSDesigner.UtilitySystems
         /// Pauses the execution of the action.
         /// </summary>
         protected override void OnElementPaused() => Action?.Pause();
+
+        public override void SetContext(ExecutionContext context) => Action?.SetContext(context);
     }
 }

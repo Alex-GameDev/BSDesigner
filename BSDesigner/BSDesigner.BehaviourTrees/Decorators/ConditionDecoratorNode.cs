@@ -77,5 +77,7 @@ namespace BSDesigner.BehaviourTrees
             Perception.Pause();
             ChildNode.Pause();
         }
+
+        public override void SetContext(ExecutionContext context) => Perception?.SetContext(context);
     }
 }

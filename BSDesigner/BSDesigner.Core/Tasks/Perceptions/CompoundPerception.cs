@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BSDesigner.Core.Perceptions
@@ -55,5 +56,7 @@ namespace BSDesigner.Core.Perceptions
         protected override void OnResumeTask()
         {
         }
+
+        public override void SetContext(ExecutionContext context) => SubPerceptions.ForEach(p => SetContext(context));
     }
 }
