@@ -1,4 +1,4 @@
-﻿namespace BSDesigner.Core.Actions
+﻿namespace BSDesigner.Core
 {
     public abstract class ActionTask : Task
     {

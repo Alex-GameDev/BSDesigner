@@ -1,4 +1,6 @@
-﻿using BSDesigner.Core.Perceptions;
+﻿using BSDesigner.Core;
+using BSDesigner.Core.Perceptions;
+using TestBSD.Core.Mocks;
 
 namespace TestBSD.Core
 {
@@ -180,6 +182,35 @@ namespace TestBSD.Core
             Assert.That(orPerception1.GetInfo(), Is.EqualTo("()"));
             Assert.That(orPerception2.GetInfo(), Does.Match("(.*)"));
             Assert.That(orPerception3.GetInfo(), Does.Match("(.* || .*)"));
+        }
+
+        [Test]
+        [TestCase(Status.Running, StatusFlags.Running, true)]
+        [TestCase(Status.Running, StatusFlags.Active, true)]
+        [TestCase(Status.Running, StatusFlags.None, false)]
+        [TestCase(Status.Success, StatusFlags.NotFailure, true)]
+        public void StatusPerception_HandlerSet_CorrectResult(Status handlerStatus, StatusFlags flags, bool expectedResult)
+        {
+            var handler = new MockGraph();
+            handler.SetStatus(handlerStatus);
+            var p = new StatusPerception(handler, flags);
+            p.Start();
+            Assert.That(p.Check(), Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void StatusPerception_NotHandlerSet_ReturnFalse()
+        {
+            var p = new StatusPerception(null, StatusFlags.None);
+            p.Start();
+            Assert.That(p.Check(), Is.False);
+        }
+
+        [Test]
+        public void StatusPerception_GetInfo_ValidString()
+        {
+            var p = new StatusPerception(null, StatusFlags.None);
+            Assert.That(p.GetInfo(), Is.Not.Empty);
         }
     }
 }
