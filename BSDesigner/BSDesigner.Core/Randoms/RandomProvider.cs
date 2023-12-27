@@ -1,9 +1,12 @@
-﻿namespace BSDesigner.Core
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace BSDesigner.Core
 {
     /// <summary>
     /// Random provider that creates randoms of type <typeparamref name="T"/>.
     /// </summary>
     /// <typeparam name="T">Tye type of the random.</typeparam>
+    [ExcludeFromCodeCoverage]
     public class RandomProvider<T> : IRandomProvider where T : IRandom, new()
     {
         /// <summary>

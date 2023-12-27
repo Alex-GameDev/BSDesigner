@@ -110,5 +110,76 @@ namespace TestBSD.Core
             var perception = new CustomPerceptionTask();
             Assert.That(!string.IsNullOrWhiteSpace(perception.GetInfo()), Is.True);
         }
+
+        [Test]
+        [TestCase(false, false, false)]
+        [TestCase(false, true, false)]
+        [TestCase(true, true, true)]
+        public void AndPerception_HasSubPerceptions_CorrectResult(bool v1, bool v2, bool expectedResult)
+        {
+            var p1 = new CustomPerceptionTask { OnCheck = () => v1 };
+            var p2 = new CustomPerceptionTask { OnCheck = () => v2 };
+
+            var andPerception = new AndPerception(p1, p2);
+
+            andPerception.Start();
+            Assert.That(andPerception.Check(), Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void AndPerception_NoSubPerceptions_ReturnsFalse()
+        {
+            var andPerception = new AndPerception();
+
+            andPerception.Start();
+            Assert.That(andPerception.Check(), Is.False);
+        }
+
+
+        [Test]
+        public void AndPerception_GetInfo_ValidString()
+        {
+            var andPerception1 = new AndPerception();
+            var andPerception2 = new AndPerception(new CustomPerceptionTask());
+            var andPerception3 = new AndPerception(new CustomPerceptionTask(), new CustomPerceptionTask());
+            Assert.That(andPerception1.GetInfo(), Is.EqualTo("()"));
+            Assert.That(andPerception2.GetInfo(), Does.Match("(.*)"));
+            Assert.That(andPerception3.GetInfo(), Does.Match("(.* && .*)"));
+        }
+
+        [Test]
+        [TestCase(false, false, false)]
+        [TestCase(false, true, true)]
+        [TestCase(true, true, true)]
+        public void OrPerception_HasSubPerceptions_CorrectResult(bool v1, bool v2, bool expectedResult)
+        {
+            var p1 = new CustomPerceptionTask { OnCheck = () => v1 };
+            var p2 = new CustomPerceptionTask { OnCheck = () => v2 };
+
+            var orPerception = new OrPerception(p1, p2);
+
+            orPerception.Start();
+            Assert.That(orPerception.Check(), Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void OrPerception_NoSubPerceptions_ReturnsFalse()
+        {
+            var orPerception = new OrPerception();
+
+            orPerception.Start();
+            Assert.That(orPerception.Check(), Is.False);
+        }
+        
+        [Test]
+        public void OrPerception_GetInfo_ValidString()
+        {
+            var orPerception1 = new OrPerception();
+            var orPerception2 = new OrPerception(new CustomPerceptionTask());
+            var orPerception3 = new OrPerception(new CustomPerceptionTask(), new CustomPerceptionTask());
+            Assert.That(orPerception1.GetInfo(), Is.EqualTo("()"));
+            Assert.That(orPerception2.GetInfo(), Does.Match("(.*)"));
+            Assert.That(orPerception3.GetInfo(), Does.Match("(.* || .*)"));
+        }
     }
 }
