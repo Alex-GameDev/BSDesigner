@@ -13,11 +13,12 @@ namespace TestBSD.BehaviourTrees.Mocks
         {
             TotalTime = timeInSeconds;
         }
+
         public void Stop() { }
 
         public void Pause() { }
 
-        public void Resume() { }
+        public void Tick() { }
 
         public bool IsTimeout => CurrentTime >= TotalTime;
     }

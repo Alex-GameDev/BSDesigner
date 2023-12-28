@@ -17,6 +17,12 @@ namespace BSDesigner.Core
             _timer.Start();
         }
 
+        public void Tick()
+        {
+            if (_timer is { Enabled: false })
+                _timer.Start();
+        }
+
         public void Stop()
         {
             IsTimeout = false;
@@ -27,11 +33,6 @@ namespace BSDesigner.Core
         public void Pause()
         {
             _timer?.Stop();
-        }
-
-        public void Resume()
-        {
-            _timer?.Start();
         }
 
         public bool IsTimeout { get; private set; }

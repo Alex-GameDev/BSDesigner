@@ -26,7 +26,7 @@ namespace BSDesigner.BehaviourTrees
 
         protected override Status UpdateStatus()
         {
-            Timer.Resume();
+            Timer.Tick();
             if (Timer.IsTimeout)
             {
                 ChildNode.Stop();

@@ -9,26 +9,27 @@
         /// Start the time count with the specified amount of time in seconds.
         /// </summary>
         /// <param name="timeInSeconds">The amount of time in seconds.</param>
-        public void Start(float timeInSeconds);
+        void Start(float timeInSeconds);
 
         /// <summary>
         /// Stop the time count.
         /// </summary>
-        public void Stop();
+        void Stop();
 
         /// <summary>
         /// Pause the time count
         /// </summary>
-        public void Pause();
+        void Pause();
 
         /// <summary>
-        /// Resume the time count.
+        /// Tick and resume the time count.
         /// </summary>
-        public void Resume();
+        void Tick();
 
         /// <summary>
         /// True if the time count is completed.
         /// </summary>
-        public bool IsTimeout { get; }
+        bool IsTimeout { get; }
+
     }
 }
