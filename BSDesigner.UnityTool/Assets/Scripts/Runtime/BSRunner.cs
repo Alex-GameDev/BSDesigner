@@ -53,7 +53,7 @@ namespace BSDesigner.UnityTool.Runtime
 
             if (_executionEngine != null)
             {
-                UnityExecutionContext context = CreateContext();
+                var context = CreateContext();
                 _executionEngine.SetContext(context);
             }
         }

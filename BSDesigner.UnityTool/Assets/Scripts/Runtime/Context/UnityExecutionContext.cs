@@ -1,4 +1,5 @@
 ﻿using BSDesigner.Core;
+using BSDesigner.Unity.Runtime;
 using UnityEngine;
 
 namespace BSDesigner.UnityTool.Runtime
@@ -30,6 +31,12 @@ namespace BSDesigner.UnityTool.Runtime
         public UnityExecutionContext(Component runnerComponent)
         {
             _runnerComponent = runnerComponent;
+            LoggerProvider = new UnityLoggerFactory(runnerComponent.gameObject);
+        }
+
+        public void Update()
+        {
+
         }
     }
 }
