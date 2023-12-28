@@ -14,5 +14,10 @@
         /// The context random provider.
         /// </summary>
         public IRandomProvider? RandomProvider { get; set; }
+
+        /// <summary>
+        /// The context logger provider.
+        /// </summary>
+        public ILoggerProvider? LoggerProvider { get; set; }
     }
 }
