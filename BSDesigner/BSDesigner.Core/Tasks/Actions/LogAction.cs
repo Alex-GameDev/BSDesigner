@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel;
 using BSDesigner.Core.Exceptions;
+using BSDesigner.Core.Tasks;
 
 namespace BSDesigner.Core.Actions
 {
     /// <summary>
     /// Action that logs a message.
     /// </summary>
+    [TaskCategory("Debug")]
     public class LogAction : ActionTask
     {
         /// <summary>

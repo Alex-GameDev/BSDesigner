@@ -1,12 +1,14 @@
 ﻿using System;
 using BSDesigner.Core.Exceptions;
 using System.ComponentModel;
+using BSDesigner.Core.Tasks;
 
 namespace BSDesigner.Core.Actions
 {
     /// <summary>
     /// Action that logs a formatted message.
     /// </summary>
+    [TaskCategory("Debug")]
     public class LogFormatAction : ActionTask
     {
         /// <summary>
