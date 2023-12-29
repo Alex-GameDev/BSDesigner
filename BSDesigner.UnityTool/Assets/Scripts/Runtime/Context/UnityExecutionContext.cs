@@ -21,6 +21,12 @@ namespace BSDesigner.UnityTool.Runtime
         /// </summary>
         public Transform Transform => GameObject.transform;
 
+        /// <summary>
+        /// The movement component
+        /// </summary>
+        public IMovement Movement => _movement ??= GameObject.GetComponent<IMovement>();
+        private IMovement _movement;
+
         private readonly Component _runnerComponent;
 
         /// <summary>
