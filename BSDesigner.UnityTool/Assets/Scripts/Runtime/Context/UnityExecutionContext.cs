@@ -2,7 +2,7 @@
 using BSDesigner.Unity.Runtime;
 using UnityEngine;
 
-namespace BSDesigner.UnityTool.Runtime
+namespace BSDesigner.Unity.Runtime
 {
     public class UnityExecutionContext : ExecutionContext
     {
@@ -38,11 +38,6 @@ namespace BSDesigner.UnityTool.Runtime
         {
             _runnerComponent = runnerComponent;
             LoggerProvider = new UnityLoggerFactory(runnerComponent.gameObject);
-        }
-
-        public void Update()
-        {
-
         }
     }
 }

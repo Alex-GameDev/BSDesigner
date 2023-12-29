@@ -1,5 +1,4 @@
 ﻿using BSDesigner.Core;
-using BSDesigner.UnityTool.Runtime;
 
 namespace BSDesigner.Unity.Runtime
 {
@@ -14,9 +13,9 @@ namespace BSDesigner.Unity.Runtime
         /// </summary>
         protected UnityExecutionContext context;
 
-        public override void SetContext(ExecutionContext context)
+        public override void SetContext(ExecutionContext ctx)
         {
-            this.context = (UnityExecutionContext)context;
+            this.context = (UnityExecutionContext)ctx;
             OnSetContext();
         }
 

@@ -1,6 +1,6 @@
 ﻿using BSDesigner.Core;
 
-namespace BSDesigner.UnityTool.Runtime.Random
+namespace BSDesigner.Unity.Runtime
 {
     /// <summary>
     /// Unity random provider

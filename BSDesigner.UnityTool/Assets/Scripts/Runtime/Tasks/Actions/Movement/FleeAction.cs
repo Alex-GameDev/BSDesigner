@@ -1,12 +1,13 @@
 ﻿using BSDesigner.Core;
+using BSDesigner.Core.Tasks;
 using UnityEngine;
 
-namespace BSDesigner.Unity.Runtime.Movement
+namespace BSDesigner.Unity.Runtime
 {
     /// <summary>
     /// Action that moves an agent away from a transform, returning success when the position is arrived.
     /// </summary>
-
+    [TaskCategory("Movement")]
     public class FleeAction : MovementAction
     {
         /// <summary>

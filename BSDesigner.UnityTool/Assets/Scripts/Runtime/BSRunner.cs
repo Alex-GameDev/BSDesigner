@@ -1,7 +1,7 @@
 using UnityEngine;
 using BSDesigner.Core;
 
-namespace BSDesigner.UnityTool.Runtime
+namespace BSDesigner.Unity.Runtime
 {
     /// <summary>
     /// Base class for all behaviour system runners.
@@ -14,6 +14,8 @@ namespace BSDesigner.UnityTool.Runtime
         bool _systemRunning;
 
         BehaviourEngine _executionEngine;
+
+        public BehaviourEngine ExecutionEngine => _executionEngine;
 
         /// <summary>
         /// Override this method to set the context that the graph will use.
@@ -93,6 +95,7 @@ namespace BSDesigner.UnityTool.Runtime
                 _executionEngine.Stop();
 
                 if (ExecuteOnLoop) _executionEngine.Start();
+                else _systemRunning = false;
 
             }
             else

@@ -1,16 +1,16 @@
 using BSDesigner.Core;
-using System.Collections;
-using System.Collections.Generic;
+using BSDesigner.Core.Tasks;
 using UnityEngine;
 
 namespace BSDesigner.Unity.Runtime
 {
+    /// <summary>
+    /// Action that stops the execution (editor only)
+    /// </summary>
+    [TaskCategory("Debug")]
     public class DebugBreakAction : UnityActionTask
     {
-        public override string GetInfo()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override string GetInfo() => "Break point";
 
         protected override void OnBeginTask()
         {
@@ -19,22 +19,16 @@ namespace BSDesigner.Unity.Runtime
 
         protected override void OnEndTask()
         {
-            throw new System.NotImplementedException();
         }
 
         protected override void OnPauseTask()
         {
-            throw new System.NotImplementedException();
         }
 
         protected override void OnResumeTask()
         {
-            throw new System.NotImplementedException();
         }
 
-        protected override Status OnUpdateTask()
-        {
-            throw new System.NotImplementedException();
-        }
+        protected override Status OnUpdateTask() => Status.Success;
     }
 }

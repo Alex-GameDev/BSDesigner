@@ -1,11 +1,13 @@
 ﻿using BSDesigner.Core;
+using BSDesigner.Core.Tasks;
 using UnityEngine;
 
-namespace BSDesigner.Unity.Runtime.Movement
+namespace BSDesigner.Unity.Runtime
 {
     /// <summary>
     /// Action that moves the agent to a determined position.
     /// </summary>
+    [TaskCategory("Movement")]
     public class MoveToTargetAction : MovementAction
     {
         /// <summary>

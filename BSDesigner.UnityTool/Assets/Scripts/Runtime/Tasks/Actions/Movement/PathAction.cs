@@ -1,8 +1,13 @@
 ﻿using BSDesigner.Core;
+using BSDesigner.Core.Tasks;
 using UnityEngine;
 
-namespace BSDesigner.Unity.Runtime.Movement
+namespace BSDesigner.Unity.Runtime
 {
+    /// <summary>
+    /// Action that makes the agent walk through a group of points
+    /// </summary>
+    [TaskCategory("Movement")]
     public class PathAction : MovementAction
     {
         /// <summary>

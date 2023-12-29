@@ -1,6 +1,6 @@
 ﻿using BSDesigner.Core;
 
-namespace BSDesigner.Unity.Runtime.Movement
+namespace BSDesigner.Unity.Runtime
 {
     public abstract class MovementAction : UnityActionTask
     {
