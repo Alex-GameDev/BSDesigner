@@ -1,7 +1,5 @@
 using System.Collections;
-using BSDesigner.Core;
 using BSDesigner.Unity.Runtime;
-using BSDesigner.Unity.Runtime.Movement;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 using UnityEngine;
