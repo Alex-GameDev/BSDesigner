@@ -9,9 +9,12 @@ namespace BSDesigner.Unity.VisualTool.Runtime
     /// <summary>
     /// Behaviour system prototype that can be created using the visual tool.
     /// </summary>
+    [CreateAssetMenu(menuName = "BSDesigner/VisualTool/Prototype", fileName = "NewBSPrototype")]
     public class VTBSPrototype : BSPrototype
     {
         [SerializeField] private BSData data;
+
+        public BSData Data => data;
 
         public override BehaviourEngine CreateBehaviourSystem()
         {

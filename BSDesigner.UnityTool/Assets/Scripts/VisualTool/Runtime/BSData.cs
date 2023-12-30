@@ -8,7 +8,7 @@ namespace BSDesigner.Unity.VisualTool.Runtime
     /// Data class that stores a serialized behaviour system.
     /// </summary>
     [System.Serializable]
-    public struct BSData : ISerializationCallbackReceiver
+    public class BSData : ISerializationCallbackReceiver
     {
         [SerializeField] private string jsonData;
 
