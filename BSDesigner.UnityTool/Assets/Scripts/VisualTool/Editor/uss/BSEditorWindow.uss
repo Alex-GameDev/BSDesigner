@@ -21,7 +21,20 @@
 	border-radius: 5px;
 }
 
+.bg-panel
+{
+	align-items: center;
+	justify-content: center;
+	background-color: rgb(32,32,32);
+	flex-grow: 1;
+}
 
+.bg-panel-text
+{
+	font-size: 20px;
+	-unity-text-align: upper-center; 
+	margin: 20px;
+}
 
 /* Engine list */
 
