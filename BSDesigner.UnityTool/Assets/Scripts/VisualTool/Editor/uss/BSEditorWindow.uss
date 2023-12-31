@@ -1,0 +1,46 @@
+#side-panel
+{
+	width: 300px;
+	background-color: rgba(24, 24, 24, 0.8);
+	flex-grow: 1;
+}
+
+.row
+{
+	flex-direction: row
+}
+
+.col
+{
+	flex-direction: column
+}
+
+.list-element
+{
+	margin: 3px;
+	border-radius: 5px;
+}
+
+
+
+/* Engine list */
+
+#ee-scroll-view
+{
+	height: 100px;
+	margin: 5px;
+	background-color: rgb(20, 20, 20);
+}
+
+.ee-name-tag-div
+{
+	flex-grow: 1;
+	padding: 2px;
+}
+
+.ee-delete-btn
+{
+	height: 20px;
+	width: 20px;
+	padding: 2px;
+}
