@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BehaviourDesigner.JsonSerialization.Model;
 using BSDesigner.Core;
 
-namespace BehaviourDesigner.JsonSerialization
+namespace BSDesigner.JsonSerialization
 {
     /// <summary>
     /// utility class to convert from business classes to dto.

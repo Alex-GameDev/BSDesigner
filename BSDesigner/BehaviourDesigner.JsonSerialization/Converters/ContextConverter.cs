@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BehaviourDesigner.JsonSerialization.Converters
+namespace BSDesigner.JsonSerialization
 {
     /// <summary>
     /// Custom json converter that can read and write variables in the context

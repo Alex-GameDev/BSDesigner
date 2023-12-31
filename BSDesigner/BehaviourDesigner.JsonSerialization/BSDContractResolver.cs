@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace BehaviourDesigner.JsonSerialization
+namespace BSDesigner.JsonSerialization
 {
     /// <summary>
     /// The default contract resolver to serialize and deserialize behaviour systems
