@@ -23,8 +23,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         #endregion
 
-
-
+        
         #region Events
 
         /// <summary>
@@ -136,14 +135,21 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         private void OpenDeleteEngineWindow(int index)
         {
-            EngineRemoved?.Invoke(index);
-            RefreshView();
+            if (EditorUtility.DisplayDialog("", "Delete selected engine?", "OK", "CANCEL"))
+            {
+                EngineRemoved?.Invoke(index);
+                RefreshView();
+            }
         }
 
         private void OpenClearEngineWindow()
         {
-            SystemClean?.Invoke();
-            RefreshView();
+
+            if (EditorUtility.DisplayDialog("", "Delete all engines in this system?", "OK", "CANCEL"))
+            {
+                SystemClean?.Invoke();
+                RefreshView();
+            }
         }
 
         private void OnSelectEngineTypeEntry(object sender, Type e)
