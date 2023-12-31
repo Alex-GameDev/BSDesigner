@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,5 +17,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
         public string EditorLayoutsPath => RootPath + "/Editor/uxml/";
 
         public string EditorStylesPath => RootPath + "/Editor/uss/";
+
+        public void Save() => Save(true);
     }
 }
