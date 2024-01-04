@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace BSDesigner.Core.Utils
+namespace BSDesigner.Core
 {
     [ExcludeFromCodeCoverage]
     public class DefaultRandom : IRandom

@@ -1,5 +1,5 @@
 ﻿using BSDesigner.Core;
-using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Actions;
 
 namespace BSDesigner.StateMachines
 {
@@ -14,6 +14,11 @@ namespace BSDesigner.StateMachines
         /// The action that this state executes.
         /// </summary>
         public ActionTask? Action;
+
+        /// <summary>
+        /// Should the action execute forever keeping the status on running until a transition is triggered?
+        /// </summary>
+        public bool ExecuteInLoop;
 
         /// <summary>
         /// <inheritdoc/>
@@ -38,6 +43,14 @@ namespace BSDesigner.StateMachines
         /// Updates the action and returns its result.
         /// </summary>
         /// <returns>The result of the action</returns>
-        protected override Status OnUpdated() => Action?.Update() ?? Status.Running;
+        protected override Status OnUpdated()
+        {
+            var result = Action?.Update() ?? Status.Running;
+            if (!ExecuteInLoop || result == Status.Running) return result;
+
+            Action?.Stop();
+            Action?.Start();
+            return Status.Running;
+        }
     }
 }

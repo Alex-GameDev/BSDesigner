@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace BSDesigner.Core.Tasks
+﻿namespace BSDesigner.Core.Actions
 {
     /// <summary>
     /// Action that executes a custom method when is started and always returns success.

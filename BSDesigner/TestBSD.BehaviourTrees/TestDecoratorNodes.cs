@@ -1,8 +1,10 @@
 ﻿using BSDesigner.BehaviourTrees;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Tasks;
-using BSDesigner.Core.Utils;
+using BSDesigner.Core.Actions;
+using BSDesigner.Core.Perceptions;
+using TestBSD.BehaviourTrees.Mocks;
+using ExecutionContext = BSDesigner.Core.ExecutionContext;
 
 namespace TestBSD.BehaviourTrees
 {
@@ -83,13 +85,13 @@ namespace TestBSD.BehaviourTrees
             var decorator = bt.CreateDecorator<LoopNode>(leaf);
             bt.ChangeRootNode(decorator);
 
-            decorator.Iterations = -1;
+            decorator.MaxIterations = -1;
             bt.Start();
             bt.Update();
             Assert.That(bt.Status, Is.EqualTo(Status.Running));
             bt.Stop();
 
-            decorator.Iterations = 1;
+            decorator.MaxIterations = 1;
             bt.Start();
             bt.Update();
             Assert.That(bt.Status, Is.EqualTo(Status.Success));
@@ -100,11 +102,11 @@ namespace TestBSD.BehaviourTrees
         [TestCase(Status.Success, Status.Failure, -1, Status.Running)]
         [TestCase(Status.Success, Status.Failure, +1, Status.Success)]
         [TestCase(Status.Failure, Status.Failure, +1, Status.Failure)]
-        public void LoopUntilNode_Execute_ReturnCorrectValue(Status returnedStatus, Status targetStatus, int maxIterations, Status expectedStatus)
+        public void LoopNode_Execute_ReturnCorrectValue(Status returnedStatus, Status targetStatus, int maxIterations, Status expectedStatus)
         {
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => returnedStatus });
-            var decorator = bt.CreateDecorator<LoopUntilNode>(leaf);
+            var decorator = bt.CreateDecorator<LoopNode>(leaf);
             bt.ChangeRootNode(decorator);
 
             decorator.MaxIterations = maxIterations;
@@ -112,6 +114,32 @@ namespace TestBSD.BehaviourTrees
             bt.Start();
             bt.Update();
             Assert.That(bt.Status, Is.EqualTo(expectedStatus));
+        }
+
+        [Test]
+        public void LoopNode_IterationEvent_RaiseCallback()
+        {
+            var iterationIdx = -1;
+            var statusResult = Status.None;
+
+            var bt = new BehaviourTree();
+            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => Status.Success });
+            var decorator = bt.CreateDecorator<LoopNode>(leaf);
+            bt.ChangeRootNode(decorator);
+
+            decorator.IterationCompleted += (i, s) => (iterationIdx, statusResult) = (i, s);
+            decorator.MaxIterations = -1;
+
+            bt.Start();
+            bt.Update();
+            Assert.That(iterationIdx, Is.EqualTo(0));
+            Assert.That(statusResult, Is.EqualTo(Status.Success));
+            bt.Update();
+            Assert.That(iterationIdx, Is.EqualTo(1));
+            bt.Stop();
+            bt.Start();
+            bt.Update();
+            Assert.That(iterationIdx, Is.EqualTo(0));
         }
 
         [Test]
@@ -244,7 +272,6 @@ namespace TestBSD.BehaviourTrees
         {
             var pauseFlag = false;
             var childResult = Status.Success;
-            var perceptionValue = true;
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<ConditionDecoratorNode>(leaf);
@@ -262,13 +289,19 @@ namespace TestBSD.BehaviourTrees
         public void TimerDecoratorNode_test()
         {
             var childResult = Status.Running;
-            bool pauseFlag = false;
+            var pauseFlag = false;
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<TimerDecoratorNode>(leaf);
-            MockedTimer timer = new MockedTimer();
-            dec.Timer = timer;
             dec.Time = 1f;
+            var timer = new MockedTimer();
+
+            var context = new ExecutionContext
+            {
+                TimerProvider = timer
+            };
+            bt.SetContext(context);
+
             bt.ChangeRootNode(dec);
 
             bt.Start();
@@ -277,9 +310,9 @@ namespace TestBSD.BehaviourTrees
             Assert.That(leaf.Status, Is.EqualTo(Status.None));
             bt.Pause();
             Assert.That(pauseFlag, Is.False);
-            timer.CurrentTime = 2f;
+
+            timer.CurrentTime = 1f;
             bt.Update();
-            Assert.That(timer.IsTimeout, Is.True);
             Assert.That(dec.Status, Is.EqualTo(Status.Running));
             Assert.That(leaf.Status, Is.EqualTo(Status.Running));
             bt.Pause();
@@ -301,8 +334,15 @@ namespace TestBSD.BehaviourTrees
             var bt = new BehaviourTree();
             var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
             var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
-            dec.Timer = new MockedTimer();
+            
             dec.Time = 1f;
+            var timer = new MockedTimer();
+            var context = new ExecutionContext
+            {
+                TimerProvider = timer
+            };
+            bt.SetContext(context);
+
             bt.ChangeRootNode(dec);
 
             bt.Start();
@@ -324,17 +364,22 @@ namespace TestBSD.BehaviourTrees
         public void RushDecoratorNode_Timeout_ReturnFailure()
         {
             var childResult = Status.Running;
-            bool pauseFlag = false;
+
             var bt = new BehaviourTree();
-            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult, OnPause = () => pauseFlag = true });
+            var leaf = bt.CreateActionNode(new CustomActionTask { OnUpdate = () => childResult });
             var dec = bt.CreateDecorator<RushDecoratorNode>(leaf);
-            MockedTimer timer = new MockedTimer();
-            dec.Timer = timer;
+            var timerProvider = new MockedTimer();
+
+            var context = new ExecutionContext
+            {
+                TimerProvider = timerProvider
+            };
+            bt.SetContext(context);
             dec.Time = 1f;
             bt.ChangeRootNode(dec);
 
             bt.Start();
-            timer.CurrentTime = 2f;
+            timerProvider.CurrentTime = 2f;
             bt.Update();
             Assert.That(dec.Status, Is.EqualTo(Status.Failure));
             Assert.That(leaf.Status, Is.EqualTo(Status.None));

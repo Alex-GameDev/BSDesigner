@@ -1,4 +1,4 @@
-﻿namespace BSDesigner.Core.Tasks
+﻿namespace BSDesigner.Core
 {
     public abstract class Task
     {

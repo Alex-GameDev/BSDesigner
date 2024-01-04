@@ -62,6 +62,22 @@ namespace BSDesigner.BehaviourTrees
         }
 
         /// <summary>
+        /// Change the execution status to success or failure if its running.
+        /// Used to end the execution outside the system.
+        /// </summary>
+        /// <param name="status">The status result.</param>
+        public void SetStatus(Status status)
+        {
+            if (Status != Status.Running)
+                throw new ExecutionStatusException(this, $"This node ({Name}) is not running.");
+
+            if(status != Status.Success && Status != Status.Failure)
+                throw new ExecutionStatusException(this, $"The specified value is not success nor failure");
+
+            Status = status;
+        }
+
+        /// <summary>
         /// Get the updated status of the node.
         /// </summary>
         /// <returns>The new status of the node.</returns>

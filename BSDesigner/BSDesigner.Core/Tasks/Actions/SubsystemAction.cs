@@ -1,13 +1,13 @@
 ﻿using BSDesigner.Core.Exceptions;
 
-namespace BSDesigner.Core.Tasks
+namespace BSDesigner.Core.Actions
 {
     /// <summary>
     /// Action that executes a behaviour engine in.
     /// </summary>
     public class SubsystemAction : ActionTask
     {
-        public Subsystem SubSystem;
+        public Subsystem SubSystem = new Subsystem();
 
         public override string GetInfo()
         {

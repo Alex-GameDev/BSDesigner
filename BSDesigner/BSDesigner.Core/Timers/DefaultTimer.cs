@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Timers;
 
-namespace BSDesigner.Core.Utils
+namespace BSDesigner.Core
 {
     [ExcludeFromCodeCoverage]
     public class DefaultTimer : ITimer

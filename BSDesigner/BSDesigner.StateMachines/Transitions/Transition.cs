@@ -2,7 +2,6 @@
 using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Tasks;
 
 namespace BSDesigner.StateMachines
 {
@@ -23,6 +22,8 @@ namespace BSDesigner.StateMachines
         /// The status values that the source state should match to check this perception.
         /// </summary>
         public Parameter<StatusFlags> StatusFlags = Core.StatusFlags.Active;
+
+        public event Action? TransitionPerformed;
 
         protected StateMachine StateMachine
         {
@@ -62,6 +63,7 @@ namespace BSDesigner.StateMachines
             if (sourceNode != null && StateMachine.CurrentState != sourceNode && !StateMachine.AnyStates.Contains(sourceNode))
                 throw new InvalidTransitionException(this, "The source state of the transition is not the current state of the machine");
 
+            TransitionPerformed?.Invoke();
             OnTransitionPerformed();
         }
 

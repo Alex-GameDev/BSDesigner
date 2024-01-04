@@ -31,7 +31,7 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// Event called when current status changed.
         /// </summary>
-        public event Action<Status> StatusChanged;
+        public event Action<Status>? StatusChanged;
 
         /// <summary>
         /// Does this element have priority over elements that are checked later even if they have higher utility?

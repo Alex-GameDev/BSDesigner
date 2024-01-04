@@ -1,7 +1,7 @@
 ﻿using System;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Actions;
 
 namespace BSDesigner.UtilitySystems
 {
@@ -11,6 +11,11 @@ namespace BSDesigner.UtilitySystems
         /// The <see cref="Action"/> that this <see cref="UtilityAction"/> executes when is selected.
         /// </summary>
         public ActionTask? Action;
+
+        /// <summary>
+        /// Should the action execute forever keeping the status on running until another element is selected? (This flag has priority to <see cref="FinishSystemOnComplete"/>)
+        /// </summary>
+        public bool ExecuteInLoop;
 
         /// <summary>
         /// The utility system should end when the action finish the execution?
@@ -71,6 +76,13 @@ namespace BSDesigner.UtilitySystems
             if (Status != Status.Running) return Status;
 
             var actionResult = Action?.Update() ?? Status.Running;
+
+            if (ExecuteInLoop && actionResult != Status.Running)
+            {
+                Action?.Stop();
+                Action?.Start();
+                actionResult = Status.Running;
+            }
 
             if (FinishSystemOnComplete && actionResult != Status.Running)
             {

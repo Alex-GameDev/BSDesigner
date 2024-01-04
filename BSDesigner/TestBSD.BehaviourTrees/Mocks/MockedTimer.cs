@@ -1,16 +1,18 @@
-﻿namespace BSDesigner.Core.Utils
+﻿using BSDesigner.Core;
+
+namespace TestBSD.BehaviourTrees.Mocks
 {
-    public class MockedTimer : ITimer
+    public class MockedTimer : ITimerProvider, ITimer
     {
         public float CurrentTime;
 
         public float TotalTime;
 
+        public ITimer CreateTimer() => this;
         public void Start(float timeInSeconds)
         {
-           TotalTime = timeInSeconds;
+            TotalTime = timeInSeconds;
         }
-
         public void Stop() { }
 
         public void Pause() { }
@@ -19,4 +21,6 @@
 
         public bool IsTimeout => CurrentTime >= TotalTime;
     }
+
+
 }

@@ -1,9 +1,11 @@
 using BSDesigner.Core;
-using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Actions;
+using BSDesigner.Core.Perceptions;
 using BSDesigner.StateMachines;
-using System;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Utils;
+using TestBSD.StateMachines.Mocks;
+using ExecutionContext = BSDesigner.Core.ExecutionContext;
+using System;
 
 namespace TestBSD.StateMachines
 {
@@ -47,6 +49,22 @@ namespace TestBSD.StateMachines
         }
 
         [Test]
+        public void ActionState_ExecuteOnLoop_KeepStatusOnRunning()
+        {
+            var fsm = new StateMachine();
+            var action = new CustomActionTask
+            {
+                OnUpdate = () => Status.Success,
+            };
+
+            var state = fsm.CreateState(action, executeOnLoop: true);
+            fsm.Start();
+            Assert.That(state.Status, Is.EqualTo(Status.Running));
+            fsm.Update();
+            Assert.That(state.Status, Is.EqualTo(Status.Running));
+        }
+
+        [Test]
         public void AnyState_ExecuteEvents_PropagateEvents()
         {
             var fsm = new StateMachine();
@@ -83,7 +101,7 @@ namespace TestBSD.StateMachines
         [Test]
         public void Transition_ExecuteEvents_PropagateEvents()
         {
-            bool paused = false;
+            var paused = false;
             var lastEvent = string.Empty;
             var fsm = new StateMachine();
             ActionTask action = new CustomActionTask
@@ -110,6 +128,20 @@ namespace TestBSD.StateMachines
             Assert.That(paused, Is.False);
             fsm.Stop();
             Assert.That(lastEvent, Is.EqualTo("END"));
+        }
+
+        [Test]
+        public void Transition_PerformEvent_RaiseCallback()
+        {
+            var flag = false;
+            var fsm = new StateMachine();
+            var state = fsm.CreateState(new CustomActionTask());
+            var state2 = fsm.CreateState(new CustomActionTask());
+            var transition = fsm.CreateTransition(state, state2);
+            transition.TransitionPerformed += () => flag = true;
+            fsm.Start();
+            fsm.Update();
+            Assert.That(flag, Is.True);
         }
 
         [Test]
@@ -174,7 +206,15 @@ namespace TestBSD.StateMachines
             var state2 = fsm.CreateState<ActionState>();
             var state3 = fsm.CreateState<ActionState>();
             var t = fsm.CreateProbabilityTransition(state1, perception: null, StatusFlags.Active, state2, state3);
-            t.Random = new MockedRandom { DoubleValue = randomValue };
+            var context = new ExecutionContext
+            {
+                RandomProvider = new MockedRandom()
+                {
+                    DoubleValue = randomValue
+                }
+            };
+            fsm.SetContext(context);
+
             t.Probabilities[state2] = prob1;
             t.Probabilities[state3] = prob2;
             fsm.Start();
@@ -193,7 +233,14 @@ namespace TestBSD.StateMachines
             var state2 = fsm.CreateState<ActionState>();
             var state3 = fsm.CreateState<ActionState>();
             var t = fsm.CreateProbabilityTransition(state1, perception: null, StatusFlags.Active, state2, state3);
-            t.Random = new MockedRandom { IntValue = expectedSelectedState };
+            var context = new ExecutionContext
+            {
+                RandomProvider = new MockedRandom()
+                {
+                    IntValue = expectedSelectedState
+                }
+            };
+            fsm.SetContext(context);
             fsm.Start();
             fsm.Update();
             Assert.That(state2.Status, Is.EqualTo(expectedSelectedState == 0 ? Status.Running : Status.None));

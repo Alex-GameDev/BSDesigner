@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Tasks;
+using BSDesigner.Core.Actions;
 
 namespace BSDesigner.UtilitySystems
 {
@@ -96,10 +96,11 @@ namespace BSDesigner.UtilitySystems
         /// <param name="action">The action executed.</param>
         /// <param name="finishOnComplete">true of the execution of the utility system must finish when the action finish.</param>
         /// <returns>The created utility action</returns>
-        public UtilityAction CreateAction(UtilityFactor factor, ActionTask? action = null, bool finishOnComplete = false)
+        public UtilityAction CreateAction(UtilityFactor factor, ActionTask? action = null, bool executeOnLoop = false,  bool finishOnComplete = false)
         {
             var utilityAction = CreateNode<UtilityAction>();
             utilityAction.Action = action;
+            utilityAction.ExecuteInLoop = executeOnLoop;
             utilityAction.FinishSystemOnComplete = finishOnComplete;
             ConnectNodes(utilityAction, factor);
             return utilityAction;
