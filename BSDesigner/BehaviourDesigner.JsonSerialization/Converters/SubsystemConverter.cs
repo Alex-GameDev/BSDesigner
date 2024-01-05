@@ -9,27 +9,27 @@ namespace BehaviourDesigner.JsonSerialization.Converters
     /// <para>SERIALIZATION: Find the subsystem identifier in a dictionary. </para>
     /// <para>DESERIALIZATION: Store the references. </para>
     /// </summary>
-    public class SubsystemConverter : ContextConverter<Subsystem>
+    public class SubsystemConverter : ContextConverter<Parameter<BehaviourEngine>>
     {
-        public override void WriteJson(JsonWriter writer, Subsystem? value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, Parameter<BehaviourEngine>? value, JsonSerializer serializer)
         {
             writer.WriteStartObject();
             writer.WritePropertyName("$id");
 
             var subsystemId = -1;
-            if (value != null && value.Engine != null)
+            if (value != null && value.Value != null)
             {
-                subsystemId = Context.Engines?.IndexOf(value.Engine) ?? -1;
+                subsystemId = Context.Engines?.IndexOf(value.Value) ?? -1;
             }
             
             writer.WriteValue(subsystemId);
             writer.WriteEndObject();
         }
 
-        public override Subsystem ReadJson(JsonReader reader, Type objectType, Subsystem existingValue, bool hasExistingValue,
+        public override Parameter<BehaviourEngine> ReadJson(JsonReader reader, Type objectType, Parameter<BehaviourEngine>? existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
-            var subsystem = new Subsystem();
+            var subsystem = (Parameter<BehaviourEngine>) Activator.CreateInstance(objectType);
             reader.Read();
             while (reader.TokenType != JsonToken.EndObject)
             {
