@@ -3,6 +3,7 @@ using System.Linq;
 using BehaviourDesigner.JsonSerialization.Converters;
 using BehaviourDesigner.JsonSerialization.Model;
 using BSDesigner.Core;
+using BSDesigner.JsonSerialization.Converters;
 using Newtonsoft.Json;
 
 namespace BehaviourDesigner.JsonSerialization
@@ -55,10 +56,31 @@ namespace BehaviourDesigner.JsonSerialization
 
             foreach (var (subsystem, index) in context.SubsystemMap)
             {
-                subsystem.Engine = engines[index];
+                subsystem.Value = engines[index];
             }
 
             return engines;
+        }
+
+
+        public static string Serialize(Blackboard blackboard)
+        {
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+
+            var fields = blackboard.GetAllFields();
+            return JsonConvert.SerializeObject(fields, settings);
+        }
+
+
+        public static Blackboard DeserializeBlackboard(string jsonData)
+        {
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+
+            var fields = JsonConvert.DeserializeObject<List<BlackboardField>>(jsonData, settings);
+
+            return fields != null ? new Blackboard(fields) : new Blackboard();
         }
 
         private static string SerializeDto(BehaviourSystemDto? dto, JsonSerializationContext context)
@@ -85,7 +107,10 @@ namespace BehaviourDesigner.JsonSerialization
             };
             //settings.Converters.Add(new NodeConnectionConverter());
             settings.Converters.Add(new SubsystemConverter { Context = context });
+            settings.Converters.Add(new ParameterConverter { Context = context });
+            settings.Converters.Add(new BlackboardConverter { Context = context });
             return settings;
         }
+
     }
 }
