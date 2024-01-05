@@ -13,7 +13,7 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// The weights applied to each utility.
         /// </summary>
-        public Parameter<float>[] Weights = Array.Empty<Parameter<float>>();
+        public Parameter<List<float>> Weights = default!;
 
         /// <summary>
         /// Returns the weighted average of the utilities in <paramref name="utilities"/>
@@ -22,7 +22,7 @@ namespace BSDesigner.UtilitySystems
         /// <returns>The weighted average of the children utility.</returns>
         protected override float Evaluate(IEnumerable<float> utilities)
         {
-            return utilities.Zip(Weights, (utility, weight) => utility * weight).Sum();
+            return utilities.Zip(Weights.Value, (utility, weight) => utility * weight).Sum();
         }
     }
 }

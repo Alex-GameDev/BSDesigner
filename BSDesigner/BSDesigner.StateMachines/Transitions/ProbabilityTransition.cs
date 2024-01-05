@@ -16,7 +16,7 @@ namespace BSDesigner.StateMachines
         /// <summary>
         /// The list of probabilities assigned to each state.
         /// </summary>
-        public IDictionary<Node, Parameter<float>> Probabilities = new Dictionary<Node, Parameter<float>>();
+        public Dictionary<Node, Parameter<float>> Probabilities = new Dictionary<Node, Parameter<float>>();
 
         /// <summary>
         /// Value used to generate the probabilities.
