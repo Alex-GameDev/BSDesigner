@@ -1,16 +1,16 @@
+using System.Reflection;
 using BSDesigner.Core;
 using BSDesigner.Unity.VisualTool.Runtime;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UTILS = BSDesigner.Unity.VisualTool.Editor.EditorUtilities;
 
 namespace BSDesigner.Unity.VisualTool.Editor
 {
     public class BSEditorWindow : EditorWindow
     {
-        private static readonly bool k_EnableDebug = true;
-
         public Object Object { get; set; }
         public BSData Data { get; set; }
 
@@ -52,7 +52,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
         {
             Object = obj;
             Data = data;
-            UTILS_LOG("Data set");
+            UTILS.LOG("BW - Load data.");
             m_EngineListView.Populate(Data);
             ChangeSelectedEngineInSystem(data.Engines.Count > 0 ? 0 : -1);
         }
@@ -97,6 +97,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
             m_GraphView.StretchToParentSize();
             rootVisualElement.Add(m_GraphView);
             m_GraphView.style.display = DisplayStyle.None;
+            m_GraphView.DataChanged += GraphView_OnDataChanged;
         }
 
         #region Change Data
@@ -105,7 +106,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
         {
             Data.Engines.Add(engine);
             int newIndex = Data.Engines.Count - 1;
-            UTILS_LOG($"Add new engine {engine.GetType().Name}");
+            UTILS.LOG($"BW - Add new engine {engine.GetType().Name}");
 
             ChangeSelectedEngineInSystem(newIndex);
             SaveDataChanges();
@@ -116,7 +117,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
             Data.Engines.RemoveAt(index);
 
             int newIndex = Data.Engines.Count > 0 ? Mathf.Max(index - 1, 0) : -1;
-            UTILS_LOG($"Remove engine at position {index}");
+            UTILS.LOG($"BW - Remove engine at position {index}");
 
             ChangeSelectedEngineInSystem(newIndex);
             SaveDataChanges();
@@ -126,9 +127,15 @@ namespace BSDesigner.Unity.VisualTool.Editor
         {
             Data.Engines.Clear();
 
-            UTILS_LOG($"All engines removed");
+            UTILS.LOG($"BW - All engines removed");
 
             ChangeSelectedEngineInSystem(-1);
+            SaveDataChanges();
+        }
+
+        private void GraphView_OnDataChanged()
+        {
+            UTILS.LOG($"BW - Data changed");
             SaveDataChanges();
         }
 
@@ -136,7 +143,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         private void ChangeSelectedEngineInSystem(int engineIndex)
         {
-            UTILS_LOG($"Change selected index to {engineIndex}");
+            UTILS.LOG($"BW - Change selected engine to element at index {engineIndex}");
             var engine = (Data != null && engineIndex >= 0) ? Data.Engines[engineIndex] : null;
             LoadEngineView(engine);
         }
@@ -154,20 +161,5 @@ namespace BSDesigner.Unity.VisualTool.Editor
             Data.SetDirty();
             EditorUtility.SetDirty(Object);
         }
-
-        #region Utils
-
-        private void UTILS_SHOWMSG(string message)
-        {
-            this.ShowNotification(new GUIContent(message), 2f);
-        }
-
-        private void UTILS_LOG(string msg)
-        {
-            if (k_EnableDebug) Debug.Log($"[BSW - {Object?.name ?? "Missing"}] {msg}", Object);
-        }
-
-        #endregion
-
     }
 }
