@@ -74,6 +74,43 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         #endregion
 
+        #region Override methods
+
+        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            var validPorts = new List<Port>();
+            var startNodeView = startPort.node as NodeView;
+
+            if (startNodeView == null) return validPorts;
+
+            var bannedNodes = new HashSet<Node>();
+
+            if (!Graph.CanCreateLoops)
+            {
+                bannedNodes = startPort.direction == Direction.Input ?
+                    startNodeView.Node.GetConnectedNodesAsChild() :
+                    startNodeView.Node.GetConnectedNodesAsParent();
+            }
+
+            foreach (var port in ports)
+            {
+                if (startPort.direction == port.direction) continue;
+                if (startPort.node == port.node) continue;
+
+                var otherNodeView = port.node as NodeView;
+
+                if (bannedNodes.Contains(otherNodeView?.Node)) continue;
+                if (startPort.direction == Direction.Input && !port.portType.IsAssignableFrom(startPort.portType)) continue;
+                if (startPort.direction == Direction.Output && !startPort.portType.IsAssignableFrom(port.portType)) continue;
+
+                validPorts.Add(port);
+            }
+
+            return validPorts;
+        }
+
+        #endregion
+
         #region Public method
 
         public void LoadGraph(BehaviourGraph graph)
@@ -185,21 +222,15 @@ namespace BSDesigner.Unity.VisualTool.Editor
             CreateConnection(edge);
         }
 
-        private void CreateConnection(EdgeView edge)
+        private void CreateConnection(Edge edge)
         {
-            var source = edge.output.node as NodeView;
-            var target = edge.input.node as NodeView;
+            var source = (edge.output.node as NodeView)?.Node;
+            var target = (edge.input.node as NodeView)?.Node;
 
-            m_CurrentGraph.ConnectNodes(source?.Node, target?.Node);
-            DataChanged?.Invoke();
-        }
+            if(source == null || target == null) return;
 
-        private void RemoveConnection(EdgeView edge)
-        {
-            var source = edge.output.node as NodeView;
-            var target = edge.input.node as NodeView;
-
-            m_CurrentGraph.Disconnect(source?.Node, target?.Node);
+            UTILS.LOG($"GV - Connect {source} with {target}");
+            m_CurrentGraph.ConnectNodes(source, target);
             DataChanged?.Invoke();
         }
 
