@@ -48,7 +48,7 @@ namespace TestBSD.UtilitySystems
             var leaf1 = us.CreateConstantLeaf(0.4f);
             var leaf2 = us.CreateConstantLeaf(0.8f);
             var factor = us.CreateFusion<WeightedFusion>(leaf1, leaf2);
-            factor.Weights = new[] { 0.5f, 0.3f };
+            factor.Weights = new List<float> { 0.5f, 0.3f };
             var action = us.CreateAction(factor);
             us.Start();
             us.Update();
@@ -62,7 +62,7 @@ namespace TestBSD.UtilitySystems
             var leaf1 = us.CreateConstantLeaf(0.4f);
             var leaf2 = us.CreateConstantLeaf(0.8f);
             var factor = us.CreateFusion<WeightedFusion>(leaf1, leaf2);
-            factor.Weights = new[] { 0.5f };
+            factor.Weights = new List<float> { 0.5f };
             var action = us.CreateAction(factor);
             us.Start();
             us.Update();
@@ -76,7 +76,7 @@ namespace TestBSD.UtilitySystems
             var leaf1 = us.CreateConstantLeaf(0.4f);
             var leaf2 = us.CreateConstantLeaf(0.8f);
             var factor = us.CreateFusion<WeightedFusion>(leaf1, leaf2);
-            factor.Weights = new[] { 0.5f, 0.3f, 0.2f, 0.1f };
+            factor.Weights = new List<float> { 0.5f, 0.3f, 0.2f, 0.1f };
             var action = us.CreateAction(factor);
             us.Start();
             us.Update();

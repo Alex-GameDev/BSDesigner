@@ -1,4 +1,6 @@
-﻿namespace BSDesigner.UtilitySystems
+﻿using BSDesigner.Core;
+
+namespace BSDesigner.UtilitySystems
 {
     /// <summary>
     /// Create a curve factor with a linear function
@@ -8,12 +10,12 @@
         /// <summary>
         /// The slope of the function.
         /// </summary>
-        public float Slope = 1f;
+        public Parameter<float> Slope = 1f;
 
         /// <summary>
         /// The y intercept of the function.
         /// </summary>
-        public float YIntercept = 0f;
+        public Parameter<float> YIntercept = 0f;
 
         /// <summary>
         /// Compute the utility using a linear function [y = slope * x + yIntercept]

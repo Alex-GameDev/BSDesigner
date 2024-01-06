@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core;
+using BSDesigner.JsonSerialization.Converters;
 using Newtonsoft.Json;
 
 namespace BSDesigner.JsonSerialization
@@ -73,19 +74,34 @@ namespace BSDesigner.JsonSerialization
 
             foreach (var (subsystem, index) in context.SubsystemMap)
             {
-                subsystem.Engine = engines[index];
+                subsystem.Value = engines[index];
             }
 
             return engines;
         }
 
 
-        /// <summary>
-        /// Deserialize a collection of behaviour engines
-        /// </summary>
-        /// <param name="jsonData">The json string deserialized.</param>
-        /// <returns>The list of behaviour engines deserialized</returns>
-        public static List<BehaviourEngine> Deserialize(string jsonData, JsonSettings settings)
+        public static string Serialize(Blackboard blackboard)
+        {
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+
+            var fields = blackboard.GetAllFields();
+            return JsonConvert.SerializeObject(fields, settings);
+        }
+
+
+        public static Blackboard DeserializeBlackboard(string jsonData)
+        {
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+
+            var fields = JsonConvert.DeserializeObject<List<BlackboardField>>(jsonData, settings);
+
+            return fields != null ? new Blackboard(fields) : new Blackboard();
+        }
+
+        private static string SerializeDto(BehaviourSystemDto? dto, JsonSerializationContext context)
         {
             var context = new JsonSerializationContext();
             var dto = DeserializeDto(jsonData, context, settings);
@@ -121,14 +137,12 @@ namespace BSDesigner.JsonSerialization
                 DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
-            serializerSettings.Converters.Add(new SubsystemConverter { Context = context });
-
-            foreach (var converter in settings.Converters)
-            {
-                serializerSettings.Converters.Add(converter);
-            }
-
-            return serializerSettings;
+            //settings.Converters.Add(new NodeConnectionConverter());
+            settings.Converters.Add(new SubsystemConverter { Context = context });
+            settings.Converters.Add(new ParameterConverter { Context = context });
+            settings.Converters.Add(new BlackboardConverter { Context = context });
+            return settings;
         }
+
     }
 }

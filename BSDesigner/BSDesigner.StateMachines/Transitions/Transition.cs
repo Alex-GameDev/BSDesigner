@@ -21,7 +21,7 @@ namespace BSDesigner.StateMachines
         /// <summary>
         /// The status values that the source state should match to check this perception.
         /// </summary>
-        public StatusFlags StatusFlags;
+        public Parameter<StatusFlags> StatusFlags = Core.StatusFlags.Active;
 
         public event Action? TransitionPerformed;
 

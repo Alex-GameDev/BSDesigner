@@ -8,7 +8,7 @@ namespace BSDesigner.BehaviourTrees
         /// <summary>
         /// The total time that the decorator waits to execute its child.
         /// </summary>
-        public float Time;
+        public Parameter<float> Time = 0f;
 
         /// <summary>
         /// Value used to generate the probabilities.

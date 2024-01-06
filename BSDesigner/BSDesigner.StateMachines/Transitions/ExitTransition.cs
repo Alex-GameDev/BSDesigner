@@ -12,7 +12,7 @@ namespace BSDesigner.StateMachines
         /// <summary>
         /// The status that the state machine will have when this transition is performed.
         /// </summary>
-        public Status FinalStatus;
+        public Parameter<Status> FinalStatus = Status.Success;
 
         /// <summary>
         /// <inheritdoc/>

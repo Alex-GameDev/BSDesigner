@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BSDesigner.Core;
 
 namespace BSDesigner.JsonSerialization
 {
@@ -7,6 +8,11 @@ namespace BSDesigner.JsonSerialization
     /// </summary>
     public class BehaviourSystemDto
     {
+        /// <summary>
+        /// The local blackboard of the engine
+        /// </summary>
+        public Blackboard? Blackboard;
+
         /// <summary>
         /// A list of behaviour engines included in the system
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BSDesigner.Core;
+using System;
 
 namespace BSDesigner.UtilitySystems
 {
@@ -10,17 +11,17 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// The exponent of the function
         /// </summary>
-        public float Exponent = 1f;
+        public Parameter<float> Exponent = 1f;
 
         /// <summary>
         /// The x displacement of the function.
         /// </summary>
-        public float DespX = 0f;
+        public Parameter<float> DespX = 0f;
 
         /// <summary>
         /// The y displacement of the function.
         /// </summary>
-        public float DespY = 0f;
+        public Parameter<float> DespY = 0f;
 
         /// <summary>
         /// Compute the utility using a exponential function [y = (x - dx)^exp + dy]

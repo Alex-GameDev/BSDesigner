@@ -9,6 +9,11 @@ namespace BSDesigner.JsonSerialization
     public class BehaviourEngineDto
     {
         /// <summary>
+        /// The local blackboard of the engine
+        /// </summary>
+        public Blackboard? Blackboard;
+
+        /// <summary>
         /// The behaviour engine
         /// </summary>
         public BehaviourEngine Engine;

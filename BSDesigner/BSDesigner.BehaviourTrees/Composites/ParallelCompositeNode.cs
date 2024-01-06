@@ -10,12 +10,12 @@ namespace BSDesigner.BehaviourTrees
         /// <summary>
         /// If true, the parallel action will stop when any action ends with success.
         /// </summary>
-        public bool finishOnAnySuccess;
+        public Parameter<bool> finishOnAnySuccess = false;
 
         /// <summary>
         /// If true, the parallel action will stop when any action ends with success.
         /// </summary>
-        public bool finishOnAnyFailure;
+        public Parameter<bool> finishOnAnyFailure = false;
 
         /// <summary>
         /// <inheritdoc/>

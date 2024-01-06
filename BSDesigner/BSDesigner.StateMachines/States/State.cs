@@ -82,7 +82,7 @@ namespace BSDesigner.StateMachines
             Status = OnUpdated();
             foreach (var transition in Transitions)
             {
-                if (((uint)Status & (uint)transition.StatusFlags) != 0 && transition.Check())
+                if (((uint)Status & (uint)transition.StatusFlags.Value) != 0 && transition.Check())
                 {
                     transition.Perform();
                     break;
