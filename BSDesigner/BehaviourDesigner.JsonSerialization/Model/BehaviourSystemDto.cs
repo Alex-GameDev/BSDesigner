@@ -11,7 +11,7 @@ namespace BSDesigner.JsonSerialization
         /// <summary>
         /// The local blackboard of the engine
         /// </summary>
-        public Blackboard? Blackboard;
+        public List<BlackboardField>? Blackboard;
 
         /// <summary>
         /// A list of behaviour engines included in the system

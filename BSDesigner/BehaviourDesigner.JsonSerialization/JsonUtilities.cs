@@ -1,75 +1,53 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core;
-using BSDesigner.JsonSerialization.Converters;
 using Newtonsoft.Json;
 
 namespace BSDesigner.JsonSerialization
 {
     public static class JsonUtilities
     {
-        private static readonly string Version = "1.0.0";
-        private static readonly string Target = ".NET Standard 2.1";
+        #region Public static methods
 
         /// <summary>
-        /// Serialize a behaviour graph in json format
+        /// Serialize a single behaviour engine.
         /// </summary>
-        /// <param name="graph">The serialized graph</param>
+        /// <param name="engine">The serialized engine</param>
+        /// <param name="settings">The settings.</param>
         /// <returns>The json string</returns>
-        public static string Serialize(BehaviourEngine graph)
-        {
-            var engines = new List<BehaviourEngine> { graph };
-            return Serialize(engines);
-        }
+        public static string Serialize(BehaviourEngine engine, JsonSettings? settings = null) => Serialize(new List<BehaviourEngine> { engine }, null, settings);
 
         /// <summary>
-        /// Serialize a collection of behaviour engines in json format
+        /// Serialize a collection of behaviour engines in json format.
         /// </summary>
-        /// <param name="engines">The serialized engines</param>
+        /// <param name="engines">The serialized engines.</param>
+        /// <param name="blackboard">The blackboard.</param>
+        /// <param name="settings">The settings.</param>
         /// <returns>The json string</returns>
-        public static string Serialize(IEnumerable<BehaviourEngine> engines)
+        public static string Serialize(IEnumerable<BehaviourEngine> engines, Blackboard? blackboard = null, JsonSettings? settings = null)
         {
             var dto = new BehaviourSystemDto
             {
-                Engines = engines.Select(DtoConversion.FromEngineToDto).ToList()
+                Engines = engines.Select(DtoConversion.FromEngineToDto).ToList(),
+                Blackboard = blackboard?.GetAllFields().ToList(),
             };
 
             var context = new JsonSerializationContext
             {
                 Engines = engines.ToList()
             };
-            return SerializeDto(dto, context, new JsonSettings());
+            return SerializeDto(dto, context, settings ?? new JsonSettings());
         }
-
-        /// <summary>
-        /// Serialize a collection of behaviour engines in json format
-        /// </summary>
-        /// <param name="engines">The serialized engines</param>
-        /// <returns>The json string</returns>
-        public static string Serialize(IEnumerable<BehaviourEngine> engines, JsonSettings settings)
-        {
-            var dto = new BehaviourSystemDto
-            {
-                Engines = engines.Select(DtoConversion.FromEngineToDto).ToList()
-            };
-
-            var context = new JsonSerializationContext
-            {
-                Engines = engines.ToList()
-            };
-            return SerializeDto(dto, context, settings);
-        }
-
 
         /// <summary>
         /// Deserialize a collection of behaviour engines
         /// </summary>
         /// <param name="jsonData">The json string deserialized.</param>
         /// <returns>The list of behaviour engines deserialized</returns>
-        public static List<BehaviourEngine> Deserialize(string jsonData)
+        public static List<BehaviourEngine> Deserialize(string jsonData, JsonSettings? settings = null)
         {
             var context = new JsonSerializationContext();
-            var dto = DeserializeDto(jsonData, context, new JsonSettings());
+            var dto = DeserializeDto(jsonData, context, settings ?? new JsonSettings());
             var engines = dto.Engines.Select(DtoConversion.FromDtoToEngine).ToList();
 
             foreach (var (subsystem, index) in context.SubsystemMap)
@@ -80,40 +58,16 @@ namespace BSDesigner.JsonSerialization
             return engines;
         }
 
+        #endregion
+        
+        //public static string Serialize(Blackboard blackboard)
+        //{
+        //    var context = new JsonSerializationContext();
+        //    var settings = CreateSerializerSettings(context);
 
-        public static string Serialize(Blackboard blackboard)
-        {
-            var context = new JsonSerializationContext();
-            var settings = CreateSerializerSettings(context);
-
-            var fields = blackboard.GetAllFields();
-            return JsonConvert.SerializeObject(fields, settings);
-        }
-
-
-        public static Blackboard DeserializeBlackboard(string jsonData)
-        {
-            var context = new JsonSerializationContext();
-            var settings = CreateSerializerSettings(context);
-
-            var fields = JsonConvert.DeserializeObject<List<BlackboardField>>(jsonData, settings);
-
-            return fields != null ? new Blackboard(fields) : new Blackboard();
-        }
-
-        private static string SerializeDto(BehaviourSystemDto? dto, JsonSerializationContext context)
-        {
-            var context = new JsonSerializationContext();
-            var dto = DeserializeDto(jsonData, context, settings);
-            var engines = dto.Engines.Select(DtoConversion.FromDtoToEngine).ToList();
-
-            foreach (var (subsystem, index) in context.SubsystemMap)
-            {
-                subsystem.Engine = engines[index];
-            }
-
-            return engines;
-        }
+        //    var fields = blackboard.GetAllFields();
+        //    return JsonConvert.SerializeObject(fields, settings);
+        //}
 
         private static string SerializeDto(BehaviourSystemDto? dto, JsonSerializationContext context, JsonSettings serializerSettings)
         {
@@ -138,10 +92,10 @@ namespace BSDesigner.JsonSerialization
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
             //settings.Converters.Add(new NodeConnectionConverter());
-            settings.Converters.Add(new SubsystemConverter { Context = context });
-            settings.Converters.Add(new ParameterConverter { Context = context });
-            settings.Converters.Add(new BlackboardConverter { Context = context });
-            return settings;
+            serializerSettings.Converters.Add(new SubsystemConverter { Context = context });
+            serializerSettings.Converters.Add(new ParameterConverter { Context = context });
+            serializerSettings.Converters.Add(new BlackboardConverter { Context = context });
+            return serializerSettings;
         }
 
     }

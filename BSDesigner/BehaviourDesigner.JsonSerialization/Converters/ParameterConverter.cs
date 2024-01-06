@@ -5,7 +5,7 @@ using BSDesigner.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace BehaviourDesigner.JsonSerialization.Converters
+namespace BSDesigner.JsonSerialization
 {
     public class ParameterConverter : ContextConverter<Parameter>
     {

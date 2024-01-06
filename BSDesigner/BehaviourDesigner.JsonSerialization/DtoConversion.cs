@@ -18,7 +18,8 @@ namespace BSDesigner.JsonSerialization
         {
             var dto = new BehaviourEngineDto
             {
-                Engine = engine
+                Engine = engine,
+                Blackboard = engine.LocalBlackboard.GetAllFields().ToList()
             };
 
             if (engine is BehaviourGraph graph)

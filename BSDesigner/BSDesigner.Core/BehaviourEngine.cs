@@ -13,17 +13,8 @@ namespace BSDesigner.Core
         /// <summary>
         /// The local blackboard for this engine
         /// </summary>
-        public Blackboard LocalBlackboard
-        {
-            get
-            {
-                if(LocalBlackboard == null)
-                    _localBlackboard = new Blackboard();
-                return _localBlackboard;
-            }
-        }
-
-        private Blackboard _localBlackboard;
+        public Blackboard LocalBlackboard => _localBlackboard ??= new Blackboard();
+        private Blackboard? _localBlackboard;
 
         /// <summary>
         /// The execution status of the behaviour engine
