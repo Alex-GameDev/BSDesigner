@@ -15,6 +15,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
         private static readonly string k_NodeLayoutPath = "node.uxml";
 
         private static readonly string k_Border = "node-border";
+        private static readonly string k_NameField = "node-name-lbl";
 
         #region Private fields
 
@@ -29,7 +30,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
         private readonly List<PortView> m_OutputPorts = new List<PortView>();
 
         private VisualElement m_BorderElement;
-
+        private Label m_NameField;
         #endregion
 
         #region Public properties
@@ -50,7 +51,10 @@ namespace BSDesigner.Unity.VisualTool.Editor
             m_Drawer = NodeDrawer.CreateDrawer(this);
 
             m_BorderElement = this.Q(k_Border);
+            m_NameField = this.Q<Label>(k_NameField);
 
+            m_NameField.text = node.Name;
+            
             SetPosition(new Rect(new Vector2(node.Position.X, node.Position.Y), Vector2.zero));
 
             m_Drawer.OnCreated();
