@@ -2,6 +2,8 @@
 using System.Numerics;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace BSDesigner.Core
 {
@@ -92,6 +94,58 @@ namespace BSDesigner.Core
         /// </summary>
         public virtual void SetContext(ExecutionContext context)
         {
+        }
+
+        /// <summary>
+        /// Get all the nodes that can reach this through its children.
+        /// </summary>
+        /// <returns>A set of nodes connected with this by its children.</returns>
+        public HashSet<Node> GetConnectedNodesAsParent()
+        {
+            var visitedNodes = new HashSet<Node>();
+            var unvisitedNodes = new HashSet<Node>{ this };
+            while (unvisitedNodes.Count > 0)
+            {
+                var node = unvisitedNodes.First();
+                unvisitedNodes.Remove(node);
+                visitedNodes.Add(node);
+
+                foreach (var connectedElement in node.Parents)
+                {
+                    if (!visitedNodes.Contains(connectedElement))
+                    {
+                        unvisitedNodes.Add(connectedElement);
+                    }
+                }
+            }
+
+            return visitedNodes;
+        }
+
+        /// <summary>
+        /// Get all the nodes that this node can reach through its children.
+        /// </summary>
+        /// <returns>A set of nodes connected with this by its parents.</returns>
+        public HashSet<Node> GetConnectedNodesAsChild()
+        {
+            var visitedNodes = new HashSet<Node>();
+            var unvisitedNodes = new HashSet<Node> { this };
+            while (unvisitedNodes.Count > 0)
+            {
+                var node = unvisitedNodes.First();
+                unvisitedNodes.Remove(node);
+                visitedNodes.Add(node);
+
+                foreach (var connectedElement in node.Children)
+                {
+                    if (!visitedNodes.Contains(connectedElement))
+                    {
+                        unvisitedNodes.Add(connectedElement);
+                    }
+                }
+            }
+
+            return visitedNodes;
         }
     }
 }

@@ -394,5 +394,71 @@ namespace TestBSD.Core
             var map = graph.GetNodeMap(ignoreRepeatedNames: true);
             Assert.That(map, Has.Count.EqualTo(0));
         }
+
+        [Test]
+        public void GetConnectedNodesAsParent_NormalGraph_ReturnNodes()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            var n2 = graph.CreateNode(-1, -1);
+            var n3 = graph.CreateNode(-1, -1);
+            var n4 = graph.CreateNode(-1, -1);
+            var n5 = graph.CreateNode(-1, -1);
+            graph.ConnectNodes(n1, n2);
+            graph.ConnectNodes(n2, n3);
+            graph.ConnectNodes(n2, n4);
+            graph.ConnectNodes(n4, n5);
+
+            var connectedNodes = n4.GetConnectedNodesAsParent();
+            Assert.That(connectedNodes, Has.Count.EqualTo(3));
+            Assert.That(connectedNodes, Does.Contain(n1));
+            Assert.That(connectedNodes, Does.Contain(n2));
+            Assert.That(connectedNodes, Does.Contain(n4));
+            Assert.That(connectedNodes, Does.Not.Contain(n3));
+            Assert.That(connectedNodes, Does.Not.Contain(n5));
+        }
+
+        [Test]
+        public void GetConnectedNodesAsParent_NoParents_ReturnSingleNode()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            var connectedNodes = n1.GetConnectedNodesAsChild();
+            Assert.That(connectedNodes, Has.Count.EqualTo(1));
+            Assert.That(connectedNodes, Does.Contain(n1));
+        }
+
+        [Test]
+        public void GetConnectedNodesAsChild_NormalGraph_ReturnNodes()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            var n2 = graph.CreateNode(-1, -1);
+            var n3 = graph.CreateNode(-1, -1);
+            var n4 = graph.CreateNode(-1, -1);
+            var n5 = graph.CreateNode(-1, -1);
+            graph.ConnectNodes(n1, n3);
+            graph.ConnectNodes(n1, n2);
+            graph.ConnectNodes(n2, n4);
+            graph.ConnectNodes(n4, n5);
+
+            var connectedNodes = n2.GetConnectedNodesAsChild();
+            Assert.That(connectedNodes, Has.Count.EqualTo(3));
+            Assert.That(connectedNodes, Does.Contain(n2));
+            Assert.That(connectedNodes, Does.Contain(n4));
+            Assert.That(connectedNodes, Does.Contain(n5));
+            Assert.That(connectedNodes, Does.Not.Contain(n1));
+            Assert.That(connectedNodes, Does.Not.Contain(n3));
+        }
+
+        [Test]
+        public void GetConnectedNodesAsChild_NoChildren_ReturnSingleNode()
+        {
+            var graph = new MockGraph();
+            var n1 = graph.CreateNode(-1, -1);
+            var connectedNodes = n1.GetConnectedNodesAsParent();
+            Assert.That(connectedNodes, Has.Count.EqualTo(1));
+            Assert.That(connectedNodes, Does.Contain(n1));
+        }
     }
 }
