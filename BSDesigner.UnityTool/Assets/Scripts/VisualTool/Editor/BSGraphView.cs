@@ -219,6 +219,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
             edge.input.Connect(edge);
             edge.output.Connect(edge);
+            this.AddElement(edge);
             CreateConnection(edge);
         }
 
