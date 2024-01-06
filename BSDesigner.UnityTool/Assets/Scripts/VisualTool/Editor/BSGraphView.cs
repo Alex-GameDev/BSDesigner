@@ -1,41 +1,47 @@
 using System;
 using System.Collections.Generic;
-using BSDesigner.BehaviourTrees;
+using System.Linq;
 using BSDesigner.Core;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Profiling.Memory.Experimental;
 using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
 using Node = BSDesigner.Core.Node;
+using UTILS = BSDesigner.Unity.VisualTool.Editor.EditorUtilities;
 
 namespace BSDesigner.Unity.VisualTool.Editor
 {
+    /// <summary>
+    /// Visual representation of a Behaviour graph.
+    /// </summary>
     public class BSGraphView : GraphView
     {
         private static readonly float k_MinZoomScale = 0.5f;
         private static readonly float k_MaxZoomScale = 5f;
-
-        private BehaviourGraph m_CurrentGraph;
-
         private static readonly string k_StylePath = "GridBackground.uss";
 
         #region Fields
 
+        private BehaviourGraph m_CurrentGraph;
+
         private readonly EditorWindow m_EditorWindow;
 
         private readonly CustomEdgeConnectorListener<EdgeView> m_ConnectorListener;
+        
         #endregion
 
         #region public Properties
 
+        public BehaviourGraph Graph => m_CurrentGraph;
         public IEdgeConnectorListener Connector => m_ConnectorListener;
 
         #endregion
 
         #region Events
 
+        /// <summary>
+        /// Event called when any node variable changed.
+        /// </summary>
         public event Action DataChanged;
 
         #endregion
@@ -52,7 +58,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
             var stylePath = VisualToolSettings.instance.EditorStylesPath + k_StylePath;
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(stylePath);
-            this.styleSheets.Add(styleSheet);
+            styleSheets.Add(styleSheet);
 
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
@@ -61,8 +67,8 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
             SetupZoom(ContentZoomer.DefaultMinScale * k_MinZoomScale, ContentZoomer.DefaultMaxScale * k_MaxZoomScale);
 
-            this.nodeCreationRequest = HandleNodeCreationCall;
-
+            nodeCreationRequest = HandleNodeCreationCall;
+            graphViewChanged = OnGraphViewChanged;
             m_ConnectorListener = new CustomEdgeConnectorListener<EdgeView>(OnEdgeCreated, OnEdgeCreatedOutsidePort);
         }
 
@@ -80,10 +86,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
             {
                 DrawGraph();
             }
-            else
-            {
-                
-            }
+            UTILS.LOG($"GV - Load graph ({graph}).");
         }
 
         #endregion
@@ -101,7 +104,12 @@ namespace BSDesigner.Unity.VisualTool.Editor
             var pos = contentViewContainer.WorldToLocal(ctx.screenMousePosition - m_EditorWindow.position.position);
             var node = (Node)Activator.CreateInstance(nodeType);
             node.Position = new System.Numerics.Vector2(pos.x, pos.y);
+            m_CurrentGraph.AddNode(node);
+
             DrawNode(node);
+
+            UTILS.LOG($"GV - Create new node ({node}) at position ({pos}).");
+            DataChanged?.Invoke();
         }
 
         private NodeView DrawNode(Node node)
@@ -193,6 +201,45 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
             m_CurrentGraph.Disconnect(source?.Node, target?.Node);
             DataChanged?.Invoke();
+        }
+
+        private GraphViewChange OnGraphViewChanged(GraphViewChange change)
+        {
+            if (change.elementsToRemove != null) OnDeleteGraphElements(change.elementsToRemove);
+            if (change.movedElements != null) OnMoveGraphElements(change.movedElements);
+            DataChanged?.Invoke();
+            return change;
+        }
+
+        private void OnDeleteGraphElements(List<GraphElement> elementsToRemove)
+        {
+            var removedEdges = elementsToRemove.OfType<EdgeView>();
+            var removedNodes = elementsToRemove.OfType<NodeView>();
+            
+            foreach (var removedEdge in removedEdges)
+            {
+                var source = (NodeView)removedEdge.output.node;
+                var target = (NodeView)removedEdge.input.node;
+                m_CurrentGraph.Disconnect(source.Node, target.Node);
+            }
+
+            foreach (var removedNode in removedNodes)
+            {
+                var node = removedNode.Node;
+                m_CurrentGraph.RemoveNode(node);
+            }
+            UTILS.LOG("GV - Remove elements");
+        }
+
+        private void OnMoveGraphElements(List<GraphElement> elementsToMove)
+        {
+            var movedNodes = elementsToMove.OfType<NodeView>();
+
+            foreach (var movedNode in movedNodes)
+            {
+                movedNode.OnMoved();
+            }
+            UTILS.LOG("GV - Move elements");
         }
 
         #endregion
