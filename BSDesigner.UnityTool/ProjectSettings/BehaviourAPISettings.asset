@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fb97b8795cb0644bd16bbef5a41e66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootPath: Assets/Scripts/VisualTool
+  _rootPath: Assets/Scripts/VisualTool
+  assemblies:
+  - {fileID: 5897886265953266890, guid: 477232c17464ab94cb0c52364ba470c7, type: 3}
+  - {fileID: 5897886265953266890, guid: 402375eabfc7590478a3d287ec78a3b3, type: 3}
+  - {fileID: 5897886265953266890, guid: 18b143708f42969408de948b9c241e60, type: 3}
+  _debugUI: 1

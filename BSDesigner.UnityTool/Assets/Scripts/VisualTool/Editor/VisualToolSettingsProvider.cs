@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.Graphs;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,9 +26,41 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         public override void OnGUI(string searchContext)
         {
-            using (CreateSettingWindowGUIScope())
+            using (var scope = CreateSettingWindowGUIScope())
             {
+                m_SerializedObject.Update();
+                EditorGUI.BeginChangeCheck();
+
                 EditorGUILayout.LabelField("General", EditorStyles.boldLabel);
+
+                var prop = m_SerializedObject.FindProperty("assemblies");
+
+                for (var i = 0; i < prop.arraySize; i++)
+                {
+                    var element = prop.GetArrayElementAtIndex(i);
+                    element.objectReferenceValue = EditorGUILayout.ObjectField(element.objectReferenceValue, typeof(AssemblyDefinitionAsset), false);
+                }
+
+                if (GUILayout.Button("Add assembly"))
+                {
+                    prop.InsertArrayElementAtIndex(prop.arraySize);
+                }
+
+                if (GUILayout.Button("Remove assembly"))
+                {
+                    prop.DeleteArrayElementAtIndex(prop.arraySize - 1);
+                }
+
+                EditorGUILayout.Space(10f);
+                EditorGUILayout.LabelField("Debug UI", EditorStyles.boldLabel);
+                var debugUIProp = m_SerializedObject.FindProperty("_debugUI");
+                debugUIProp.boolValue = EditorGUILayout.Toggle("Enable debug", debugUIProp.boolValue);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    m_SerializedObject.ApplyModifiedProperties();
+                    VisualToolSettings.instance.Save();
+                }
             }
 
         }
