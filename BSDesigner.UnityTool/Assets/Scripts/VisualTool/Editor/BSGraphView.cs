@@ -223,15 +223,21 @@ namespace BSDesigner.Unity.VisualTool.Editor
             CreateConnection(edge);
         }
 
-        private void CreateConnection(Edge edge)
+        private void CreateConnection(EdgeView edge)
         {
-            var source = (edge.output.node as NodeView)?.Node;
-            var target = (edge.input.node as NodeView)?.Node;
+            var sourceView = edge.output.node as NodeView;
+            var targetView = edge.input.node as NodeView;
+            var source = sourceView?.Node;
+            var target = targetView?.Node;
 
             if(source == null || target == null) return;
 
             UTILS.LOG($"GV - Connect {source} with {target}");
             m_CurrentGraph.ConnectNodes(source, target);
+
+            sourceView.OnConnected(edge);
+            targetView.OnConnected(edge);
+
             DataChanged?.Invoke();
         }
 

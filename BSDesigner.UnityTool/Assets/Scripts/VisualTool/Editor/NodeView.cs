@@ -59,7 +59,6 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
             m_Drawer.OnCreated();
             m_Drawer.SetUpPorts();
-
         }
 
         #endregion
