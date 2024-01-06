@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Scripts/VisualTool/Editor/uss/Node.uss?fileID=7433441132597879392&amp;guid=cdadf81ad6cf672498f142c44e7f3ed4&amp;type=3#Node" />
+    <ui:VisualElement name="node-div">
+        <ui:VisualElement name="node-port-div" class="elem-stretchtoparent">
+            <ui:VisualElement name="input" class="elem-stretchtoparent" style="align-items: center; justify-content: center;" />
+            <ui:VisualElement name="output" class="elem-stretchtoparent" style="align-items: center; justify-content: center;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="node-border" class="border-corner-sml border-unselected" style="display: flex;">
+            <ui:VisualElement name="content" class="border-corner-sml border-line-default bg-color-default node-content-default">
+                <ui:VisualElement name="top" style="display: flex;">
+                    <ui:VisualElement name="node-header" class="align-h-centered node-header-disabled" style="background-color: rgb(170, 255, 153);" />
+                    <ui:VisualElement name="node-body" class="container-h">
+                        <ui:VisualElement name="node-icon" class="elem-w-sml" style="padding-left: 1px; padding-right: 1px; padding-top: 1px; padding-bottom: 1px;" />
+                        <ui:VisualElement name="node-type-div" tooltip="f:node_tooltip_definition" class="elem-expand align-v-centered align-h-centered">
+                            <ui:VisualElement name="node-type-icon" class="node-type-icon" style="width: 30px;" />
+                            <ui:Label text="Node" display-tooltip-when-elided="true" name="node-type-lbl" class="text-size-mid text-align-tag" style="display: none;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="node-status" class="elem-w-sml" style="padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;">
+                            <ui:VisualElement name="node-status-icon" style="background-color: rgba(0, 0, 0, 0); height: 100%; border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="divider" class="node-divider" />
+                    <ui:VisualElement name="node-name" class="elem-padding-mid">
+                        <ui:Label display-tooltip-when-elided="true" name="node-name-lbl" class="text-size-sml text-align-tag" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="divider" class="node-divider" />
+                    <ui:VisualElement name="node-info" class="elem-padding-mid" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

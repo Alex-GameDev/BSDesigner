@@ -46,7 +46,7 @@ namespace BSDesigner.Unity.VisualTool.Runtime
 
             var settings = new JsonSettings();
             settings.AddReferenceConverter(ref referencedObjects);
-            jsonData = JsonUtilities.Serialize(_engines, settings);
+            jsonData = JsonUtilities.Serialize(_engines, null, settings);
 
             m_DirtyFlag = false;
         }
