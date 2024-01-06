@@ -14,6 +14,8 @@ namespace BSDesigner.Unity.VisualTool.Editor
     {
         private static readonly string k_NodeLayoutPath = "node.uxml";
 
+        private static readonly string k_Border = "node-border";
+
         #region Private fields
 
         private readonly Node m_Node;
@@ -25,6 +27,8 @@ namespace BSDesigner.Unity.VisualTool.Editor
         private readonly List<PortView> m_InputPorts = new List<PortView>();
         
         private readonly List<PortView> m_OutputPorts = new List<PortView>();
+
+        private VisualElement m_BorderElement;
 
         #endregion
 
@@ -45,7 +49,12 @@ namespace BSDesigner.Unity.VisualTool.Editor
             m_GraphView = gView;
             m_Drawer = NodeDrawer.CreateDrawer(this);
 
+            m_BorderElement = this.Q(k_Border);
+
             SetPosition(new Rect(new Vector2(node.Position.X, node.Position.Y), Vector2.zero));
+
+            m_Drawer.OnCreated();
+            m_Drawer.SetUpPorts();
 
         }
 
@@ -56,12 +65,16 @@ namespace BSDesigner.Unity.VisualTool.Editor
         public override void OnSelected()
         {
             base.OnSelected();
+            m_BorderElement.AddToClassList("border-selected");
+            m_BorderElement.RemoveFromClassList("border-unselected");
             m_Drawer.OnSelected();
         }
 
         public override void OnUnselected()
         {
             base.OnUnselected();
+            m_BorderElement.RemoveFromClassList("border-selected");
+            m_BorderElement.AddToClassList("border-unselected");
             m_Drawer.OnUnselected();
         }
 
