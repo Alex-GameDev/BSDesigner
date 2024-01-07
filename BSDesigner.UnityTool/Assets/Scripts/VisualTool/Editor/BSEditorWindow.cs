@@ -15,9 +15,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
         public BSData Data { get; set; }
 
         private BSEngineListView m_EngineListView;
-
-        private BSGraphView m_GraphView;
-
+        private BSEngineView m_EngineView;
 
         public static void Open(Object obj, BSData data)
         {
@@ -66,11 +64,11 @@ namespace BSDesigner.Unity.VisualTool.Editor
         private void CreateSidePanel()
         {
             var element = new VisualElement();
-            element.name = "side-panel";
+            element.AddToClassList("side-panel");
+            element.AddToClassList("flex-grow");
             rootVisualElement.Add(element);
 
             m_EngineListView = new BSEngineListView();
-            m_EngineListView.name = "engine-list";
             m_EngineListView.EngineAdded += AddEngineToSystem;
             m_EngineListView.EngineRemoved += RemoveEngineToSystem;
             m_EngineListView.SystemClean += ClearAllEnginesInSystem;
@@ -93,11 +91,10 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         private void CreateGraphView()
         {
-            m_GraphView = new BSGraphView(this);
-            m_GraphView.StretchToParentSize();
-            rootVisualElement.Add(m_GraphView);
-            m_GraphView.style.display = DisplayStyle.None;
-            m_GraphView.DataChanged += GraphView_OnDataChanged;
+            m_EngineView = new BSEngineView(this);
+            m_EngineView.StretchToParentSize();
+            rootVisualElement.Add(m_EngineView);
+            m_EngineView.DataChanged += EngineView_OnDataChanged;
         }
 
         #region Change Data
@@ -133,7 +130,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
             SaveDataChanges();
         }
 
-        private void GraphView_OnDataChanged()
+        private void EngineView_OnDataChanged()
         {
             UTILS.LOG($"BW - Data changed");
             SaveDataChanges();
@@ -145,15 +142,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
         {
             UTILS.LOG($"BW - Change selected engine to element at index {engineIndex}");
             var engine = (Data != null && engineIndex >= 0) ? Data.Engines[engineIndex] : null;
-            LoadEngineView(engine);
-        }
-
-        private void LoadEngineView(BehaviourEngine engine)
-        {
-            //Display engine in editor inspector
-            var graph = engine as BehaviourGraph;
-            m_GraphView.LoadGraph(graph);
-            m_GraphView.style.display = graph != null ? DisplayStyle.Flex : DisplayStyle.None;
+            m_EngineView.LoadEngine(engine);
         }
 
         private void SaveDataChanges()

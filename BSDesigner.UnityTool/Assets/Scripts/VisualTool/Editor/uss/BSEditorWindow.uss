@@ -1,18 +1,21 @@
-#side-panel
-{
-	width: 300px;
-	background-color: rgba(24, 24, 24, 0.8);
-	flex-grow: 1;
-}
-
 .row
 {
 	flex-direction: row
 }
 
+.row-rev
+{
+	flex-direction: row-reverse
+}
+
 .col
 {
 	flex-direction: column
+}
+
+.col-rev
+{
+	flex-direction: column-reverse
 }
 
 .list-element
@@ -34,6 +37,17 @@
 	font-size: 20px;
 	-unity-text-align: upper-center; 
 	margin: 20px;
+}
+
+.side-panel
+{
+	width: 300px;
+	background-color: rgba(24, 24, 24, 0.8);
+}
+
+.flex-grow
+{
+	flex-grow: 1;
 }
 
 /* Engine list */

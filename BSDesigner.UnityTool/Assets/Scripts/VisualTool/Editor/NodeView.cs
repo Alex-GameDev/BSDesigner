@@ -104,35 +104,13 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         public void OnConnected(EdgeView edgeView)
         {
-            //if (edgeView.output.node == this)
-            //{
-            //    var other = edgeView.input.node as NodeView;
-            //    m_Node.children.Add(other.m_Node);
-            //}
-            //else
-            //{
-            //    var other = edgeView.output.node as NodeView;
-            //    m_Node.parents.Add(other.m_Node);
-            //}
             m_Drawer.OnConnected(edgeView);
-
             UpdateEdgeViews();
         }
 
         public void OnDisconnected(EdgeView edgeView)
         {
-            //if (edgeView.output.node == this)
-            //{
-            //    var other = edgeView.input.node as NodeView;
-            //    m_nodeData.children.Remove(other.NodeData);
-            //}
-            //else
-            //{
-            //    var other = edgeView.output.node as NodeView;
-            //    m_nodeData.parents.Remove(other.NodeData);
-            //}
             m_Drawer.OnDisconnected(edgeView);
-
             UpdateEdgeViews();
         }
 

@@ -44,6 +44,11 @@ namespace BSDesigner.Unity.VisualTool.Editor
         /// </summary>
         public event Action DataChanged;
 
+        /// <summary>
+        /// Event called when the node selection changes.
+        /// </summary>
+        public event Action<IEnumerable<Node>> NodeSelectionChanged;
+
         #endregion
 
         #region Constructor
@@ -55,6 +60,10 @@ namespace BSDesigner.Unity.VisualTool.Editor
             var bg = new GridBackground { name = "Grid" };
             bg.StretchToParentSize();
             Insert(0, bg);
+
+            var element = new VisualElement();
+            element.name = "side-panel";
+            this.Add(element);
 
             var stylePath = VisualToolSettings.instance.EditorStylesPath + k_StylePath;
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(stylePath);
@@ -108,6 +117,42 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
             return validPorts;
         }
+
+        /// <summary>
+        /// Called when a new element is added to the selection.
+        /// Invoke the selection change method. 
+        /// </summary>
+        /// <param name="selectable">The selected element.</param>
+        public override void AddToSelection(ISelectable selectable)
+        {
+            base.AddToSelection(selectable);
+            var selectedNodes = GetSelection();
+            NodeSelectionChanged?.Invoke(selectedNodes);
+        }
+
+        /// <summary>
+        /// Called when a new element is removed from the selection
+        /// Invoke the selection change method. 
+        /// </summary>
+        /// <param name="selectable">The unselected element.</param>
+        public override void RemoveFromSelection(ISelectable selectable)
+        {
+            base.RemoveFromSelection(selectable);
+            var selectedNodes = GetSelection();
+            NodeSelectionChanged?.Invoke(selectedNodes);
+        }
+
+        /// <summary>
+        /// Called when the selection is clear.
+        /// Invoke the selection change method. 
+        /// </summary>
+        public override void ClearSelection()
+        {
+            base.ClearSelection();
+            var selectedNodes = GetSelection();
+            NodeSelectionChanged?.Invoke(selectedNodes);
+        }
+
 
         #endregion
 
@@ -279,6 +324,8 @@ namespace BSDesigner.Unity.VisualTool.Editor
             }
             UTILS.LOG("GV - Move elements");
         }
+
+        private IEnumerable<Node> GetSelection() => selection.OfType<NodeView>().Select(n => n.Node);
 
         #endregion
 
