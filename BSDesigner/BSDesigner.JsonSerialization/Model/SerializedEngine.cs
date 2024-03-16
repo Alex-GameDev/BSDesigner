@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-using BSDesigner.Core;
+﻿using BSDesigner.Core;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace BSDesigner.JsonSerialization
+namespace BSDesigner.JsonSerialization.Model
 {
     /// <summary>
-    /// Serializable representation a behaviour engine.
+    /// Serializable representation of a behaviour engine
     /// </summary>
-    public class BehaviourEngineDto
+    public class SerializedEngine
     {
-        /// <summary>
-        /// The local blackboard of the engine
-        /// </summary>
-        public List<BlackboardField>? Blackboard;
-
         /// <summary>
         /// The behaviour engine
         /// </summary>
@@ -26,6 +22,6 @@ namespace BSDesigner.JsonSerialization
         /// <summary>
         /// The list of connections (Behaviour graph only)
         /// </summary>
-        public List<ConnectionDto>? Connections;
+        public List<SerializedConnection>? Connections;
     }
 }

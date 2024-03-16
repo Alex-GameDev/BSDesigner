@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 
-namespace BSDesigner.JsonSerialization
+namespace BSDesigner.JsonSerialization.Model
 {
     /// <summary>
     /// Represent a connection between two nodes in a graph
     /// </summary>
-    public class ConnectionDto
+    public class SerializedConnection
     {
         /// <summary>
         /// The index of the source node in the graph node list
