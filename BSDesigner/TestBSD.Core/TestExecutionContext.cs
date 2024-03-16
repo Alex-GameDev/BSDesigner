@@ -1,4 +1,4 @@
-﻿using TestBSD.Core.Mocks;
+﻿using TestBSD.Mocks;
 using ExecutionContext = BSDesigner.Core.ExecutionContext;
 
 namespace TestBSD.Core

@@ -1,6 +1,7 @@
-﻿using BSDesigner.Core;
+﻿using System;
+using BSDesigner.Core;
 
-namespace TestBSD.StateMachines.Mocks
+namespace TestBSD.Mocks
 {
     public class MockedRandom : IRandomProvider, IRandom
     {

@@ -1,10 +1,8 @@
-﻿using BSDesigner.Core;
-using System.Diagnostics.CodeAnalysis;
-using ExecutionContext = BSDesigner.Core.ExecutionContext;
+﻿using System;
+using BSDesigner.Core;
 
-namespace TestBSD.Core.Mocks
+namespace TestBSD.Mocks
 {
-    [ExcludeFromCodeCoverage]
     public class MockNode : Node
     {
         public override Type GraphType => SupportedGraphType;
@@ -12,10 +10,12 @@ namespace TestBSD.Core.Mocks
         public override int MaxInputConnections => MaxParents;
         public override int MaxOutputConnections => MaxChildren;
 
-        public int MaxParents = -1;
-        public int MaxChildren = -1;
-        public Type SupportedGraphType = typeof(MockGraph);
-        public Type SupportedChildType = typeof(MockNode);
+        public int MaxParents { get; set; } = -1;
+        public int MaxChildren { get; set; } = -1;
+        public Type SupportedGraphType { get; set; } = typeof(MockGraph);
+        public Type SupportedChildType { get; set; } = typeof(MockNode);
+
+        public int intValue;
 
         public ExecutionContext Context { get; private set; } = null!;
 

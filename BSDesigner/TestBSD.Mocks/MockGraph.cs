@@ -1,9 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
 using BSDesigner.Core;
 
-namespace TestBSD.Core.Mocks
+namespace TestBSD.Mocks
 {
-    [ExcludeFromCodeCoverage]
     public class MockGraph : BehaviourGraph
     {
         public static readonly string START_EVENT = "started";
@@ -19,15 +18,15 @@ namespace TestBSD.Core.Mocks
             return mockNode;
         }
 
-        public event Action<string> OnEvent = delegate { };
+        public event Action<string> OnEvent  = delegate { };
 
         public override Type NodeType => SupportedNodeType;
         public override bool CanCreateLoops => LoopsEnabled;
 
 
-        public bool LoopsEnabled = true;
+        public bool LoopsEnabled { get; set; } = true;
 
-        public Type SupportedNodeType = typeof(MockNode);
+        public Type SupportedNodeType { get; set; } = typeof(MockNode);
 
         public MockGraph()
         {

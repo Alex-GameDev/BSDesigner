@@ -1,6 +1,6 @@
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using TestBSD.Core.Mocks;
+using TestBSD.Mocks;
 
 namespace TestBSD.Core
 {
@@ -436,7 +436,7 @@ namespace TestBSD.Core
             var n2 = graph.CreateNode(-1, -1);
             var n3 = graph.CreateNode(-1, -1);
             var n4 = graph.CreateNode(-1, -1);
-            var n5 = graph.CreateNode(-1, -1);
+            var n5 = graph.CreateNode( -1, -1);
             graph.ConnectNodes(n1, n3);
             graph.ConnectNodes(n1, n2);
             graph.ConnectNodes(n2, n4);

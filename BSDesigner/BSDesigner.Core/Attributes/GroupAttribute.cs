@@ -6,7 +6,7 @@ namespace BSDesigner.Core.Attributes
     /// Specify a group for an element
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class GroupAttribute
+    public class GroupAttribute : Attribute
     {
         /// <summary>
         /// Name of the group

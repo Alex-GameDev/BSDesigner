@@ -2,7 +2,7 @@
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Actions;
-using TestBSD.BehaviourTrees.Mocks;
+using TestBSD.Mocks;
 using ExecutionContext = BSDesigner.Core.ExecutionContext;
 
 namespace TestBSD.BehaviourTrees

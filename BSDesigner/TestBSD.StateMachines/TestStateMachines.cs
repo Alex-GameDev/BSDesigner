@@ -3,9 +3,9 @@ using BSDesigner.Core.Actions;
 using BSDesigner.Core.Perceptions;
 using BSDesigner.StateMachines;
 using BSDesigner.Core.Exceptions;
-using TestBSD.StateMachines.Mocks;
 using ExecutionContext = BSDesigner.Core.ExecutionContext;
 using System;
+using TestBSD.Mocks;
 
 namespace TestBSD.StateMachines
 {

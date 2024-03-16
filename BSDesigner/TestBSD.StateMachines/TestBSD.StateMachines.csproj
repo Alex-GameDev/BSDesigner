@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BSDesigner.Core\BSDesigner.Core.csproj" />
     <ProjectReference Include="..\BSDesigner.StateMachines\BSDesigner.StateMachines.csproj" />
+    <ProjectReference Include="..\TestBSD.Mocks\TestBSD.Mocks.csproj" />
   </ItemGroup>
 
 </Project>

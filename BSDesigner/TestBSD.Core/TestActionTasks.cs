@@ -1,7 +1,7 @@
 ﻿using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Actions;
-using TestBSD.Core.Mocks;
+using TestBSD.Mocks;
 
 namespace TestBSD.Core
 {
