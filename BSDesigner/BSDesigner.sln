@@ -21,15 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.UtilitySystems", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.Internal", "BSDesigner.Internal\BSDesigner.Internal.csproj", "{6E3A04DB-F3BD-4B81-872D-683778C86CFA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.Serialization", "BSDesigner.Serialization\BSDesigner.Serialization.csproj", "{A040BB54-DDF3-49F7-A772-CC8C304AA51E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.Serialization", "TestBSD.Serialization\TestBSD.Serialization.csproj", "{07229A44-B98B-44C2-969E-95D1FA8C82D2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0EBC4380-E83C-4176-AD9F-DB57CF6F3E74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSDesigner.JsonSerialization", "JsonSerialization\BSDesigner.JsonSerialization.csproj", "{99A18EFE-0EF9-4364-AFE1-02966FA8F816}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.Mocks", "TestBSD.Mocks\TestBSD.Mocks.csproj", "{51B8EB49-68C7-454D-91B4-8C813E2C51EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBSD.Mocks", "TestBSD.Mocks\TestBSD.Mocks.csproj", "{51B8EB49-68C7-454D-91B4-8C813E2C51EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.JsonSerialization", "BSDesigner.JsonSerialization\BSDesigner.JsonSerialization.csproj", "{EC7B889B-C1D5-4385-B469-A431F719CDC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,22 +71,18 @@ Global
 		{6E3A04DB-F3BD-4B81-872D-683778C86CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E3A04DB-F3BD-4B81-872D-683778C86CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E3A04DB-F3BD-4B81-872D-683778C86CFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A040BB54-DDF3-49F7-A772-CC8C304AA51E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A040BB54-DDF3-49F7-A772-CC8C304AA51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A040BB54-DDF3-49F7-A772-CC8C304AA51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A040BB54-DDF3-49F7-A772-CC8C304AA51E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07229A44-B98B-44C2-969E-95D1FA8C82D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07229A44-B98B-44C2-969E-95D1FA8C82D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07229A44-B98B-44C2-969E-95D1FA8C82D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07229A44-B98B-44C2-969E-95D1FA8C82D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99A18EFE-0EF9-4364-AFE1-02966FA8F816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99A18EFE-0EF9-4364-AFE1-02966FA8F816}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99A18EFE-0EF9-4364-AFE1-02966FA8F816}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99A18EFE-0EF9-4364-AFE1-02966FA8F816}.Release|Any CPU.Build.0 = Release|Any CPU
 		{51B8EB49-68C7-454D-91B4-8C813E2C51EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{51B8EB49-68C7-454D-91B4-8C813E2C51EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51B8EB49-68C7-454D-91B4-8C813E2C51EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51B8EB49-68C7-454D-91B4-8C813E2C51EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC7B889B-C1D5-4385-B469-A431F719CDC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC7B889B-C1D5-4385-B469-A431F719CDC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC7B889B-C1D5-4385-B469-A431F719CDC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC7B889B-C1D5-4385-B469-A431F719CDC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

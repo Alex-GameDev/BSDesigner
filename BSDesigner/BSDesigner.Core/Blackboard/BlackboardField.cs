@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BSDesigner.Core
 {
     [Serializable]
-    public abstract class BlackboardField
+    public abstract class BlackboardField : IDisposable
     {
         /// <summary>
         /// The name of the field, used as identifier in the blackboard.
         /// </summary>
-        public string Name;
+        public readonly string Name;
 
         /// <summary>
         /// The object representation of the field value.
@@ -30,7 +31,6 @@ namespace BSDesigner.Core
             Name = string.Empty;
         }
 
-
         protected BlackboardField(string name)
         {
             Name = name;
@@ -39,7 +39,7 @@ namespace BSDesigner.Core
         /// <summary>
         /// Method called from the blackboard when the field is removed.
         /// </summary>
-        internal void Unbind() => FieldUnbind?.Invoke();
+        public void Dispose() => FieldUnbind?.Invoke();
     }
 
     /// <summary>
@@ -54,20 +54,19 @@ namespace BSDesigner.Core
         /// </summary>
         public T Value = default!;
 
-        public override object? BaseValue 
-        { 
+        public override object? BaseValue
+        {
             get => Value;
-            set => Value = (T)value; 
+            set => Value = (T)value!;
         }
 
         public override Type Type => typeof(T);
 
-        public BlackboardField() : base()
+        public BlackboardField()
         {
-
         }
 
-        public BlackboardField(string name) : base(name)
+        internal BlackboardField(string name) : base(name)
         {
         }
     }

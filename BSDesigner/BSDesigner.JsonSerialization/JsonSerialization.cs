@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using BSDesigner.Core;
+using BSDesigner.JsonSerialization.Converters;
 using BSDesigner.JsonSerialization.Model;
 using BSDesigner.JsonSerialization.Settings;
 using Newtonsoft.Json;
@@ -20,16 +20,20 @@ namespace BSDesigner.JsonSerialization
         /// <returns>The serialized data.</returns>
         public static string Serialize(BehaviourSystem? system)
         {
+            var context = new JsonConversionContext();
             var settings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
                 ContractResolver = new BSDContractResolver(),
+                Converters = new List<JsonConverter>
+                {
+                    new BlackboardConverter(context)
+                }
             };
             var serializableSystem = SystemToSerializedFormat(system);
-            var result = JsonConvert.SerializeObject(serializableSystem, settings);
-            return result;
+            return JsonConvert.SerializeObject(serializableSystem, settings);
         }
 
         /// <summary>
@@ -39,17 +43,21 @@ namespace BSDesigner.JsonSerialization
         /// <returns>The deserialized system.</returns>
         public static BehaviourSystem? Deserialize(string jsonData)
         {
+            var context = new JsonConversionContext();
             var settings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
                 ContractResolver = new BSDContractResolver(),
+                Converters = new List<JsonConverter>
+                {
+                    new BlackboardConverter(context)
+                }
             };
 
             var serializableSystem = JsonConvert.DeserializeObject<SerializedSystem>(jsonData, settings);
-            var system = SystemToBusinessFormat(serializableSystem);
-            return system;
+            return SystemToBusinessFormat(serializableSystem);
         }
 
         #region Private methods
@@ -67,6 +75,7 @@ namespace BSDesigner.JsonSerialization
             {
                 serializedSystem.Engines = system.engines.Select(EngineToSerializedFormat).ToList();
             }
+            serializedSystem.Blackboard = system.blackboard;
             return serializedSystem;
         }
 
@@ -99,6 +108,8 @@ namespace BSDesigner.JsonSerialization
             {
                 system.engines = serializedSystem.Engines.Select(EngineToBusinessFormat).ToList();
             }
+
+            system.blackboard = serializedSystem.Blackboard;
             return system;
         }
 

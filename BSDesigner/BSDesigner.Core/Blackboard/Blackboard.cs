@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BSDesigner.Core
 {
@@ -7,7 +8,7 @@ namespace BSDesigner.Core
     /// Data class that allow write and read variables of any type identified by a name.
     /// </summary>
     [Serializable]
-    public class Blackboard : IBlackboard
+    public class Blackboard
     {
         Dictionary<string, BlackboardField> fields = new Dictionary<string, BlackboardField>();
 
@@ -16,7 +17,6 @@ namespace BSDesigner.Core
         /// </summary>
         /// <returns>The fields stored in the blackboard.</returns>
         public IEnumerable<BlackboardField> GetAllFields() => fields.Values;
-
 
         /// <summary>
         /// Default constructor
@@ -35,6 +35,21 @@ namespace BSDesigner.Core
             {
                 this.fields[blackboardField.Name] = blackboardField;
             }
+        }
+
+        /// <summary>
+        /// Get all the fields that stores a variable of the given type,
+        /// </summary>
+        /// <param name="type">The specified type</param>
+        /// <returns>A list of fields.</returns>
+        public IEnumerable<BlackboardField> GetAllFieldsOfType(Type type)
+        {
+            return fields.Values.Where(f => type.IsAssignableFrom(f.Type));
+        }
+
+        public IEnumerable<BlackboardField<T>> GetAllFieldsOfType<T>()
+        {
+            return fields.Values.OfType<BlackboardField<T>>();
         }
 
         /// <summary>
@@ -80,10 +95,7 @@ namespace BSDesigner.Core
 
             if (type == null) throw new Exception();
 
-            var field = CreateField(id, type);
-
-            field.BaseValue = value;
-            return field;
+            return CreateField(id, type, value);
         }
 
         /// <summary>
@@ -91,12 +103,14 @@ namespace BSDesigner.Core
         /// </summary>
         /// <param name="id">The field identifier.</param>
         /// <param name="fieldType">The type of the field</param>
+        /// <param name="value">The initial value of the field.</param>
         /// <returns>The created </returns>
-        public BlackboardField CreateField(string id, Type fieldType)
+        public BlackboardField CreateField(string id, Type fieldType, object? value = null)
         {
             var completeType = typeof(BlackboardField<>).MakeGenericType(fieldType);
             var field = (BlackboardField)Activator.CreateInstance(completeType);
             fields.Add(id, field);
+            field.BaseValue = value;
             return field;
         }
 
@@ -124,6 +138,8 @@ namespace BSDesigner.Core
             return field;
         }
 
+
+
         /// <summary>
         /// Get all the fields
         /// </summary>
@@ -136,7 +152,6 @@ namespace BSDesigner.Core
         public void RemoveFieldById(string id)
         {
             var field = GetFieldById(id);
-            field.Unbind();
             fields.Remove(id);
         }
 
@@ -147,7 +162,7 @@ namespace BSDesigner.Core
         {
             foreach (var field in fields.Values)
             {
-                field.Unbind();
+                //field.Unbind();
             }
 
             fields.Clear();
@@ -157,7 +172,7 @@ namespace BSDesigner.Core
         /// Move all the fields from this blackboard to other (Used in deserialization).
         /// </summary>
         /// <param name="other">The other blackboard</param>
-        public void CopyTo(IBlackboard other)
+        public void CopyTo(Blackboard other)
         {
             foreach (var kvp in fields)
             {

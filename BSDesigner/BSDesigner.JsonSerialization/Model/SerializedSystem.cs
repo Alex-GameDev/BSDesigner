@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BSDesigner.Core;
 
 namespace BSDesigner.JsonSerialization.Model
 {
@@ -7,6 +8,11 @@ namespace BSDesigner.JsonSerialization.Model
     /// </summary>
     public class SerializedSystem
     {
+        /// <summary>
+        /// A common bloackboard for all the engines in the system
+        /// </summary>
+        public Blackboard? Blackboard;
+
         /// <summary>
         /// A list of behaviour engines included in the system
         /// </summary>

@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Reflection;
+
 namespace BSDesigner.Core
 {
     /// <summary>
     /// Variable wrapper that allow classes to get values from blackboards.
+    /// Parameter class is immutable.
     /// </summary>
     public abstract class Parameter
     {
-        protected Parameter() { }
-
         /// <summary>
         /// Get the allowed type of the parameter value
         /// </summary>
@@ -16,18 +17,12 @@ namespace BSDesigner.Core
         /// <summary>
         /// The current value of the parameter
         /// </summary>
-        public abstract object? ObjectValue { get; set; }
+        public abstract object? InternalValue { get; }
 
         /// <summary>
         /// The field bound to this parameter.
         /// </summary>
-        public abstract BlackboardField? BaseBoundField { get; set; }
-
-        public void Reset()
-        {
-            BaseBoundField = null;
-            ObjectValue = default;
-        }
+        public abstract BlackboardField? BaseBoundField { get; }
     }
 
     /// <summary>
@@ -35,78 +30,69 @@ namespace BSDesigner.Core
     /// </summary>
     public class Parameter<T> : Parameter
     {
-        public override object? ObjectValue
-        {
-            get => Value;
-            set => Value = (T)value!;
-        }
+        #region Properties
 
-        public override BlackboardField? BaseBoundField
-        {
-            get => BoundField;
-            set => BoundField = (BlackboardField<T>?)value;
-        }
-        
+        public override object? InternalValue => m_Value;
+
+        public override BlackboardField? BaseBoundField => m_BoundField;
+
         public override Type Type => typeof(T);
 
         /// <summary>
-        /// The value of the parameter
+        /// The value of the parameter.
+        /// If is bound, the value is defined by the bound field.
+        /// Otherwise is value.
         /// </summary>
-        public T Value
+        public T Value => m_BoundField != null ? m_BoundField.Value : m_Value;
+
+        #endregion
+
+        #region Fields
+
+        private readonly T m_Value = default!;
+
+        private readonly BlackboardField<T>? m_BoundField;
+
+        #endregion
+
+        #region Constructors
+
+        private Parameter()
         {
-            get => _boundField != null ? _boundField.Value : _value;
-            set
-            {
-                if (_boundField != null)
-                {
-                    _boundField.FieldUnbind -= Reset;
-                }
-                _boundField = null;
-                _value = value;
-
-            }
-        }
-        private T _value = default!;
-
-        /// <summary>
-        /// The blackboard field assigned
-        /// </summary>
-        public BlackboardField<T>? BoundField
-        {
-            get => _boundField;
-            set
-            {
-                Value = default!;
-                _boundField = value;
-
-                if(_boundField != null)
-                {
-                    _boundField.FieldUnbind += Reset;
-                }
-            }
+            m_Value = default!;
+            m_BoundField = null;
         }
 
-        private BlackboardField<T>? _boundField;
+        private Parameter(T value)
+        {
+            m_Value = value;
+            m_BoundField = null;
+        }
+
+        private Parameter(BlackboardField<T> value)
+        {
+            m_Value = default!;
+            m_BoundField = value;
+        }
+
+        #endregion
 
         /// <summary>
         /// Use this operator to get the value of the parameter without explicitly access to Value property.
         /// </summary>
         /// <param name="param">The parameter.</param>
-
         public static implicit operator T(Parameter<T> param) => param.Value;
 
         /// <summary>
         /// Use this operator to create an independent parameter implicitly using the wrapped value.
         /// </summary>
         /// <param name="value">The wrapped value.</param>
-
-        public static implicit operator Parameter<T>(T value) => new Parameter<T>{ Value = value};
+        public static implicit operator Parameter<T>(T value) => new Parameter<T>(value);
 
         /// <summary>
         /// Use this operator to create a parameter bounded to the specified blackboard field
         /// </summary>
         /// <param name="boundField"></param>
-
-        public static implicit operator Parameter<T>(BlackboardField<T> boundField) => new Parameter<T> { BoundField = boundField };
+        public static implicit operator Parameter<T>(BlackboardField<T> boundField) => new Parameter<T>(boundField);
     }
 }
