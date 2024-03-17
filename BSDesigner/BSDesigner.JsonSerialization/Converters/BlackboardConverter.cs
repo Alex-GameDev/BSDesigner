@@ -74,6 +74,7 @@ namespace BSDesigner.JsonSerialization.Converters
                 ReadField(value, reader, serializer);
 
             }
+            Context.GlobalBlackboard = value;
             return value;
         }
 
@@ -82,9 +83,9 @@ namespace BSDesigner.JsonSerialization.Converters
             var jobject = JToken.ReadFrom(reader);
             reader.Read();
 
-            var id = jobject["id"]?.Value<string>();
-            var fieldTypeToken = jobject["$type"]?.Value<string>();
-            var valueToken = jobject["value"];
+            var id = jobject[ID_TOKEN]?.Value<string>();
+            var fieldTypeToken = jobject[TYPE_TOKEN]?.Value<string>();
+            var valueToken = jobject[VALUE_TOKEN];
             if (id == null || fieldTypeToken == null)
             {
                 return;
@@ -92,7 +93,7 @@ namespace BSDesigner.JsonSerialization.Converters
 
             var fieldType = GetTypeFormSerializedString(fieldTypeToken, serializer.SerializationBinder); // Get the blackboard field type
 
-            var concreteTypeToken = valueToken?["$type"]?.Value<string>();
+            var concreteTypeToken = valueToken.HasValues ? valueToken?["$type"]?.Value<string>() : null;
             var concreteFieldType = concreteTypeToken != null ? GetTypeFormSerializedString(concreteTypeToken, serializer.SerializationBinder) : fieldType; // Get the value field type
 
             if (valueToken != null && concreteFieldType != null && fieldType != null)

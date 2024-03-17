@@ -18,6 +18,14 @@ namespace TestBSD.Mocks
             return mockNode;
         }
 
+        public T CreateNode<T>(int maxParents, int maxChildren) where T : MockNode, new()
+        {
+            var mockNode = base.CreateNode<T>();
+            mockNode.MaxParents = maxParents;
+            mockNode.MaxChildren = maxChildren;
+            return mockNode;
+        }
+
         public event Action<string> OnEvent  = delegate { };
 
         public override Type NodeType => SupportedNodeType;

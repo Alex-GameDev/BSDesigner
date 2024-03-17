@@ -29,7 +29,8 @@ namespace BSDesigner.JsonSerialization
                 ContractResolver = new BSDContractResolver(),
                 Converters = new List<JsonConverter>
                 {
-                    new BlackboardConverter(context)
+                    new BlackboardConverter(context),
+                    new ParameterConverter(context)
                 }
             };
             var serializableSystem = SystemToSerializedFormat(system);
@@ -52,7 +53,8 @@ namespace BSDesigner.JsonSerialization
                 ContractResolver = new BSDContractResolver(),
                 Converters = new List<JsonConverter>
                 {
-                    new BlackboardConverter(context)
+                    new BlackboardConverter(context),
+                    new ParameterConverter(context)
                 }
             };
 

@@ -76,7 +76,7 @@ public class TestJsonDeserialization
     #region Blackboard
 
     [Test]
-    public void Serialization_EmptyBlackboard_MatchExpectedResult()
+    public void Deserialization_EmptyBlackboard_MatchExpectedResult()
     {
         const string jsonData = "{\"blackboard\":[]}";
 
@@ -86,9 +86,9 @@ public class TestJsonDeserialization
     }
 
     [Test]
-    public void Serialization_BlackboardWithFields_MatchExpectedResult()
+    public void Deserialization_BlackboardWithFields_MatchExpectedResult()
     {
-        const string jsonData = "{\"blackboard\":[{\"id\":\"intfield\",\"value\":2}]}";
+        const string jsonData = "{\"blackboard\":[{\"id\":\"intfield\",\"fieldtype\":\"System.Int32, System.Private.CoreLib\",\"value\":2}]}";
 
         var system = JsonSerialization.Deserialize(jsonData);
         Assert.That(system?.blackboard, Is.Not.Null);
@@ -96,9 +96,9 @@ public class TestJsonDeserialization
     }
 
     [Test]
-    public void Serialization_BlackboardWithLongField_MatchExpectedResult()
+    public void Deserialization_BlackboardWithLongField_MatchExpectedResult()
     {
-        const string jsonData = "{\"blackboard\":[{\"id\":\"longfield\",\"$type\":\"System.Private.CoreLib, System.Int64\",\"value\":2}]}";
+        const string jsonData = "{\"blackboard\":[{\"id\":\"longfield\",\"fieldtype\":\"System.Int64, System.Private.CoreLib\",\"value\":2}]}";
 
         var system = JsonSerialization.Deserialize(jsonData);
         Assert.That(system?.blackboard, Is.Not.Null);
@@ -108,9 +108,9 @@ public class TestJsonDeserialization
     }
 
     [Test]
-    public void Serialization_BlackboardWithFewField_MatchExpectedResult()
+    public void Deserialization_BlackboardWithFewField_MatchExpectedResult()
     {
-        const string jsonData = "{\"Blackboard\":[{\"id\":\"bool\",\"value\":true},{\"id\":\"string\",\"value\":\"str\"},{\"id\":\"int\",\"value\":2}]}";
+        const string jsonData = "{\"Blackboard\":[{\"id\":\"bool\",\"fieldtype\":\"System.Boolean, System.Private.CoreLib\",\"value\":true},{\"id\":\"string\",\"fieldtype\":\"System.String, System.Private.CoreLib\",\"value\":\"str\"},{\"id\":\"int\",\"fieldtype\":\"System.Int32, System.Private.CoreLib\",\"value\":2}]}";
 
         var system = JsonSerialization.Deserialize(jsonData);
         Assert.That(system?.blackboard, Is.Not.Null);
@@ -127,15 +127,41 @@ public class TestJsonDeserialization
     }
 
     [Test]
-    public void Serialization_BlackboardWithPolymorficField_MatchExpectedResult()
+    public void Deserialization_BlackboardWithPolymorficField_MatchExpectedResult()
     {
-        const string jsonData = "{\"blackboard\":[{\"id\":\"data\",\"$type\":\"TestBSD.Mocks.ExampleData, TestBSD.Mocks\",\"value\":{\"$type\":\"TestBSD.Mocks.DerivedAExampleData, TestBSD.Mocks\",\"doubleValue\":5.0,\"boolValue\":true,\"intValue\":2}}]}";
+        const string jsonData = "{\"blackboard\":[{\"id\":\"data\",\"fieldtype\":\"TestBSD.Mocks.ExampleData, TestBSD.Mocks\",\"value\":{\"$type\":\"TestBSD.Mocks.DerivedAExampleData, TestBSD.Mocks\",\"doubleValue\":5.0,\"boolValue\":true,\"intValue\":2}}]}";
 
         var system = JsonSerialization.Deserialize(jsonData);
         Assert.That(system?.blackboard, Is.Not.Null);
         Assert.That(system?.blackboard?.GetAllFields().ToList(), Has.Count.EqualTo(1));
         var field = system?.blackboard?.GetFieldById<ExampleData>("data");
         Assert.That(field?.Value, Is.InstanceOf<DerivedAExampleData>());
+    }
+
+    #endregion
+
+    #region Parameters
+
+    [Test]
+    public void Deserialization_NodeWithValueParameter_MatchExpectedResult()
+    {
+        const string jsonData = "{\"Engines\":[{\"Engine\":{\"$type\":\"TestBSD.Mocks.MockGraph, TestBSD.Mocks\",\"Name\":\"\"},\"Nodes\":[{\"$type\":\"TestBSD.Mocks.ParameterNode, TestBSD.Mocks\",\"intParameter\":2}]}]}";
+
+        var system = JsonSerialization.Deserialize(jsonData);
+        var node = (system?.engines.First() as MockGraph)?.Nodes.First() as ParameterNode;
+        Assert.That(node, Is.Not.Null);
+        Assert.That(node?.intParameter.Value, Is.EqualTo(2));
+    }
+
+    [Test]
+    public void Deserialization_NodeWithBoundParameter_MatchExpectedResult()
+    {
+        const string jsonData = "{\"Blackboard\":[{\"id\":\"intField\",\"fieldtype\":\"System.Int32, System.Private.CoreLib\",\"value\":2}],\"Engines\":[{\"Engine\":{\"$type\":\"TestBSD.Mocks.MockGraph, TestBSD.Mocks\",\"Name\":\"\"},\"Nodes\":[{\"$type\":\"TestBSD.Mocks.ParameterNode, TestBSD.Mocks\",\"intParameter\":{\"id\":\"intField\"}}]}]}";
+
+        var system = JsonSerialization.Deserialize(jsonData);
+        var node = (system?.engines.First() as MockGraph)?.Nodes.First() as ParameterNode;
+        Assert.That(node, Is.Not.Null);
+        Assert.That(node?.intParameter.Value, Is.EqualTo(2));
     }
 
     #endregion

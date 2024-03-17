@@ -128,4 +128,37 @@ public class TestJsonSerialization
     }
 
     #endregion
+
+    #region Parameters
+
+    [Test]
+    public void Serialization_NodeWithValueParameter_MatchExpectedResult()
+    {
+        var system = new BehaviourSystem();
+        var engine = new MockGraph();
+        var node = engine.CreateNode<ParameterNode>(0, 1);
+        node.intParameter = 2;
+        system.engines.Add(engine);
+
+        var jsonData = JsonSerialization.Serialize(system);
+        Assert.That(jsonData.ToLower(), Does.Match("{.*\"intparameter\":2}.*}"));
+    }
+
+    [Test]
+    public void Serialization_NodeWithBoundParameter_MatchExpectedResult()
+    {
+        var system = new BehaviourSystem();
+        var blackboard = new Blackboard();
+        var field = blackboard.CreateField("intField", 2);
+        var engine = new MockGraph();
+        var node = engine.CreateNode<ParameterNode>(0, 1);
+        node.intParameter = field;
+        system.blackboard = blackboard;
+        system.engines.Add(engine);
+
+        var jsonData = JsonSerialization.Serialize(system);
+        Assert.That(jsonData.ToLower(), Does.Match("{.*\"intparameter\":{\"id\":\"intfield\"}}.*}"));
+    }
+
+    #endregion
 }

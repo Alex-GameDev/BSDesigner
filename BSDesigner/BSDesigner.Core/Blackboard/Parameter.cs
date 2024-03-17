@@ -57,7 +57,7 @@ namespace BSDesigner.Core
 
         #region Constructors
 
-        private Parameter()
+        public Parameter()
         {
             m_Value = default!;
             m_BoundField = null;
