@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -8,5 +8,9 @@
   <ItemGroup>
     <ProjectReference Include="..\BSDesigner.Core\BSDesigner.Core.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y &quot;$(ProjectDir)$(OutDir)$(TargetName)$(TargetExt)&quot; &quot;$(SolutionDir)bin&quot;" />
+  </Target>
 
 </Project>
