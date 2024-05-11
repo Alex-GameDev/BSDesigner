@@ -52,5 +52,10 @@ namespace BSDesigner.StateMachines
             Action?.Start();
             return Status.Running;
         }
+
+        public override void SetContext(ExecutionContext context)
+        {
+            Action?.SetContext(context);
+        }
     }
 }

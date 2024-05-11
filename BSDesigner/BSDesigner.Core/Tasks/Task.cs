@@ -48,6 +48,11 @@
             OnEndTask();
         }
 
+        public virtual void SetContext(ExecutionContext context)
+        {
+            return;
+        }
+
         protected abstract void OnBeginTask();
 
         protected abstract void OnEndTask();

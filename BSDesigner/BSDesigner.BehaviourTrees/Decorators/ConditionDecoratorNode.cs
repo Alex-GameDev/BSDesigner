@@ -1,5 +1,6 @@
 ﻿using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
+using System;
 
 namespace BSDesigner.BehaviourTrees
 {
@@ -75,6 +76,11 @@ namespace BSDesigner.BehaviourTrees
 
             Perception.Pause();
             ChildNode.Pause();
+        }
+
+        public override void SetContext(ExecutionContext context)
+        {
+            Perception?.SetContext(context);
         }
     }
 }

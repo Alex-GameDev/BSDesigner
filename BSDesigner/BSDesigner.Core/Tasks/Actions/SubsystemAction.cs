@@ -1,4 +1,5 @@
 ﻿using BSDesigner.Core.Exceptions;
+using System;
 
 namespace BSDesigner.Core.Actions
 {
@@ -72,6 +73,11 @@ namespace BSDesigner.Core.Actions
 
             SubSystem.Value.Update();
             return SubSystem.Value.Status;
+        }
+
+        public override void SetContext(ExecutionContext context)
+        {
+            SubSystem?.Value.SetContext(context);
         }
     }
 }

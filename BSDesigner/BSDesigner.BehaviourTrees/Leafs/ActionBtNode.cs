@@ -41,5 +41,10 @@ namespace BSDesigner.BehaviourTrees
             Status = actionResult;
             return Status;
         }
+
+        public override void SetContext(ExecutionContext context)
+        {
+            Action?.SetContext(context);
+        }
     }
 }

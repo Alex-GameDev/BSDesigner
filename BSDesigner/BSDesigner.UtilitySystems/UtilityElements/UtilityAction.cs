@@ -97,5 +97,10 @@ namespace BSDesigner.UtilitySystems
         /// Pauses the execution of the action.
         /// </summary>
         protected override void OnElementPaused() => Action?.Pause();
+
+        public override void SetContext(ExecutionContext context)
+        {
+            Action?.SetContext(context);
+        }
     }
 }
