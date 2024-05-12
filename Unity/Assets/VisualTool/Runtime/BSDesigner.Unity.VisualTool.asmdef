@@ -1,0 +1,16 @@
+{
+    "name": "BSDesigner.Unity.VisualTool",
+    "rootNamespace": "BSDesigner.Unity.VisualTool.Runtime",
+    "references": [
+        "GUID:3fda73fa858a52041955e5ea87e57c44"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
