@@ -1,0 +1,19 @@
+{
+    "name": "BSDesigner.Unity.SmartObjects",
+    "rootNamespace": "BSDesigner.Unity.SmartObjects",
+    "references": [
+        "GUID:3fda73fa858a52041955e5ea87e57c44"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "BSDesigner.Core.dll",
+        "BSDesigner.SmartObjects.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
