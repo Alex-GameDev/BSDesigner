@@ -1,8 +1,13 @@
 {
     "name": "BSDesigner.Unity.VisualTool.Editor",
     "rootNamespace": "BSDesigner.Unity.VisualTool.Editor",
-    "references": [],
-    "includePlatforms": [],
+    "references": [
+        "GUID:9deef26518403404999c8e6c1b66df53",
+        "GUID:3fda73fa858a52041955e5ea87e57c44"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

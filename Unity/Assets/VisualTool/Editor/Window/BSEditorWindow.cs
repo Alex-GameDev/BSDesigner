@@ -1,11 +1,15 @@
+using BSDesigner.Unity.VisualTool;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class BSEditorWindow : EditorWindow
 {
-    [SerializeField]
-    private VisualTreeAsset m_VisualTreeAsset = default;
+    public Object Object { get; set; }
+    public BSData Data { get; set; }
+
+    [SerializeField] private VisualTreeAsset m_VisualTreeAsset = default;
+    [SerializeField] private StyleSheet m_StyleSheet = default;
 
     [MenuItem("Window/UI Toolkit/BSEditorWindow")]
     public static void ShowExample()
@@ -14,17 +18,39 @@ public class BSEditorWindow : EditorWindow
         wnd.titleContent = new GUIContent("BSEditorWindow");
     }
 
-    public void CreateGUI()
+    public static void Open(Object obj, BSData data)
     {
-        // Each editor window contains a root VisualElement object
+        var windows = Resources.FindObjectsOfTypeAll<BSEditorWindow>();
+        foreach (var w in windows)
+        {
+            if (w.Object == obj)
+            {
+                w.Focus();
+                return;
+            }
+        }
+
+        var window = CreateWindow<BSEditorWindow>(typeof(BSEditorWindow), typeof(SceneView));
+        window.titleContent = new GUIContent($"{obj.name}");
+        window.Load(obj, data);
+    }
+
+    private void CreateGUI()
+    {
         VisualElement root = rootVisualElement;
 
-        // VisualElements objects can contain other VisualElement following a tree hierarchy.
-        VisualElement label = new Label("Hello World! From C#");
-        root.Add(label);
+        if (m_StyleSheet != null)
+        {
+            root.styleSheets.Add(m_StyleSheet);
+        }
 
-        // Instantiate UXML
         VisualElement labelFromUXML = m_VisualTreeAsset.Instantiate();
         root.Add(labelFromUXML);
+    }
+
+    private void Load(Object obj, BSData data)
+    {
+        Object = obj;
+        Data = data;
     }
 }

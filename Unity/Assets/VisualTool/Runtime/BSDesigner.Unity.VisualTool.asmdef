@@ -1,6 +1,6 @@
 {
     "name": "BSDesigner.Unity.VisualTool",
-    "rootNamespace": "BSDesigner.Unity.VisualTool.Runtime",
+    "rootNamespace": "BSDesigner.Unity.VisualTool",
     "references": [
         "GUID:3fda73fa858a52041955e5ea87e57c44"
     ],

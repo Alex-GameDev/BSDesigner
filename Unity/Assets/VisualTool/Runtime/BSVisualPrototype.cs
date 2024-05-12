@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace BSDesigner.Unity.VisualTool.Runtime.Assets.VisualTool.Runtime
+namespace BSDesigner.Unity.VisualTool
 {
     /// <summary>
     /// Behaviour system prototype that can be created using the visual tool.
