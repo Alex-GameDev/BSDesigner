@@ -3,7 +3,7 @@ using BSDesigner.Core.Exceptions;
 
 namespace BSDesigner.Core
 {
-    public abstract class BehaviourEngine : IStatusHandler
+    public abstract class BehaviourEngine : IStatusHandler, IBehaviour
     {
         /// <summary>
         /// The name of the behaviour engine
@@ -67,15 +67,17 @@ namespace BSDesigner.Core
         /// <summary>
         /// Update the execution if is not finished yet.
         /// </summary>
-        public void Update()
+        public Status Update()
         {
             if(Status == Status.None)
                 throw new ExecutionStatusException(this, "This behaviour engine is not running.");
 
-            if (Status != Status.Running) return;
-
-            IsPaused = false;
-            OnUpdated();
+            if (Status == Status.Running)
+            {
+                IsPaused = false;
+                OnUpdated();
+            }
+            return Status;
         }
 
         /// <summary>

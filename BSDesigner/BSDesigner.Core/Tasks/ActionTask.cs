@@ -1,6 +1,6 @@
 ﻿namespace BSDesigner.Core
 {
-    public abstract class ActionTask : Task
+    public abstract class ActionTask : Task, IBehaviour
     {
         private Status _result;
 

@@ -71,8 +71,7 @@ namespace BSDesigner.Core.Actions
             if (SubSystem?.Value == null)
                 throw new MissingBehaviourSystemException("Subsystem cannot be null");
 
-            SubSystem.Value.Update();
-            return SubSystem.Value.Status;
+            return SubSystem.Value.Update();
         }
 
         public override void SetContext(ExecutionContext context)
