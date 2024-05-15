@@ -11,13 +11,12 @@ public class BSEditorWindow : EditorWindow
     [SerializeField] private VisualTreeAsset m_VisualTreeAsset = default;
     [SerializeField] private StyleSheet m_StyleSheet = default;
 
-    [MenuItem("Window/UI Toolkit/BSEditorWindow")]
-    public static void ShowExample()
-    {
-        BSEditorWindow wnd = GetWindow<BSEditorWindow>();
-        wnd.titleContent = new GUIContent("BSEditorWindow");
-    }
-
+    /// <summary>
+    /// Open an editor window with the specified data. If a window with <paramref name="obj"/> 
+    /// already exists, focus the window. Otherwise, creates a new window.
+    /// </summary>
+    /// <param name="obj">The object reference of the element edited.</param>
+    /// <param name="data">The data edited.</param>
     public static void Open(Object obj, BSData data)
     {
         var windows = Resources.FindObjectsOfTypeAll<BSEditorWindow>();
