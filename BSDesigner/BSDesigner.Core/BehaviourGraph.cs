@@ -130,6 +130,16 @@ namespace BSDesigner.Core
         }
 
         /// <summary>
+        /// Create a new connection using <paramref name="connection"/> data.
+        /// If index value is -1 (default), the element will be added at the end of the list.
+        /// </summary>
+        /// <param name="connection">The data with the connected nodes.</param>
+        /// <param name="childIndex">The index of target node in source's child list.</param>
+        /// <param name="parentIndex">The index of source node in target's parent list.</param>
+        /// <exception cref="ArgumentException">Thrown if any of the arguments are not valid.</exception>
+        public void ConnectNodes(Connection connection, int childIndex = -1, int parentIndex = -1) => ConnectNodes(connection.Source, connection.Target, childIndex, parentIndex);
+
+        /// <summary>
         /// Remove the first found connection from <paramref name="source"/> to <paramref name="target"/>
         /// </summary>
         /// <param name="source">The first node of the connection</param>
@@ -146,6 +156,13 @@ namespace BSDesigner.Core
             source.InternalChildList.RemoveAt(childIndex);
             target.InternalParentList.RemoveAt(parentIndex);
         }
+
+        /// <summary>
+        /// Remove the first found connection that matches <paramref name="connection"/>
+        /// </summary>
+        /// <param name="connection">The connection removed</param>
+        /// <exception cref="ConnectionException">If the nodes are not connected.</exception>
+        public void Disconnect(Connection connection) => Disconnect(connection.Source, connection.Target);
 
         /// <summary>
         /// Remove the output connection from <paramref name="source"/> in <paramref name="childIndex"/> position.
@@ -182,6 +199,13 @@ namespace BSDesigner.Core
             target.InternalParentList.RemoveAt(parentIndex);
             source.InternalChildList.RemoveAt(childIndex);
         }
+
+        /// <summary>
+        /// Returns if graph has a connection path that matches <paramref name="connection"/>.
+        /// </summary>
+        /// <param name="connection">The checked connection.</param>
+        /// <returns>True if a path between the nodes exists.</returns>
+        public bool AreNodesConnected(Connection connection) => AreNodesConnected(connection.Source, connection.Target);
 
         /// <summary>
         /// Returns if graph has a connection path between <paramref name="source"/> and <paramref name="target"/>.
@@ -256,6 +280,23 @@ namespace BSDesigner.Core
                     throw new ArgumentException("Error: This graph contains nodes with the same name.");
             }
             return nodeMap;
+        }
+
+        /// <summary>
+        /// Return all the connections of the graph. Modify the returned list does not modify the graph.
+        /// </summary>
+        /// <returns>LThe list of connections.</returns>
+        public IEnumerable<Connection> GetConnections()
+        {
+            var connections = new List<Connection>();
+            foreach (var node in Nodes)
+            {
+                foreach(var child in node.Children)
+                {
+                    connections.Add(new Connection(node, child));
+                }
+            }
+            return connections;
         }
 
         /// <summary>
