@@ -174,5 +174,35 @@ namespace BSDesigner.Core
         /// Called when the graph is paused.
         /// </summary>
         protected abstract void OnPaused();
+
+        /// <summary>
+        /// Check if a behaviour engine is nested with this.
+        /// </summary>
+        /// <param name="target">The engine checked</param>
+        /// <returns>True if its nested</returns>
+        public bool IsNestedWith(BehaviourEngine? target)
+        {
+            if (target == null)
+                return false;
+
+            var unvisitedNodes = new HashSet<BehaviourEngine>();
+            var visitedNodes = new HashSet<BehaviourEngine>();
+
+            unvisitedNodes.Add(target);
+            while (unvisitedNodes.Count > 0)
+            {
+                var n = unvisitedNodes.First();
+                unvisitedNodes.Remove(n);
+                visitedNodes.Add(n);
+                foreach (var parent in n.GetNestedEngines())
+                {
+                    if (parent == this)
+                        return true;
+                    if (!visitedNodes.Contains(parent))
+                        unvisitedNodes.Add(parent);
+                }
+            }
+            return false;
+        }
     }
 }

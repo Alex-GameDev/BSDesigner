@@ -6,6 +6,10 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="xcopy /y &quot;$(ProjectDir)$(OutDir)$(TargetName)$(TargetExt)&quot; &quot;$(SolutionDir)bin&quot;" />
   </Target>

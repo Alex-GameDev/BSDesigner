@@ -9,9 +9,21 @@ namespace BSDesigner.UtilitySystems.UtilityElements
     public class SubsystemUtilityNode : FactorizedUtilityNode, ISubsystem
     {
         /// <summary>
-        /// The nested subystem.
+        /// The nested behaviour engine.
         /// </summary>
-        public BehaviourEngine? Subsystem { get; set; }
+        public BehaviourEngine? Subsystem
+        {
+            get => _nestedEngine;
+            set
+            {
+                if (_nestedEngine != value && !(_nestedEngine?.IsNestedWith(this.Graph) ?? false))
+                {
+                    this.Subsystem = value;
+                }
+            }
+        }
+
+        private BehaviourEngine? _nestedEngine;
 
         /// <summary>
         /// Pauses the nested behaviour engine
