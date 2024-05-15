@@ -211,6 +211,22 @@ namespace BSDesigner.Core
             return false;
         }
 
+        /// <summary>
+        /// Find all the nested behaviour engines in its nodes.
+        /// </summary>
+        /// <returns>A list of nested engines.</returns>
+        public override IEnumerable<BehaviourEngine> GetNestedEngines()
+        {
+            List<BehaviourEngine> nestedEngines = new List<BehaviourEngine>();
+            foreach(var node in Nodes)
+            {
+                if(node is ISubsystem subsystemNode && subsystemNode.Subsystem != null)
+                {
+                    nestedEngines.Add(subsystemNode.Subsystem);
+                }
+            }
+            return nestedEngines;
+        }
 
         /// <summary>
         /// <inheritdoc/>

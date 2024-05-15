@@ -5,7 +5,7 @@ using ExecutionContext = BSDesigner.Core.ExecutionContext;
 namespace TestBSD.Core.Mocks
 {
     [ExcludeFromCodeCoverage]
-    public class MockNode : Node
+    public class MockNode : Node, ISubsystem
     {
         public override Type GraphType => SupportedGraphType;
         public override Type ChildType => SupportedChildType;
@@ -18,6 +18,8 @@ namespace TestBSD.Core.Mocks
         public Type SupportedChildType = typeof(MockNode);
 
         public ExecutionContext Context { get; private set; } = null!;
+
+        public BehaviourEngine? Subsystem { get; set; }
 
         public MockNode() { }
 

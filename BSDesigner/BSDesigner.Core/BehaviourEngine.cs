@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using BSDesigner.Core.Exceptions;
 
 namespace BSDesigner.Core
@@ -50,6 +52,36 @@ namespace BSDesigner.Core
         /// Event called when the status changes
         /// </summary>
         public event Action<Status>? StatusChanged;
+
+        /// <summary>
+        /// Gets the directly nested sub behaviour systems
+        /// </summary>
+        /// <returns>The list of subsystems.</returns>
+        public abstract IEnumerable<BehaviourEngine> GetNestedEngines();
+
+        /// <summary>
+        /// Get all nested sub behaviour systems.
+        /// </summary>
+        /// <returns>The list of nested subsystems.</returns>
+        public IEnumerable<BehaviourEngine> GetAllNestedEngines()
+        {
+            HashSet<BehaviourEngine> allNestedEngines = new HashSet<BehaviourEngine>();
+            var directlyNestedEngines = GetNestedEngines().ToList();
+            while (directlyNestedEngines.Count() > 0)
+            {
+                var subsystem = directlyNestedEngines.First();
+                directlyNestedEngines.RemoveAt(0);
+                allNestedEngines.Add(subsystem);
+                foreach (var nestedSubsystem in subsystem.GetNestedEngines())
+                {
+                    if (nestedSubsystem != this && !allNestedEngines.Contains(nestedSubsystem))
+                    {
+                        directlyNestedEngines.Add(nestedSubsystem);
+                    }
+                }
+            }
+            return allNestedEngines.ToList();
+        }
 
         /// <summary>
         /// Starts the execution and set the status value to Running.

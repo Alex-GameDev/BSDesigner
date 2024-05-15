@@ -1,14 +1,17 @@
-﻿using System;
-using BSDesigner.Core;
-using BSDesigner.Core.Exceptions;
+﻿using BSDesigner.Core;
 using BSDesigner.Core.Actions;
+using System.Collections.Generic;
+using BSDesigner.UtilitySystems.UtilityElements;
 
 namespace BSDesigner.UtilitySystems
 {
-    public class UtilityAction : UtilityElement
+    /// <summary>
+    /// Utility node that executes an action when is selected
+    /// </summary>
+    public class ActionUtilityNode : FactorizedUtilityNode
     {
         /// <summary>
-        /// The <see cref="Action"/> that this <see cref="UtilityAction"/> executes when is selected.
+        /// The <see cref="Action"/> that this <see cref="ActionUtilityNode"/> executes when is selected.
         /// </summary>
         public ActionTask? Action;
 
@@ -21,37 +24,6 @@ namespace BSDesigner.UtilitySystems
         /// The utility system should end when the action finish the execution?
         /// </summary>
         public bool FinishSystemOnComplete;
-
-        public override Type ChildType => typeof(UtilityFactor);
-        public override int MaxOutputConnections => 1;
-
-        protected UtilityFactor Factor
-        {
-            get
-            {
-                if (_cachedFactor == null)
-                {
-                    if (Children.Count == 0) throw new MissingConnectionException("Can't find the child node if the children list is empty");
-                    _cachedFactor = (UtilityFactor)Children[0];
-                }
-                return _cachedFactor;
-            }
-        }
-
-        private UtilityFactor? _cachedFactor;
-
-        public override bool HasPriority => false;
-
-        /// <summary>
-        /// <inheritdoc/>
-        /// Updates the utility of the factor and gets it.
-        /// </summary>
-        /// <returns>The utility of the factor</returns>
-        protected override float GetUtility()
-        {
-            Factor.UpdateUtility();
-            return Factor.Utility;
-        }
 
         /// <summary>
         /// <inheritdoc/>

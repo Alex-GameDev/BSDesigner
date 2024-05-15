@@ -1,5 +1,7 @@
 ﻿using BSDesigner.Core;
+using BSDesigner.Core.Actions;
 using BSDesigner.Core.Exceptions;
+using System.Collections.Generic;
 
 namespace BSDesigner.BehaviourTrees
 {
@@ -14,16 +16,41 @@ namespace BSDesigner.BehaviourTrees
         public ActionTask? Action;
 
         /// <summary>
-        /// Get the task associated with this leaf node.
+        /// Starts the action execution.
         /// </summary>
-        /// <returns>The task.</returns>
-        /// <exception cref="MissingTaskException">Thrown if the action is null.</exception>
-        protected override Task GetTask()
+        /// <exception cref="MissingTaskException">If the action is null</exception>
+        protected override void OnNodeStarted()
         {
             if (Action == null)
-                throw new MissingTaskException("Leaf nodes need a task to work.");
+                throw new MissingTaskException("Action leaf nodes need an task to work.");
 
-            return Action;
+            Action.Start();
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// Stops the action execution.
+        /// </summary>
+        /// <exception cref="MissingTaskException"></exception>
+        protected override void OnNodeStopped()
+        {
+            if (Action == null)
+                throw new MissingTaskException("Action leaf nodes need an task to work.");
+
+            Action.Stop();
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// Stops the action execution.
+        /// </summary>
+        /// <exception cref="MissingTaskException"></exception>
+        protected override void OnNodePaused()
+        {
+            if (Action == null)
+                throw new MissingTaskException("Action leaf nodes need an task to work.");
+
+            Action.Pause();
         }
 
         /// <summary>

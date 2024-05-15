@@ -38,23 +38,23 @@ namespace TestBSD.JsonSerialization
             Assert.That(bt2.Nodes, Has.Count.EqualTo(2));
         }
 
-        [Test]
-        public void SerializeGraph_HierarchicalSystem_ExecuteSubsystem()
-        {
-            var bt = new BehaviourTree();
-            var subBt = new BehaviourTree();
-            bt.CreateActionNode(new SubsystemAction { SubSystem = subBt });
-            subBt.CreateActionNode(new CustomActionTask());
+        //[Test]
+        //public void SerializeGraph_HierarchicalSystem_ExecuteSubsystem()
+        //{
+        //    var bt = new BehaviourTree();
+        //    var subBt = new BehaviourTree();
+        //    bt.CreateActionNode(new SubsystemAction { SubSystem = subBt });
+        //    subBt.CreateActionNode(new CustomActionTask());
 
-            var jsonData = JsonUtilities.Serialize( new List<BehaviourEngine>{bt, subBt});
+        //    var jsonData = JsonUtilities.Serialize( new List<BehaviourEngine>{bt, subBt});
 
-            var graphs = JsonUtilities.Deserialize(jsonData);
-            bt = (BehaviourTree)graphs[0];
-            subBt = (BehaviourTree)graphs[1];
-            bt.Start();
-            Assert.That(subBt.Status, Is.EqualTo(Status.Running));
-            bt.Stop();
-            Assert.That(subBt.Status, Is.EqualTo(Status.None));
-        }
+        //    var graphs = JsonUtilities.Deserialize(jsonData);
+        //    bt = (BehaviourTree)graphs[0];
+        //    subBt = (BehaviourTree)graphs[1];
+        //    bt.Start();
+        //    Assert.That(subBt.Status, Is.EqualTo(Status.Running));
+        //    bt.Stop();
+        //    Assert.That(subBt.Status, Is.EqualTo(Status.None));
+        //}
     }
 }

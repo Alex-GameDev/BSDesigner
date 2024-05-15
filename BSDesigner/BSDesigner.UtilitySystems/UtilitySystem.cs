@@ -4,6 +4,7 @@ using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Actions;
+using BSDesigner.UtilitySystems.UtilityElements;
 
 namespace BSDesigner.UtilitySystems
 {
@@ -34,20 +35,20 @@ namespace BSDesigner.UtilitySystems
         /// <summary>
         /// The element that this system will execute.
         /// </summary>
-        protected UtilityElement MainElement
+        protected SelectableUtilityNode MainElement
         {
             get
             {
                 if (_cachedMainElement == null)
                 {
-                    var firstState = Nodes.OfType<UtilityElement>().FirstOrDefault();
+                    var firstState = Nodes.OfType<SelectableUtilityNode>().FirstOrDefault();
                     _cachedMainElement = firstState ?? throw new EmptyGraphException("Can't find the root element if graph is empty");
                 }
                 return _cachedMainElement;
             }
         }
 
-        private UtilityElement? _cachedMainElement;
+        private SelectableUtilityNode? _cachedMainElement;
 
         /// <summary>
         /// Create a new bucket of type <typeparamref name="T"/> that will select between the elements in <paramref name="candidates"/>.
@@ -57,7 +58,7 @@ namespace BSDesigner.UtilitySystems
         /// <param name="priorityThreshold">The minimum utility value for a the selected candidate to enable the priority.</param>
         /// <param name="candidates">The list of candidates of the bucket. They are also its children.</param>
         /// <returns>The bucket created.</returns>
-        public T CreateBucket<T>(IEnumerable<UtilityElement> candidates, float bucketThreshold = 0f, float priorityThreshold = 0f) where T : UtilityBucket, new()
+        public T CreateBucket<T>(IEnumerable<SelectableUtilityNode> candidates, float bucketThreshold = 0f, float priorityThreshold = 0f) where T : BucketUtilityNode, new()
         {
             var bucket = CreateNode<T>();
             bucket.BucketThreshold = bucketThreshold;
@@ -77,7 +78,7 @@ namespace BSDesigner.UtilitySystems
         /// <param name="priorityThreshold">The minimum utility value for a the selected candidate to enable the priority.</param>
         /// <param name="candidates">The list of candidates of the bucket. They are also its children.</param>
         /// <returns>The bucket created.</returns>
-        public T CreateBucket<T>(float bucketThreshold, float priorityThreshold, params UtilityElement[] candidates) where T : UtilityBucket, new() => CreateBucket<T>(candidates, bucketThreshold, priorityThreshold);
+        public T CreateBucket<T>(float bucketThreshold, float priorityThreshold, params SelectableUtilityNode[] candidates) where T : BucketUtilityNode, new() => CreateBucket<T>(candidates, bucketThreshold, priorityThreshold);
 
         /// <summary>
         /// Create a new bucket of type <typeparamref name="T"/> that will select between the elements in <paramref name="candidates"/>.
@@ -85,10 +86,10 @@ namespace BSDesigner.UtilitySystems
         /// <typeparam name="T">The type of the bucket created.</typeparam>
         /// <param name="candidates">The list of candidates of the bucket. They are also its children.</param>
         /// <returns>The bucket created.</returns>
-        public T CreateBucket<T>(params UtilityElement[] candidates) where T : UtilityBucket, new() => CreateBucket<T>(candidates, 0f);
+        public T CreateBucket<T>(params SelectableUtilityNode[] candidates) where T : BucketUtilityNode, new() => CreateBucket<T>(candidates, 0f);
 
         /// <summary>
-        /// Create a new <see cref="UtilityAction"/> that computes its utility using <paramref name="factor"/> and executes the action specified in <paramref name="action"/>.
+        /// Create a new <see cref="ActionUtilityNode"/> that computes its utility using <paramref name="factor"/> and executes the action specified in <paramref name="action"/>.
         /// To prevent the action from being added to the <see cref="UtilitySystem"/> candidate list.
         /// To make the <see cref="UtilitySystem"/> execution ends when the action ends, set <paramref name="finishOnComplete"/> to true (default is false).
         /// </summary>
@@ -96,14 +97,29 @@ namespace BSDesigner.UtilitySystems
         /// <param name="action">The action executed.</param>
         /// <param name="finishOnComplete">true of the execution of the utility system must finish when the action finish.</param>
         /// <returns>The created utility action</returns>
-        public UtilityAction CreateAction(UtilityFactor factor, ActionTask? action = null, bool executeOnLoop = false,  bool finishOnComplete = false)
+        public ActionUtilityNode CreateAction(UtilityFactor factor, ActionTask? action = null, bool executeOnLoop = false,  bool finishOnComplete = false)
         {
-            var utilityAction = CreateNode<UtilityAction>();
+            var utilityAction = CreateNode<ActionUtilityNode>();
             utilityAction.Action = action;
             utilityAction.ExecuteInLoop = executeOnLoop;
             utilityAction.FinishSystemOnComplete = finishOnComplete;
             ConnectNodes(utilityAction, factor);
             return utilityAction;
+        }
+
+        /// <summary>
+        /// Create a new <see cref="ActionUtilityNode"/> that computes its utility using <paramref name="factor"/> and executes <paramref name="subsystem"/>.
+        /// To prevent the action from being added to the <see cref="UtilitySystem"/> candidate list.
+        /// </summary>
+        /// <param name="factor">The child factor of the action.</param>
+        /// <param name="subsystem">The action executed.</param>
+        /// <returns>The created utility action</returns>
+        public SubsystemUtilityNode CreateSubsystem(UtilityFactor factor, BehaviourEngine subsystem)
+        {
+            var utilitySubsystem = CreateNode<SubsystemUtilityNode>();
+            utilitySubsystem.Subsystem = subsystem;
+            ConnectNodes(utilitySubsystem, factor);
+            return utilitySubsystem;
         }
 
         /// <summary>
@@ -182,7 +198,7 @@ namespace BSDesigner.UtilitySystems
         /// Specify a new root node.
         /// </summary>
         /// <param name="node">The new root node of the behaviour tree.</param>
-        public void ChangeRootNode(UtilityElement node)
+        public void ChangeRootNode(SelectableUtilityNode node)
         {
             ReorderNode(node, 0);
             _cachedMainElement = node;

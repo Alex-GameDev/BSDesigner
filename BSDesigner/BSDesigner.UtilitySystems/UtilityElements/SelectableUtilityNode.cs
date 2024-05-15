@@ -7,7 +7,7 @@ namespace BSDesigner.UtilitySystems
     /// <summary>
     /// Utility node that can be selected and executed by a utility system.
     /// </summary>
-    public abstract class UtilityElement : UtilityNode, IStatusHandler
+    public abstract class SelectableUtilityNode : UtilityNode, IStatusHandler
     {
         public override int MaxInputConnections => 1;
 

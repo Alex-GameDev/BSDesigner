@@ -5,6 +5,7 @@ using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Actions;
 using BSDesigner.Core.Perceptions;
+using BSDesigner.StateMachines.States;
 
 namespace BSDesigner.StateMachines
 {
@@ -80,6 +81,19 @@ namespace BSDesigner.StateMachines
             actionState.Action = action;
             actionState.ExecuteInLoop = executeOnLoop;
             return actionState;
+        }
+
+        /// <summary>
+        /// Create a new <see cref="ActionState"/> that executes <paramref name="subsystem"/> when is the current state.
+        /// </summary>
+        /// <param name="subsystem">The nested engine this state executes.</param>
+        /// <param name="executeOnLoop">True if the state executes the action forever until a transition is triggered.</param>
+        /// <returns>The <see cref="ActionState"/> created.</returns>
+        public SubsystemState CreateSubsystemState(BehaviourEngine subsystem)
+        {
+            var subsystemState = CreateNode<SubsystemState>();
+            subsystemState.Subsystem = subsystem;
+            return subsystemState;
         }
 
         /// <summary>

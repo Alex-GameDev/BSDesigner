@@ -25,16 +25,41 @@ namespace BSDesigner.BehaviourTrees
         public Status ValueOnFalse = Status.Failure;
 
         /// <summary>
-        /// Get the task associated with this leaf node.
+        /// Starts the action execution.
         /// </summary>
-        /// <returns>The task.</returns>
-        /// <exception cref="MissingTaskException">Thrown if the action is null.</exception>
-        protected override Task GetTask()
+        /// <exception cref="MissingTaskException">If the action is null</exception>
+        protected override void OnNodeStarted()
         {
             if (Perception == null)
-                throw new MissingTaskException("Leaf nodes need an task to work.");
+                throw new MissingTaskException("Action leaf nodes need an task to work.");
 
-            return Perception;
+            Perception.Start();
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// Stops the action execution.
+        /// </summary>
+        /// <exception cref="MissingTaskException"></exception>
+        protected override void OnNodeStopped()
+        {
+            if (Perception == null)
+                throw new MissingTaskException("Action leaf nodes need an task to work.");
+
+            Perception.Stop();
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// Stops the action execution.
+        /// </summary>
+        /// <exception cref="MissingTaskException"></exception>
+        protected override void OnNodePaused()
+        {
+            if (Perception == null)
+                throw new MissingTaskException("Action leaf nodes need an task to work.");
+
+            Perception.Pause();
         }
 
         /// <summary>

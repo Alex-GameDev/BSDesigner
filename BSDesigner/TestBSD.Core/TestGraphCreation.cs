@@ -394,5 +394,40 @@ namespace TestBSD.Core
             var map = graph.GetNodeMap(ignoreRepeatedNames: true);
             Assert.That(map, Has.Count.EqualTo(0));
         }
+
+        [Test]
+        public void GetNestedEngines_NoSubsystems_EmptyList()
+        {
+            var graph = new MockGraph();
+            graph.CreateNode(-1, -1);
+            Assert.That(graph.GetNestedEngines().ToList(), Has.Count.EqualTo(0));
+        }
+
+
+        [Test]
+        public void GetNestedEngines_OneSubsystems_ValidResult()
+        {
+            var graph = new MockGraph();
+            var subgraph = new MockGraph();
+            var node = graph.CreateNode(-1, -1);
+            node.Subsystem = subgraph;
+            Assert.That(graph.GetNestedEngines().ToList(), Has.Count.EqualTo(1));
+            Assert.That(graph.GetNestedEngines().First(), Is.EqualTo(subgraph));
+        }
+
+        [Test]
+        public void GetAllNestedEngines_CyclicSubsystems_ValidResult()
+        {
+            var graph1 = new MockGraph();
+            var graph2 = new MockGraph();
+            var node1 = graph1.CreateNode(-1, -1);
+            var node2 = graph2.CreateNode(-1, -1);
+            node1.Subsystem = graph2;
+            node2.Subsystem = graph1;
+            Assert.That(graph1.GetAllNestedEngines().ToList(), Has.Count.EqualTo(1));
+            Assert.That(graph1.GetAllNestedEngines().First(), Is.EqualTo(graph2));
+            Assert.That(graph2.GetAllNestedEngines().ToList(), Has.Count.EqualTo(1));
+            Assert.That(graph2.GetAllNestedEngines().First(), Is.EqualTo(graph1));
+        }
     }
 }

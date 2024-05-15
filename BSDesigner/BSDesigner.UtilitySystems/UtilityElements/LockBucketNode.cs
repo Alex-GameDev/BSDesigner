@@ -6,15 +6,15 @@ namespace BSDesigner.UtilitySystems
     /// <summary>
     /// Bucket that locks the selected action until ends
     /// </summary>
-    public class LockBucket : UtilityBucket
+    public class LockBucketNode : BucketUtilityNode
     {
-        protected override UtilityElement ComputeCurrentBestElement()
+        protected override SelectableUtilityNode ComputeCurrentBestElement()
         {
             if (SelectedElement is { Status: Status.Running })
                 return SelectedElement;
 
             var currentHigherUtility = float.MinValue;
-            UtilityElement? newBestElement = null;
+            SelectableUtilityNode? newBestElement = null;
             foreach (var candidate in Candidates)
             {
                 candidate.UpdateUtility();

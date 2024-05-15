@@ -5,7 +5,7 @@ using BSDesigner.Core.Exceptions;
 
 namespace BSDesigner.UtilitySystems
 {
-    public class InertiaBucket : UtilityBucket
+    public class InertiaBucketNode : BucketUtilityNode
     {
         public static readonly float DefaultInertia = 1.3f;
 
@@ -20,10 +20,10 @@ namespace BSDesigner.UtilitySystems
         /// </summary>
         /// <returns></returns>
         /// <exception cref="EmptyGraphException"></exception>
-        protected override UtilityElement ComputeCurrentBestElement()
+        protected override SelectableUtilityNode ComputeCurrentBestElement()
         {
             var currentHigherUtility = float.MinValue;
-            UtilityElement? newBestElement = null;
+            SelectableUtilityNode? newBestElement = null;
             foreach (var candidate in Candidates)
             {
                 candidate.UpdateUtility();

@@ -13,7 +13,7 @@ public class TestUtilityBuckets
     public void UtilityBucket_ExecuteWithNoChildren_ThrowException()
     {
         var us = new UtilitySystem();
-        var bucket = us.CreateBucket<InertiaBucket>();
+        var bucket = us.CreateBucket<InertiaBucketNode>();
         us.ChangeRootNode(bucket);
         Assert.That(us.Start, Throws.InstanceOf<MissingConnectionException>());
     }
@@ -25,7 +25,7 @@ public class TestUtilityBuckets
         var us = new UtilitySystem();
         var factor = us.CreateConstantLeaf(1f);
         var action = us.CreateAction(factor, new CustomActionTask { OnPause = () => isPaused = true, OnResume = () => isPaused = false });
-        var bucket = us.CreateBucket<InertiaBucket>(action);
+        var bucket = us.CreateBucket<InertiaBucketNode>(action);
         us.ChangeRootNode(bucket);
 
         us.Start();
@@ -49,7 +49,7 @@ public class TestUtilityBuckets
         var factor2 = us.CreateConstantLeaf(u2);
         var action1 = us.CreateAction(factor1);
         var action2 = us.CreateAction(factor2);
-        var bucket = us.CreateBucket<InertiaBucket>(action1, action2);
+        var bucket = us.CreateBucket<InertiaBucketNode>(action1, action2);
         us.ChangeRootNode(bucket);
         us.Start();
         us.Update();
@@ -68,7 +68,7 @@ public class TestUtilityBuckets
         var factor2 = us.CreateConstantLeaf(u2);
         var action1 = us.CreateAction(factor1);
         var action2 = us.CreateAction(factor2);
-        var bucket = us.CreateBucket<InertiaBucket>(action1, action2);
+        var bucket = us.CreateBucket<InertiaBucketNode>(action1, action2);
         us.ChangeRootNode(bucket);
         bucket.Inertia = inertia;
         us.Start();
@@ -89,9 +89,9 @@ public class TestUtilityBuckets
         var factor2 = us.CreateConstantLeaf(u2);
         var action1 = us.CreateAction(factor1);
         var action2 = us.CreateAction(factor2);
-        var priorityBucket = us.CreateBucket<InertiaBucket>(action1);
+        var priorityBucket = us.CreateBucket<InertiaBucketNode>(action1);
         priorityBucket.BucketThreshold = bucketThreshold;
-        var mainBucket = us.CreateBucket<InertiaBucket>(priorityBucket, action2);
+        var mainBucket = us.CreateBucket<InertiaBucketNode>(priorityBucket, action2);
         us.ChangeRootNode(mainBucket);
         us.Start();
         us.Update();
@@ -112,10 +112,10 @@ public class TestUtilityBuckets
         var factor2 = us.CreateConstantLeaf(u2);
         var action1 = us.CreateAction(factor1);
         var action2 = us.CreateAction(factor2);
-        var priorityBucket = us.CreateBucket<InertiaBucket>(action1);
+        var priorityBucket = us.CreateBucket<InertiaBucketNode>(action1);
         priorityBucket.BucketThreshold = bucketThreshold;
         priorityBucket.PriorityThreshold = priorityThreshold;
-        var mainBucket = us.CreateBucket<InertiaBucket>(priorityBucket, action2);
+        var mainBucket = us.CreateBucket<InertiaBucketNode>(priorityBucket, action2);
         us.ChangeRootNode(mainBucket);
         us.Start();
         us.Update();
@@ -132,7 +132,7 @@ public class TestUtilityBuckets
         var factor2 = us.CreateConstantLeaf(0f);
         var action1 = us.CreateAction(factor1, new CustomActionTask {OnUpdate = () => status});
         var action2 = us.CreateAction(factor2);
-        var bucket = us.CreateBucket<LockBucket>(action1, action2);
+        var bucket = us.CreateBucket<LockBucketNode>(action1, action2);
         us.ChangeRootNode(bucket);
         us.Start();
         us.Update();

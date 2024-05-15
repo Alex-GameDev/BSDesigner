@@ -5,6 +5,7 @@ using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Actions;
+using BSDesigner.BehaviourTrees.Leafs;
 
 namespace BSDesigner.BehaviourTrees
 {
@@ -92,6 +93,18 @@ namespace BSDesigner.BehaviourTrees
         {
             var node = CreateNode<ActionBtNode>();
             node.Action = action;
+            return node;
+        }
+
+        /// <summary>
+        /// Create a new <see cref="SubsystemBtNode"/> in this <see cref="BehaviourTree"/> that executes the nested engine specified in <paramref name="subsystem"/>.
+        /// </summary>
+        /// <param name="subsystem">The nested engine that the leaf node executes.</param>
+        /// <returns>The <see cref="ActionBtNode"/> created.</returns>
+        public SubsystemBtNode CreateSubsystemNode(BehaviourEngine subsystem)
+        {
+            var node = CreateNode<SubsystemBtNode>();
+            node.Subsystem = subsystem;
             return node;
         }
 

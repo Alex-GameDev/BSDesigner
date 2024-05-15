@@ -5,10 +5,10 @@ using BSDesigner.Core;
 namespace BSDesigner.UtilitySystems
 {
     /// <summary>
-    /// Utility element that handle a group of <see cref="UtilityElement"/> itself and
+    /// Utility element that handle a group of <see cref="SelectableUtilityNode"/> itself and
     /// returns the maximum utility if its best candidate utility is higher than the threshold.
     /// </summary>
-    public abstract class UtilityBucket : UtilityElement
+    public abstract class BucketUtilityNode : SelectableUtilityNode
     {
         /// <summary>
         /// The utility value that any action in this bucket should reach to be selected.
@@ -22,22 +22,22 @@ namespace BSDesigner.UtilitySystems
         /// </summary>
         public Parameter<float> PriorityThreshold= 0f;
 
-        public override Type ChildType => typeof(UtilityElement);
+        public override Type ChildType => typeof(SelectableUtilityNode);
         public override int MaxOutputConnections => -1;
 
         /// <summary>
         /// Collection of elements from which the candidate is chosen.
         /// </summary>
-        protected IEnumerable<UtilityElement> Candidates
+        protected IEnumerable<SelectableUtilityNode> Candidates
         {
             get
             {
                 if (_candidates == null)
                 {
-                    _candidates = new List<UtilityElement>();
+                    _candidates = new List<SelectableUtilityNode>();
                     foreach (var node in Children)
                     {
-                        if (node is UtilityElement selectableNode)
+                        if (node is SelectableUtilityNode selectableNode)
                             _candidates.Add(selectableNode);
                     }
                 }
@@ -45,17 +45,17 @@ namespace BSDesigner.UtilitySystems
                 return _candidates;
             }
         }
-        private List<UtilityElement>? _candidates;
+        private List<SelectableUtilityNode>? _candidates;
 
         /// <summary>
         /// The current selected element of the candidates in this bucket.
         /// </summary>
-        public UtilityElement? SelectedElement { get; private set; }
+        public SelectableUtilityNode? SelectedElement { get; private set; }
 
         /// <summary>
         /// The last executed element in this bucket.
         /// </summary>
-        public UtilityElement? LastExecutedElement { get; private set; }
+        public SelectableUtilityNode? LastExecutedElement { get; private set; }
 
         /// <summary>
         /// <inheritdoc/>
@@ -126,7 +126,7 @@ namespace BSDesigner.UtilitySystems
         /// Select an element of <see cref="Candidates"/> to be executed if the bucket is selected.
         /// </summary>
         /// <returns>The selected element</returns>
-        protected abstract UtilityElement ComputeCurrentBestElement();
+        protected abstract SelectableUtilityNode ComputeCurrentBestElement();
 
         /// <summary>
         /// Priority is enabled only if the utility of the selected element is higher than the priority threshold and bucket threshold.

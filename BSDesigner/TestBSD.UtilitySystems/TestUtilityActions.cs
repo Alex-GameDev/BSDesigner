@@ -12,7 +12,7 @@ namespace TestBSD.UtilitySystems
         public void UtilityAction_NoFactor_ThrowException()
         {
             var us = new UtilitySystem();
-            var action1 = new UtilityAction();
+            var action1 = new ActionUtilityNode();
             us.AddNode(action1);
             Assert.That(us.Start, Throws.InstanceOf<MissingConnectionException>());
         }

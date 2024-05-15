@@ -1,5 +1,6 @@
 ﻿using BSDesigner.Core;
 using BSDesigner.Core.Actions;
+using System.Collections.Generic;
 
 namespace BSDesigner.StateMachines
 {
