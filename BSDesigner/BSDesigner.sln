@@ -23,7 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.JsonSerializatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.JsonSerialization", "TestBSD.JsonSerialization\TestBSD.JsonSerialization.csproj", "{1FC33EB7-795D-489E-B8C6-121DD9AD96FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSDesigner.SmartObjects", "SmartObjects\BSDesigner.SmartObjects.csproj", "{6FE3EF08-8764-4E2C-A3ED-B445EA955C13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.SmartObjects", "SmartObjects\BSDesigner.SmartObjects.csproj", "{6FE3EF08-8764-4E2C-A3ED-B445EA955C13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.LayoutProcessing", "BSDesigner.LayoutProcessing\BSDesigner.LayoutProcessing.csproj", "{BC608459-0944-493F-9287-05CD3085313B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{99E1F063-6349-4DDF-B39A-973ED66F0D11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{1DC6CCEC-A2C9-4F96-9935-314C62846C3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,9 +81,17 @@ Global
 		{6FE3EF08-8764-4E2C-A3ED-B445EA955C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE3EF08-8764-4E2C-A3ED-B445EA955C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE3EF08-8764-4E2C-A3ED-B445EA955C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC608459-0944-493F-9287-05CD3085313B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC608459-0944-493F-9287-05CD3085313B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC608459-0944-493F-9287-05CD3085313B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC608459-0944-493F-9287-05CD3085313B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5182EE52-43CE-49FC-93D7-126BEF4D29D4} = {99E1F063-6349-4DDF-B39A-973ED66F0D11}
+		{BC608459-0944-493F-9287-05CD3085313B} = {99E1F063-6349-4DDF-B39A-973ED66F0D11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A2B66D7-10EC-4B12-BC10-2C354501C5B3}
