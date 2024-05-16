@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/VisualTool/Editor/Window/main.uss?fileID=7433441132597879392&amp;guid=536edd646268fa64d85b78ef98b412ca&amp;type=3#main" />
+    <uie:Toolbar name="bw-toolbar" class="toolbar" style="height: auto;" />
+    <ui:VisualElement name="bw-main">
+        <ui:VisualElement name="bw-graph" class="panel-fullwidth" style="flex-grow: 1; height: 100%;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/VisualTool/Editor/GraphView/node.uss?fileID=7433441132597879392&amp;guid=84c517ce5c1cd9c43a76b8b538fcfcfc&amp;type=3#node" />
+    <Style src="project://database/Assets/VisualTool/Editor/GraphView/UI/node.uss?fileID=7433441132597879392&amp;guid=2e048cacaa13dfb44a646256ad160193&amp;type=3#node" />
     <ui:VisualElement name="node-div">
         <ui:VisualElement name="node-port-div" class="elem-stretchtoparent">
             <ui:VisualElement name="input" class="elem-stretchtoparent" style="align-items: center; justify-content: center;" />
