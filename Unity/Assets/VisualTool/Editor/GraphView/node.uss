@@ -1,0 +1,210 @@
+.elem-w-sml {
+    width: 15px;
+    height: 15px;
+}
+
+.elem-expand {
+    flex-grow: 1;
+}
+
+.align-v-centered {
+    justify-content: center;
+}
+
+.align-h-centered {
+    align-items: center;
+}
+
+.text-size-sml {
+    font-size: 8px;
+}
+
+.text-size-mid {
+    font-size: 10px;
+}
+
+.text-align-tag {
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.h-resizable {
+    cursor: resize-horizontal;
+}
+
+.w-resizable {
+    cursor: resize-vertical;
+}
+
+.corner-resizable {
+    cursor: resize-up-left;
+}
+
+.border-corner-sml {
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: -40px;
+}
+
+.border-line-default {
+    border-right-width: 1px;
+    border-left-color: rgb(20, 20, 20);
+    border-right-color: rgb(20, 20, 20);
+    border-top-color: rgb(20, 20, 20);
+    border-bottom-color: rgb(20, 20, 20);
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.border-unselected {
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.border-selected {
+    border-left-color: rgb(50, 112, 144);
+    border-right-color: rgb(50, 112, 144);
+    border-top-color: rgb(50, 112, 144);
+    border-bottom-color: rgb(50, 112, 144);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.bg-color-default {
+    background-color: rgb(57, 57, 57);
+}
+
+.elem-padding-sml {
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.elem-padding-mid {
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.elem-padding-lg {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.elem-stretchtoparent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.container-h {
+    flex-direction: row;
+}
+
+.container-grow {
+    flex-grow: 1;
+}
+
+.square-mid {
+    width: 30px;
+    height: 30px;
+}
+
+.margin-sml {
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.scroll-sml {
+    min-height: 120px;
+    max-height: 80px;
+}
+
+.scroll-mid {
+    min-height: 150px;
+    max-height: 300px;
+}
+
+.panel {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.pos-abs {
+    position: absolute;
+}
+
+
+
+.node-content-default {
+    width: 150px;
+}
+
+.node-divider {
+    background-color: rgb(20, 20, 20);
+    height: 1px;
+}
+
+PortView Label#type {
+}
+
+#node-port-div {
+}
+
+.port-up {
+    top: -20px;
+    position: absolute;
+}
+
+.port-down {
+    position: absolute;
+    bottom: -20px;
+}
+
+.port-left {
+    position: absolute;
+    left: -30px;
+    top: 50%;
+}
+
+.port-right {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+}
+
+.port-bg {
+}
+
+.node-header-enabled {
+    height: 5px;
+}
+
+.node-header-disabled {
+    height: 5px;
+}
+
+.node-type-icon {
+    height: 15px;
+    width: 25px;
+    -unity-background-scale-mode: scale-to-fit;
+}
