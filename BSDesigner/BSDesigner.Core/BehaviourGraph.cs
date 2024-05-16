@@ -332,5 +332,11 @@ namespace BSDesigner.Core
             _nodeList.Remove(node);
             _nodeList.Insert(index, node);
         }
+
+        /// <summary>
+        /// Apply a processor in the graph
+        /// </summary>
+        /// <param name="processor">The processor applied.</param>
+        public void ApplyProcessor(IGraphProcessor processor) => processor.Apply(this);
     }
 }
