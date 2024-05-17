@@ -3,6 +3,7 @@ using BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor.Graphs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -47,6 +48,11 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             GridBackground background = new GridBackground();
             background.StretchToParentSize();
             Insert(0, background);
+
+            var stylePath = $"{ToolSettings.instance.EditorToolPath}/Editor/Graphs/UI/main.uss";
+            Debug.Log(stylePath);
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(stylePath);
+            styleSheets.Add(styleSheet);
 
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
