@@ -12,10 +12,15 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         private static readonly string BORDER_ID = "node-border";
         private static readonly string NAME_FIELD_ID = "node-name-lbl";
 
+        #region Properties
+
+        public Node Node { get; }
+
+        #endregion
 
         #region Private fields
 
-        private readonly Node node;
+
 
         private readonly IEdgeConnectorListener connector;
 
@@ -34,7 +39,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         public NodeView(Node node, IEdgeConnectorListener connector) : base($"{ToolSettings.instance.EditorToolPath}/Graphs/UI/node.uxml")
         {
-            this.node = node;
+            this.Node = node;
             this.connector = connector;
             this.renderer = NodeRenderer.Create(this);
 
@@ -53,18 +58,18 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public void UpdatePosition()
         {
             var pos = GetPosition().position;
-            node.Position = new System.Numerics.Vector2(pos.x, pos.y);
+            Node.Position = new System.Numerics.Vector2(pos.x, pos.y);
         }
 
         internal PortView InstantiatePort(Direction direction, Vector2 connectionDirection)
         {
-            if (direction == Direction.Input ? node.MaxInputConnections == 0 : node.MaxOutputConnections == 0) return null;
+            if (direction == Direction.Input ? Node.MaxInputConnections == 0 : Node.MaxOutputConnections == 0) return null;
 
             var capacity = direction == Direction.Input ?
-                node.MaxInputConnections == -1 ? Port.Capacity.Multi : Port.Capacity.Single :
-                node.MaxOutputConnections == -1 ? Port.Capacity.Multi : Port.Capacity.Single;
+                Node.MaxInputConnections == -1 ? Port.Capacity.Multi : Port.Capacity.Single :
+                Node.MaxOutputConnections == -1 ? Port.Capacity.Multi : Port.Capacity.Single;
 
-            var type = direction == Direction.Input ? node.GetType() : node.ChildType;
+            var type = direction == Direction.Input ? Node.GetType() : Node.ChildType;
             var port = new PortView(Orientation.Horizontal, direction, capacity, type, connector);
 
             if (direction == Direction.Input)
