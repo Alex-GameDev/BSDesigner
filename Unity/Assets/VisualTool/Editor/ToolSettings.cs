@@ -11,11 +11,15 @@ namespace BSDesigner.Unity.VisualTool.Editor
     [FilePath("ProjectSettings/BSDesignerSettings.asset", FilePathAttribute.Location.ProjectFolder)]
     public class ToolSettings: ScriptableSingleton<ToolSettings>
     {
-        private static readonly string k_RootPath = "Assets/VisualTool/";
+        private static readonly string k_RootPath = "Assets/VisualTool";
 
         [NonSerialized] private string rootPath = k_RootPath;
 
         public string EditorToolPath => rootPath;
+
+        public string LayoutPath => $"{rootPath}/Editor/UI";
+
+        public string IconPath => $"{rootPath}/Editor/Icons";
 
         internal void Save() => this.Save(true);
     }
