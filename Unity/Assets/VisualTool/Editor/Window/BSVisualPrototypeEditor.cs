@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace BSDesigner.Unity.VisualTool.Editor
+namespace BSDesigner.Unity.VisualTool.Editor.Window
 {
     [CustomEditor(typeof(BSVisualPrototype))]
     public class VTBSPrototypeEditor : UnityEditor.Editor
