@@ -19,7 +19,7 @@ namespace BSDesigner.Core
         {
             get
             {
-                if(LocalBlackboard == null)
+                if(_localBlackboard == null)
                     _localBlackboard = new Blackboard();
                 return _localBlackboard;
             }
