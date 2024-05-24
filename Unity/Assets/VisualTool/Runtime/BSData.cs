@@ -1,9 +1,11 @@
-﻿using BSDesigner.Core;
+﻿using BehaviourDesigner.JsonSerialization;
+using BSDesigner.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace BSDesigner.Unity.VisualTool
 {
+    [System.Serializable]
     /// <summary>
     /// Data class that stores a serialized behaviour system.
     /// </summary>
@@ -15,11 +17,17 @@ namespace BSDesigner.Unity.VisualTool
         [SerializeField] private List<Object> referencedObjects;
 
         /// <summary>
+        /// The behaviour system data serialized in json format.
+        /// </summary>
+        [SerializeField] private string jsonData;
+
+        /// <summary>
         /// The list of behaviour engines in the system
         /// </summary>
         public List<BehaviourEngine> Engines => _engines;
-
         List<BehaviourEngine> _engines = new List<BehaviourEngine>();
+
+
         bool m_DirtyFlag;
 
         /// <summary>
@@ -29,15 +37,20 @@ namespace BSDesigner.Unity.VisualTool
 
         public void OnAfterDeserialize()
         {
-            //TODO: Deserialize data
+            if (string.IsNullOrEmpty(jsonData)) return;
+
+            Debug.Log("Deserialize data: " + this.jsonData);
+            //TODO: Serialize data
+
+            _engines = JsonUtilities.Deserialize(jsonData); 
         }
 
         public void OnBeforeSerialize()
         {
             if (!m_DirtyFlag) return;
 
-            //TODO: Serialize data
-
+            Debug.Log("Serialize data: " + this.jsonData);
+            this.jsonData = JsonUtilities.Serialize(_engines);
             m_DirtyFlag = false;
         }
     }
