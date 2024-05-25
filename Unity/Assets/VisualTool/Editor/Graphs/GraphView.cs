@@ -154,7 +154,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         #region Render data
 
         private void UpdateView()
-        {
+        { 
             foreach (var node in Graph.Nodes)
             {
                 DrawNode(node);
@@ -168,7 +168,10 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         private void ClearView()
         {
-            this.DeleteElements(this.graphElements);
+            foreach (var element in graphElements)
+            {
+                this.RemoveElement(element);
+            }
         }
 
         private void DrawNode(Node node)

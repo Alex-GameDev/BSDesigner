@@ -19,7 +19,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             };
             return control;
         }
-
+         
         private class Control : EdgeControl
         {
             private static readonly float k_MinJointDistance = 30f;
