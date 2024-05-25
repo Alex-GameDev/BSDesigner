@@ -6,18 +6,18 @@ namespace BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor
 {
     public class BSEngineCardView : VisualElement
     {
-        private readonly Type assignedType;
+        public Type AssignedType { get; }
 
-        public event Action<Type> CardSelected;
+        public event EventHandler<Type> Selected;
 
         public BSEngineCardView(Type type)
         {
-            this.assignedType = type;
+            this.AssignedType = type;
 
-            VisualTreeAsset asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>($"{ToolSettings.instance.LayoutPath}/bsenginecard.uxml");
+            VisualTreeAsset asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>($"{ToolSettings.instance.LayoutPath}/bstypecard.uxml");
             asset.CloneTree(this);
 
-            var titleLabel = this.Q<Label>("bw-card-label");
+            var titleLabel = this.Q<Label>("bw-card-title");
             titleLabel.text = type.Name;
 
             var iconImg = this.Q("bw-card-icon");
@@ -25,11 +25,13 @@ namespace BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor
 
             var descriptionLabel = this.Q<Label>("bw-card-description");
             descriptionLabel.text = "Desc ..."; //TODO:
+
+            this.Q<Button>("bw-card-select-btn").clicked += OnSelect;
         }
 
         private void OnSelect()
         {
-            this.CardSelected?.Invoke(assignedType);
+            this.Selected?.Invoke(this, AssignedType);
         }
     }
 }

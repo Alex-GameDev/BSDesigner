@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 199bed37930f0de40a89769709d73429, type: 3}
-  m_Name: Example
+  m_Name: Example 2
   m_EditorClassIdentifier: 
   data:
     referencedObjects: []
-    jsonData: '{"Engines":[{"Engine":{"$type":"BSDesigner.BehaviourTrees.BehaviourTree,
-      BSDesigner.BehaviourTrees","Name":""},"Nodes":[],"Connections":[]}]}'
+    jsonData: 

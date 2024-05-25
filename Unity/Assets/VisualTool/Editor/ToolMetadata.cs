@@ -19,8 +19,10 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         protected override IEnumerable<Type> GetTargetAssemblies()
         {
-            return AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.StartsWith("BSDesigner"))
-                .SelectMany(a => a.GetTypes());
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var validAssemblies = assemblies.Where(a => a.FullName.StartsWith("BSDesigner")).ToList();
+
+            return validAssemblies.SelectMany(a => a.GetTypes());
         }   
     }
 }

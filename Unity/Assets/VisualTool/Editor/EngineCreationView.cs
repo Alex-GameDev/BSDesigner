@@ -1,16 +1,54 @@
-﻿using UnityEditor;
+﻿using BSDesigner.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor
 {
     internal class EngineCreationView : VisualElement
-    {
-        public EngineCreationView()
+    {     
+
+        private Type selectedType;
+
+        private List<BSEngineCardView> viewList = new List<BSEngineCardView> ();
+
+        private TextField nameField;
+
+        private Action<Type, string> SubmitCallback;
+        public EngineCreationView(Action<Type, string> submitCallback)
         {
+            this.SubmitCallback = submitCallback;
+
             VisualTreeAsset asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>($"{ToolSettings.instance.LayoutPath}/bsenginecreator.uxml");
             asset.CloneTree(this);
 
-            this.Q<Button>("bw-enginecreation-ok-btn").clicked += Hide;
+            this.Q<Button>("bw-enginecreation-ok-btn").clicked += BtnOk_Click;
+            var listView = this.Q<ScrollView>("bw-enginecreation-list");
+            this.nameField = this.Q<TextField>("bw-enginecreation-name-tf");
+
+            var card1 = new BSEngineCardView(typeof(BehaviourTrees.BehaviourTree));
+            card1.Selected += OnSelectCard;
+            viewList.Add(card1);
+            listView.Add(card1);
+
+            var card2 = new BSEngineCardView(typeof(StateMachines.StateMachine));
+            viewList.Add(card2);
+            listView.Add(card2);
+            SubmitCallback = submitCallback;
+        }
+
+        private void OnSelectCard(object sender, Type type)
+        {
+            selectedType = type;
+        }
+
+        private void BtnOk_Click()
+        {
+            SubmitCallback?.Invoke(selectedType, this.nameField.name);
+            Hide();
         }
 
         public void Show() => this.style.visibility = Visibility.Visible;

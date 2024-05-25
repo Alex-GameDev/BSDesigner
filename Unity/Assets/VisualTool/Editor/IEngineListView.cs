@@ -13,7 +13,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         public event Action<BehaviourEngine> EngineSelected;
 
-        public void CreateUI(VisualElement parent);
+        public void CreateUI(VisualElement parent, VisualElement dialogDisplay);
 
         public void Update(List<BehaviourEngine> engine);
 

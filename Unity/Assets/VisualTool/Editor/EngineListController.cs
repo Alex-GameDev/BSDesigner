@@ -28,16 +28,16 @@ namespace BSDesigner.Unity.VisualTool.Editor
            
         }
 
-        public void CreateUI(VisualElement parent)
+        public void CreateUI(VisualElement parent, VisualElement dialogDisplay)
         {
             VisualTreeAsset asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>($"{ToolSettings.instance.LayoutPath}/bsenginelist.uxml");
             var element = asset.Instantiate();
             parent.Add(element);
 
-            this.creationView = new EngineCreationView();
+            this.creationView = new EngineCreationView(HandleCreateBehaviourEngine);
             this.creationView.StretchToParentSize();
             this.creationView.Hide();
-            parent.Add(creationView);
+            dialogDisplay.Add(creationView);
 
             element.Q<Button>("bw-enginelist-add-btn").clicked += HandleAddBtnClick;
         }
@@ -47,13 +47,21 @@ namespace BSDesigner.Unity.VisualTool.Editor
             this.creationView.Show();
         }
 
-        private void HandleCreateBehaviourEngine()
+        private void HandleCreateBehaviourEngine(Type engineType, string name)
         {
-            //1. Create engine
-            var engine = new BehaviourTrees.BehaviourTree();
+            if(engineType != null && !string.IsNullOrEmpty(name))
+            {
+                //1. Create engine
+                var engine = (BehaviourEngine)Activator.CreateInstance(engineType);
+                engine.Name = name;
 
-            //2. Add engine to the system
-            this.EngineAdded(engine);
+                //2. Add engine to the system
+                this.EngineAdded?.Invoke(engine);
+            }
+            else
+            {
+
+            }
 
         }
 

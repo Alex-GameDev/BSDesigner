@@ -50,8 +50,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             Insert(0, background);
 
             var stylePath = $"{ToolSettings.instance.EditorToolPath}/Editor/Graphs/UI/main.uss";
-            Debug.Log(stylePath);
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(stylePath);
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(stylePath); 
             styleSheets.Add(styleSheet);
 
             this.AddManipulator(new ContentDragger());

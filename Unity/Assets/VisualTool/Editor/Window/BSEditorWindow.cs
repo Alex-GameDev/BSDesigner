@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Window
 {
-
     public class BSEditorWindow : EditorWindow
     {
         public Object Object { get; set; }
@@ -15,7 +14,9 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
         [SerializeField] private VisualTreeAsset m_VisualTreeAsset = default;
         [SerializeField] private StyleSheet m_StyleSheet = default;
 
-        private GraphView graphView;
+
+        private IEngineView engineView;
+        private IEngineListView engineListView;
 
         /// <summary>
         /// Open an editor window with the specified data. If a window with <paramref name="obj"/> 
@@ -40,22 +41,6 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             window.Load(obj, data);
         }
 
-        /// <summary>
-        /// Update the system rendered in the window
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="data"></param>
-        public void UpdateSystem(Object obj, BSData data)
-        {
-            Object = obj;
-            Data = data;
-
-            if(data != null)
-            {
-                this.graphView.Update(data.Engines.FirstOrDefault());
-            }
-        }
-
         private void CreateGUI()
         {
             VisualElement root = rootVisualElement;
@@ -68,22 +53,54 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
 
             m_VisualTreeAsset.CloneTree(root);
 
-            var graphDataView = new Graphs.GraphView();
-            var graphContainer = rootVisualElement.Q("bw-main");
-            graphDataView.StretchToParentSize();
-            graphContainer.Insert(0, graphDataView);
+            var main = root.Q("bw-main");
+
+            var dialogDisplay = root.Q("bw-dialog");
+            ///
+            engineListView = new EngineListController();
+            engineListView.CreateUI(main, dialogDisplay);
+
+            engineView = new GenericEngineView();
+            engineView.CreateUI(main);
+            ///
 
             if (m_StyleSheet != null)
             {
                 root.styleSheets.Add(m_StyleSheet);
             }
+
+            ToolMetadata metadata = ToolMetadata.Instance;
+            Debug.Log("Loaded metadata");
         }
+
+        #region Data events
 
         private void Load(Object obj, BSData data)
         {
             Object = obj;
             Data = data;
-        }
-    }
 
+            //1.    Carga la lista de engines
+            this.engineListView.Update(data.Engines);
+            //1.1.  Muestra el blackboard
+
+            //2.    Muestra el engine seleccionado (First or default)
+            this.engineView.Update(data.Engines.FirstOrDefault());
+        }
+
+
+        private void RegisterUserAction(string actionName)
+        {
+            if (this.Object == null) return;
+
+            Undo.RegisterCompleteObjectUndo(this.Object, actionName);
+        }
+
+        private void SaveChanges()
+        {
+            EditorUtility.SetDirty(this.Object);
+        } 
+
+        #endregion
+    }
 }
