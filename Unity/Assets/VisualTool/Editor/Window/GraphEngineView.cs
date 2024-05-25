@@ -20,9 +20,10 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             graphView.ClearGraph();
         }
 
-        public void CreateUI(VisualElement parent)
+        public void CreateUI(VisualElement parent, EditorWindow parentWindow)
         {
-            this.graphView = new GraphView();
+            this.graphView = new GraphView(parentWindow);
+            this.graphView.DataChanged += this.DataChanged;
             parent.Add(this.graphView);
             this.graphView.StretchToParentSize();
         }

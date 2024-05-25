@@ -15,13 +15,14 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
 
         private VisualElement content;
 
-        public void CreateUI(VisualElement parent)
+        public void CreateUI(VisualElement parent, EditorWindow window)
         {
             var asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(ToolSettings.instance.LayoutPath + "/bsengineview.uxml");
             asset.CloneTree(parent);
             this.content = parent.Q("bw-engineview-content");
             this.graphView = new GraphEngineView();
-            this.graphView.CreateUI(this.content);
+            this.graphView.DataChanged += this.DataChanged;
+            this.graphView.CreateUI(this.content, window);
 
             this.graphView.Hide();
         }

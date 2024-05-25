@@ -63,7 +63,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             engineListView.EngineSelected += EngineListView_EngineSelected;
 
             engineView = new GenericEngineView();
-            engineView.CreateUI(main);
+            engineView.DataChanged += EngineView_DataChanged;
+            engineView.CreateUI(main, this);
             ///
 
             if (m_StyleSheet != null)
@@ -75,6 +76,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             Debug.Log("Loaded metadata");
         }
 
+
         #region UI Events
 
         private void EngineListView_EngineSelected(BehaviourEngine engine)
@@ -85,6 +87,13 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
         #endregion
 
         #region Data events
+
+        private void EngineView_DataChanged()
+        {
+            Debug.Log("Save change");
+            this.Data.SetDirty();
+            this.SaveChanges();
+        }
 
         private void Load(Object obj, BSData data)
         {

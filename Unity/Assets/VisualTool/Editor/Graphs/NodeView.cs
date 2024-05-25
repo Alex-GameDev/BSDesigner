@@ -37,7 +37,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         #endregion
 
 
-        public NodeView(Node node, IEdgeConnectorListener connector) : base($"{ToolSettings.instance.EditorToolPath}/Graphs/UI/node.uxml")
+        public NodeView(Node node, IEdgeConnectorListener connector) : base($"{ToolSettings.instance.EditorToolPath}/Editor/Graphs/UI/node.uxml")
         {
             this.Node = node;
             this.connector = connector;
@@ -50,7 +50,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
             SetPosition(new Rect(new Vector2(node.Position.X, node.Position.Y), Vector2.zero));
 
-            this.renderer.OnUIEvent(GraphUIEvent.Added);
+            this.renderer?.OnUIEvent(GraphUIEvent.Added);
         }
 
         #region Public methods
@@ -95,7 +95,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             base.OnSelected();
             //m_BorderElement.AddToClassList("border-selected");
             //m_BorderElement.RemoveFromClassList("border-unselected");
-            renderer.OnUIEvent(GraphUIEvent.Selected);
+            renderer?.OnUIEvent(GraphUIEvent.Selected);
         }
 
         public override void OnUnselected()
@@ -103,12 +103,12 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             base.OnUnselected();
             //m_BorderElement.RemoveFromClassList("border-selected");
             //m_BorderElement.AddToClassList("border-unselected");
-            renderer.OnUIEvent(GraphUIEvent.Unselected);
+            renderer?.OnUIEvent(GraphUIEvent.Unselected);
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
-            renderer.BuildContextualMenu(evt);
+            renderer?.BuildContextualMenu(evt);
             evt.StopPropagation();
         }
 

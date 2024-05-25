@@ -1,4 +1,5 @@
 using BSDesigner.Core;
+using BSDesigner.Unity.VisualTool.Editor.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         #endregion
 
+        private EditorWindow window;
+
         private IEdgeConnectorListener connector;
 
         private Dictionary<Node, NodeView> nodeViewMap = new Dictionary<Node, NodeView>();
@@ -42,8 +45,9 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         /// <summary>
         /// Create a new graphView
         /// </summary>
-        public GraphView()
+        public GraphView(EditorWindow parentWindow)
         {
+            this.window = parentWindow;
             GridBackground background = new GridBackground();
             background.StretchToParentSize();
             Insert(0, background);
@@ -190,9 +194,24 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), nodeCreationProvider);
         }
 
-        private void CreateNode(Type type, NodeCreationContext context)
-        {
-            Debug.Log("Node created");
+        private void CreateNode(Type type, NodeCreationContext ctx)
+        {           
+            var node = (Node)Activator.CreateInstance(type);
+
+            if(node == null)
+            {
+                Debug.Log("Error creating a node: Selected type is not valid.");
+                return;
+            }
+
+            var pos = this.contentViewContainer.WorldToLocal(ctx.screenMousePosition - this.window.position.position);
+            node.Position = new System.Numerics.Vector2(pos.x, pos.y);
+
+            this.Graph.AddNode(node);
+            DrawNode(node);
+
+            Debug.Log($"GV - Create new node ({node}) at position ({pos}).");
+            DataChanged?.Invoke();
         }
 
         /// <summary>

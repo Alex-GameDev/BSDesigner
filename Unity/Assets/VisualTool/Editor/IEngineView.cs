@@ -1,5 +1,6 @@
 ﻿using BSDesigner.Core;
 using System;
+using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace BSDesigner.Unity.VisualTool.Editor
@@ -8,7 +9,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
     {
         public event Action DataChanged;
 
-        public void CreateUI(VisualElement parent);
+        public void CreateUI(VisualElement parent, EditorWindow parentWindow);
 
         public void Update(BehaviourEngine engine);
 
