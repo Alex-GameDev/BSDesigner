@@ -1,5 +1,4 @@
 using BSDesigner.Core;
-using BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor.Graphs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -187,8 +186,13 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         private void HandleNodeCreationRequest(NodeCreationContext context)
         {
-            //var nodeCreationProvider = NodeTypeSearchWindow.Create(m_CurrentGraph.NodeType, (_, t) => CreateNode(t, ctx));
-            //SearchWindow.Open(new SearchWindowContext(ctx.screenMousePosition), nodeCreationProvider);
+            var nodeCreationProvider = SearchWindowProvider.Create(this.Graph.NodeType, (t) => this.CreateNode(t, context));
+            SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), nodeCreationProvider);
+        }
+
+        private void CreateNode(Type type, NodeCreationContext context)
+        {
+            Debug.Log("Node created");
         }
 
         /// <summary>

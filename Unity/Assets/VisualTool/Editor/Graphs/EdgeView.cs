@@ -1,8 +1,7 @@
-﻿using BSDesigner.Unity.VisualTool.Editor.Graphs;
-using UnityEditor.Experimental.GraphView;
+﻿using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-namespace BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor.Graphs
+namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 {
     internal class EdgeView : Edge
     {
