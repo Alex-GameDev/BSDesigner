@@ -47,7 +47,6 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
         public void Clear()
         {
             this.currentView.Clear();
-            this.currentView.Hide();
             this.currentView = null;
         }
 

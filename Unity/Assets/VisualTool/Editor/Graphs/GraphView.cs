@@ -76,6 +76,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             }
         }
 
+        public void ClearGraph() => ClearView();
+
         #region Override methods
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -163,7 +165,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         private void ClearView()
         {
-            this.graphElements.ForEach(RemoveElement);
+            this.DeleteElements(this.graphElements);
         }
 
         private void DrawNode(Node node)

@@ -18,14 +18,26 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         private EngineCreationView creationView;
 
+        private ScrollView engineListView;
+
+        private List<BehaviourEngine> engineList = new List<BehaviourEngine>();
+
         public void Clear()
         {
-           
+            this.engineList = null;
+            this.engineList.Clear();
         }
 
-        public void Update(List<BehaviourEngine> engine)
+        public void Update(List<BehaviourEngine> engines)
         {
-           
+            this.engineList = engines;
+            foreach (var engine in engines)
+            {
+                var item = new BSEngineIconView();
+                item.SetEngine(engine);
+                item.OnClick += HandleSelectedEngine;
+                this.engineListView.Add(item);
+            }
         }
 
         public void CreateUI(VisualElement parent, VisualElement dialogDisplay)
@@ -40,7 +52,19 @@ namespace BSDesigner.Unity.VisualTool.Editor
             dialogDisplay.Add(creationView);
 
             element.Q<Button>("bw-enginelist-add-btn").clicked += HandleAddBtnClick;
+
+            this.engineListView = element.Q<ScrollView>("bw-enginelist-content");
+
         }
+
+        private void HandleSelectedEngine(BehaviourEngine engine)
+        {
+            if(engine != null)
+            {
+                this.EngineSelected?.Invoke(engine);
+            }
+        }
+
 
         private void HandleAddBtnClick()
         {
@@ -65,5 +89,30 @@ namespace BSDesigner.Unity.VisualTool.Editor
 
         }
 
+
+        private class BSEngineIconView : VisualElement
+        {
+            private readonly Button btnIcon;
+
+            public event Action<BehaviourEngine> OnClick;
+
+            private BehaviourEngine engine;
+            public BSEngineIconView()
+            {
+                var treeView = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(ToolSettings.instance.LayoutPath + "/bsengineicon.uxml");
+                treeView.CloneTree(this);
+
+                this.btnIcon = this.Q<Button>("bs-engineicon-btn");
+                this.btnIcon.clicked +=  () => OnClick?.Invoke(engine);
+            }
+
+            public void SetEngine(BehaviourEngine engine)
+            {
+                this.engine = engine;
+                string iconName = $"/{engine.GetType().Name.ToLower()}";
+                var iconImg = AssetDatabase.LoadAssetAtPath<Texture2D>(ToolSettings.instance.IconPath + iconName + ".png");
+                btnIcon.style.backgroundImage = iconImg;
+            }
+        }
     }
 }

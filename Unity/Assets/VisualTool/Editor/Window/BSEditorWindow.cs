@@ -1,3 +1,4 @@
+using BSDesigner.Core;
 using BSDesigner.Unity.VisualTool.Editor.Graphs;
 using System.Linq;
 using UnityEditor;
@@ -59,6 +60,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             ///
             engineListView = new EngineListController();
             engineListView.CreateUI(main, dialogDisplay);
+            engineListView.EngineSelected += EngineListView_EngineSelected;
 
             engineView = new GenericEngineView();
             engineView.CreateUI(main);
@@ -72,6 +74,15 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             ToolMetadata metadata = ToolMetadata.Instance;
             Debug.Log("Loaded metadata");
         }
+
+        #region UI Events
+
+        private void EngineListView_EngineSelected(BehaviourEngine engine)
+        {
+            this.engineView.Update(engine);
+        }
+
+        #endregion
 
         #region Data events
 

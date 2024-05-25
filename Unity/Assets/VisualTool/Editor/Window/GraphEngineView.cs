@@ -17,7 +17,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
 
         public void Clear()
         {
-            graphView.Clear();
+            graphView.ClearGraph();
         }
 
         public void CreateUI(VisualElement parent)
