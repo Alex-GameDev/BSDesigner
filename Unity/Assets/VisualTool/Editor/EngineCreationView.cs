@@ -29,15 +29,15 @@ namespace BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor
             var listView = this.Q<ScrollView>("bw-enginecreation-list");
             this.nameField = this.Q<TextField>("bw-enginecreation-name-tf");
 
-            var card1 = new BSEngineCardView(typeof(BehaviourTrees.BehaviourTree));
-            card1.Selected += OnSelectCard;
-            viewList.Add(card1);
-            listView.Add(card1);
+            //var card1 = new BSEngineCardView(typeof(BehaviourTrees.BehaviourTree));
+            //card1.Selected += OnSelectCard;
+            //viewList.Add(card1);
+            //listView.Add(card1);
 
-            var card2 = new BSEngineCardView(typeof(StateMachines.StateMachine));
-            viewList.Add(card2);
-            listView.Add(card2);
-            SubmitCallback = submitCallback;
+            //var card2 = new BSEngineCardView(typeof(StateMachines.StateMachine));
+            //viewList.Add(card2);
+            //listView.Add(card2);
+            //SubmitCallback = submitCallback;
         }
 
         private void OnSelectCard(object sender, Type type)

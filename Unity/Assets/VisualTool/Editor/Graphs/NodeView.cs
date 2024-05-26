@@ -16,6 +16,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         public Node Node { get; }
 
+        public event System.Action DataChanged;
+
         #endregion
 
         #region Private fields
@@ -50,6 +52,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
             SetPosition(new Rect(new Vector2(node.Position.X, node.Position.Y), Vector2.zero));
 
+            this.renderer?.SetUp();
             this.renderer?.OnUIEvent(GraphUIEvent.Added);
         }
 
@@ -58,7 +61,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public void UpdatePosition()
         {
             var pos = GetPosition().position;
-            Node.Position = new System.Numerics.Vector2(pos.x, pos.y);
+            this.Node.Position = new System.Numerics.Vector2(pos.x, pos.y);
         }
 
         internal PortView InstantiatePort(Direction direction, Vector2 connectionDirection)
@@ -93,16 +96,16 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public override void OnSelected()
         {
             base.OnSelected();
-            //m_BorderElement.AddToClassList("border-selected");
-            //m_BorderElement.RemoveFromClassList("border-unselected");
+            this.border.AddToClassList("border-selected");
+            this.border.RemoveFromClassList("border-unselected");
             renderer?.OnUIEvent(GraphUIEvent.Selected);
         }
 
         public override void OnUnselected()
         {
             base.OnUnselected();
-            //m_BorderElement.RemoveFromClassList("border-selected");
-            //m_BorderElement.AddToClassList("border-unselected");
+            this.border.RemoveFromClassList("border-selected");
+            this.border.AddToClassList("border-unselected");
             renderer?.OnUIEvent(GraphUIEvent.Unselected);
         }
 

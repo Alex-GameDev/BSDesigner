@@ -177,6 +177,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         private void DrawNode(Node node)
         {
             var nodeView = new NodeView(node, connector);
+            nodeView.DataChanged += this.DataChanged;
             this.AddElement(nodeView);
             this.nodeViewMap[node] = nodeView;
         }
@@ -255,7 +256,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         {
             if (change.elementsToRemove != null) DeleteGraphElements(change.elementsToRemove);
             if (change.movedElements != null) MoveGraphElements(change.movedElements);
-            //DataChanged?.Invoke();
+            this.DataChanged?.Invoke();
             return change;
         }
 

@@ -16,6 +16,8 @@ MonoBehaviour:
     referencedObjects: []
     jsonData: '{"Engines":[{"Engine":{"$type":"BSDesigner.BehaviourTrees.BehaviourTree,
       BSDesigner.BehaviourTrees","Name":""},"Nodes":[{"$type":"BSDesigner.BehaviourTrees.ActionBtNode,
-      BSDesigner.BehaviourTrees","Position":{"X":275.254242,"Y":113.34}},{"$type":"BSDesigner.BehaviourTrees.ActionBtNode,
-      BSDesigner.BehaviourTrees","Position":{"X":679.0,"Y":413.0}}],"Connections":[]},{"Engine":{"$type":"BSDesigner.BehaviourTrees.BehaviourTree,
+      BSDesigner.BehaviourTrees","Position":{"X":513.0,"Y":319.0}},{"$type":"BSDesigner.BehaviourTrees.ActionBtNode,
+      BSDesigner.BehaviourTrees","Position":{"X":835.0,"Y":446.0}},{"$type":"BSDesigner.BehaviourTrees.ActionBtNode,
+      BSDesigner.BehaviourTrees","Position":{"X":396.0,"Y":504.0}},{"$type":"BSDesigner.BehaviourTrees.ConditionDecoratorNode,
+      BSDesigner.BehaviourTrees","Position":{"X":772.0,"Y":216.0}}],"Connections":[{"SourceId":3,"TargetId":1}]},{"Engine":{"$type":"BSDesigner.BehaviourTrees.BehaviourTree,
       BSDesigner.BehaviourTrees","Name":""},"Nodes":[],"Connections":[]}]}'

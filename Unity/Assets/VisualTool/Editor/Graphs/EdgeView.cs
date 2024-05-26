@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 {
-    internal class EdgeView : Edge
+    public class EdgeView : Edge
     {
         private static readonly float CAP_RADIUS = 4f;
         private static readonly float INTERCEPT_WIDTH = 6f;
