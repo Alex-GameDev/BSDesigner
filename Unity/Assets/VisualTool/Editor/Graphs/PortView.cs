@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 {
-    internal class PortView : Port
+    public class PortView : Port
     {
         public PortView(Orientation portOrientation, Direction portDirection, Capacity portCapacity, Type type, IEdgeConnectorListener connector) :
                    base(portOrientation, portDirection, portCapacity, type)

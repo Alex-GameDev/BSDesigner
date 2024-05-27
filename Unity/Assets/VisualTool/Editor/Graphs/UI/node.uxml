@@ -1,9 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/VisualTool/Editor/Graphs/UI/node.uss?fileID=7433441132597879392&amp;guid=2e048cacaa13dfb44a646256ad160193&amp;type=3#node" />
     <ui:VisualElement name="node-div">
-        <ui:VisualElement name="node-port-div" class="elem-stretchtoparent" style="left: -10px; top: -10px; right: -10px; bottom: -10px;">
-            <ui:VisualElement name="input" class="elem-stretchtoparent" />
-            <ui:VisualElement name="output" class="elem-stretchtoparent" style="justify-content: flex-end;" />
+        <ui:VisualElement name="node-port-div" class="elem-stretchtoparent" style="left: 0; top: -20px; right: 0; bottom: -20px;">
+            <ui:VisualElement name="input" class="elem-stretchtoparent" style="align-items: center;" />
+            <ui:VisualElement name="output" class="elem-stretchtoparent" style="justify-content: flex-end; align-items: center;" />
         </ui:VisualElement>
         <ui:VisualElement name="node-border" class="border-corner-sml border-unselected" style="display: flex;">
             <ui:VisualElement name="content" class="border-corner-sml border-line-default bg-color-default node-content-default">

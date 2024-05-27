@@ -186,6 +186,10 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         {
             var source = this.nodeViewMap.GetValueOrDefault(connection.Source);
             var target = this.nodeViewMap.GetValueOrDefault(connection.Target);
+            var sourcePort = source.GetPort(target, Direction.Output);
+            var targetPort = target.GetPort(source, Direction.Input);
+            var edge = sourcePort.ConnectTo<EdgeView>(targetPort);
+            AddElement(edge);
         }
 
         #endregion

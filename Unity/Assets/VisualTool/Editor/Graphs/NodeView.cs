@@ -1,4 +1,5 @@
 ﻿using BSDesigner.Core;
+using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -114,6 +115,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             renderer?.BuildContextualMenu(evt);
             evt.StopPropagation();
         }
+
+        public PortView GetPort(NodeView target, Direction input) => this.renderer.GetPort(target, input);
 
         #endregion
     }

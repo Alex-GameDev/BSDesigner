@@ -21,6 +21,11 @@ namespace BSDesigner.Unity.VisualTool.Editor.BehaviourTrees
 
         }
 
+        public override PortView GetPort(NodeView target, Direction input)
+        {
+            return input == Direction.Input ? inputPort : outputPort;
+        }
+
         public override void OnConnect(EdgeView edge)
         {
             return;

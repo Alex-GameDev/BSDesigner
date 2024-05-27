@@ -37,21 +37,36 @@ namespace BSDesigner.Unity.VisualTool
 
         public void OnAfterDeserialize()
         {
-            if (string.IsNullOrEmpty(jsonData)) return;
+            if (string.IsNullOrEmpty(jsonData)) return;           
 
-            Debug.Log("Deserialize data: " + this.jsonData);
-            //TODO: Serialize data
+            try
+            {
+                _engines = JsonUtilities.Deserialize(jsonData);
+            }
+            catch
+            {
+                Debug.LogError("Error deserializing data: " + this.jsonData);
+                //TODO: Serialize data
+            }
 
-            _engines = JsonUtilities.Deserialize(jsonData); 
         }
 
         public void OnBeforeSerialize()
         {
             if (!m_DirtyFlag) return;
 
-            Debug.Log("Serialize data: " + this.jsonData);
-            this.jsonData = JsonUtilities.Serialize(_engines);
-            m_DirtyFlag = false;
+            try
+            {
+                this.jsonData = JsonUtilities.Serialize(_engines);
+            }
+            catch 
+            {
+                Debug.LogError("Error serializing data");
+            }
+            finally
+            {
+                m_DirtyFlag = false;
+            }
         }
     }
 }

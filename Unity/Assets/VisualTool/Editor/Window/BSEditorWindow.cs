@@ -90,7 +90,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
 
         private void EngineView_DataChanged()
         {
-            Debug.Log("Save change");
+            Debug.Log("Save change"); 
             this.Data.SetDirty();
             this.SaveChanges();
         }

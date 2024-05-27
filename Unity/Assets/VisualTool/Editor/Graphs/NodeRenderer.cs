@@ -1,4 +1,5 @@
 ﻿using BSDesigner.Unity.VisualTool.Editor.BehaviourTrees;
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
@@ -39,5 +40,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public abstract void OnDisconnect(EdgeView edge);
 
         public abstract void BuildContextualMenu(ContextualMenuPopulateEvent evt);
+
+        public abstract PortView GetPort(NodeView target, Direction input);
     }
 }
