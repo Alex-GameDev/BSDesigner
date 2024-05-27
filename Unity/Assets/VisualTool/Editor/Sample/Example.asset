@@ -16,6 +16,4 @@ MonoBehaviour:
     referencedObjects: []
     jsonData: '{"Engines":[{"Engine":{"$type":"BSDesigner.BehaviourTrees.BehaviourTree,
       BSDesigner.BehaviourTrees","Name":""},"Nodes":[{"$type":"BSDesigner.BehaviourTrees.ActionBtNode,
-      BSDesigner.BehaviourTrees","Position":{"X":239.0,"Y":614.0}},{"$type":"BSDesigner.BehaviourTrees.ConditionDecoratorNode,
-      BSDesigner.BehaviourTrees","Position":{"X":315.0,"Y":282.0}}],"Connections":[{"SourceId":1,"TargetId":0}]},{"Engine":{"$type":"BSDesigner.BehaviourTrees.BehaviourTree,
-      BSDesigner.BehaviourTrees","Name":""},"Nodes":[],"Connections":[]}]}'
+      BSDesigner.BehaviourTrees","Position":{"X":150.0,"Y":21.0}}],"Connections":[]}]}'

@@ -46,7 +46,6 @@ namespace BSDesigner.Unity.VisualTool
             catch
             {
                 Debug.LogError("Error deserializing data: " + this.jsonData);
-                //TODO: Serialize data
             }
 
         }
