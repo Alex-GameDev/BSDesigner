@@ -1,9 +1,6 @@
-﻿using BSDesigner.Core;
-using BSDesigner.Core.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace BSDesigner.Reflection
 {
@@ -23,11 +20,11 @@ namespace BSDesigner.Reflection
         protected APIMetadata()
         {
             IEnumerable<Type> types = GetTargetAssemblies();
-
+            var requiredRoots = GetRequiredRootTypes();
 
             foreach (Type type in types)
             {
-                if (IsValidType(type) && typeof(Node).IsAssignableFrom(type))
+                if (IsValidType(type) &&  GetRequiredRootTypes().Any(t => t.IsAssignableFrom(type)))
                 {
                     ProcessType(type);
                 }
@@ -37,6 +34,8 @@ namespace BSDesigner.Reflection
         public TypeHierarchyNode GetTypeNode(Type type) => _typeMap.GetValueOrDefault(type);
 
         protected abstract IEnumerable<Type> GetTargetAssemblies();
+
+        protected abstract HashSet<Type> GetRequiredRootTypes();
 
         private void ProcessType(Type type)
         {

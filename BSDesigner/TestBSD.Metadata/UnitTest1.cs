@@ -1,7 +1,9 @@
 using BSDesigner.BehaviourTrees;
+using BSDesigner.Core;
 using BSDesigner.Reflection;
 using BSDesigner.StateMachines;
 using BSDesigner.UtilitySystems;
+using Task = BSDesigner.Core.Task;
 
 namespace TEstBSD.Metadata
 {
@@ -21,14 +23,23 @@ namespace TEstBSD.Metadata
             var metadata = new MockAPIMetadata();
             Assert.That(metadata, Is.Not.Null);
 
-            var compositeTypeNode = metadata.GetTypeNode(typeof(CompositeNode));
-            Assert.That(compositeTypeNode, Is.Not.Null);
-            Assert.That(compositeTypeNode.SubTypes, Is.Not.Empty);
+            var typeNode = metadata.GetTypeNode(typeof(Node));
+            Assert.That(typeNode, Is.Not.Null);
+            Assert.That(typeNode.SubTypes, Is.Not.Empty);
         }
     }
 
     public class MockAPIMetadata : APIMetadata
     {
+        protected override HashSet<Type> GetRequiredRootTypes()
+        {
+            HashSet<Type> types = new HashSet<Type>();
+            types.Add(typeof(Node));
+            types.Add(typeof(BehaviourEngine));
+            types.Add(typeof(Task));
+            return types;
+        }
+
         protected override IEnumerable<Type> GetTargetAssemblies()
         {
             return AppDomain.CurrentDomain.GetAssemblies()
