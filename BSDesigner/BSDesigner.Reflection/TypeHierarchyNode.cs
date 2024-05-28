@@ -44,6 +44,21 @@ namespace BSDesigner.Reflection
             this.subTypes.Add(node);
         }
 
+        public IEnumerable<TypeHierarchyNode> GetConcreteSubtypesRecursively()
+        {
+            List<TypeHierarchyNode> subtypes = new List<TypeHierarchyNode>();
+
+            foreach (TypeHierarchyNode node in subTypes)
+            {
+                if(!node.Type?.IsAbstract ?? false)
+                {
+                    subtypes.Add(node);
+                }
+                subtypes.AddRange(node.GetConcreteSubtypesRecursively());
+            }
+            return subtypes;
+        }
+
         public override string ToString()
         {
             return $"{Name}\n{string.Join(", ", this.subTypes.Select(s => s.ToString()))}";

@@ -5,7 +5,7 @@ using BSDesigner.StateMachines;
 using BSDesigner.UtilitySystems;
 using Task = BSDesigner.Core.Task;
 
-namespace TEstBSD.Metadata
+namespace TestBSD.Metadata
 {
     public class Tests
     {
@@ -15,7 +15,7 @@ namespace TEstBSD.Metadata
         }
 
         [Test]
-        public void Test1()
+        public void GetTypeNode_ValidResult()
         {
             var tree = new BehaviourTree();
             var us = new UtilitySystem();
@@ -26,6 +26,25 @@ namespace TEstBSD.Metadata
             var typeNode = metadata.GetTypeNode(typeof(Node));
             Assert.That(typeNode, Is.Not.Null);
             Assert.That(typeNode.SubTypes, Is.Not.Empty);
+        }
+
+        [Test]
+        public void GetSubtypesRecursively_ValidResult()
+        {
+            var tree = new BehaviourTree();
+            var us = new UtilitySystem();
+            var fsm = new StateMachine();
+            var metadata = new MockAPIMetadata();
+            Assert.That(metadata, Is.Not.Null);
+
+            var typeNode = metadata.GetTypeNode(typeof(BehaviourEngine));
+            var flatTypes = typeNode.GetConcreteSubtypesRecursively();
+
+            Assert.That(flatTypes, Is.Not.Null);
+            Assert.That(flatTypes.Count(), Is.GreaterThan(0));
+            Assert.That(flatTypes.Select(n => n.Type), Has.Some.EqualTo(tree.GetType()));
+            Assert.That(flatTypes.Select(n => n.Type), Has.Some.EqualTo(us.GetType()));
+            Assert.That(flatTypes.Select(n => n.Type), Has.Some.EqualTo(fsm.GetType()));
         }
     }
 
