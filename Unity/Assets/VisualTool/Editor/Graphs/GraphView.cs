@@ -229,8 +229,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         private void HandleCreateConnection(EdgeView newEdge)
         {
             var edgesToDelete =
-                newEdge.input.connections.Where(previousEdge => AreEdgesCompatible(newEdge, previousEdge))
-                .Union(newEdge.output.connections.Where(previousEdge => AreEdgesCompatible(newEdge, previousEdge)));
+                newEdge.input.connections.Where(previousEdge => AreEdgesCompatibleInput(newEdge, previousEdge))
+                .Union(newEdge.output.connections.Where(previousEdge => AreEdgesCompatibleOutput(newEdge, previousEdge)));
 
             if (edgesToDelete.Count() > 0)
             {
@@ -293,8 +293,11 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             }
         }
 
-        private bool AreEdgesCompatible(Edge newEdge, Edge previousEdge) => newEdge != previousEdge &&
+        private bool AreEdgesCompatibleInput(Edge newEdge, Edge previousEdge) => newEdge != previousEdge &&
             (newEdge.input.capacity == Port.Capacity.Single || previousEdge.output == newEdge.output);
+
+        private bool AreEdgesCompatibleOutput(Edge newEdge, Edge previousEdge) => newEdge != previousEdge &&
+            (newEdge.output.capacity == Port.Capacity.Single || previousEdge.input == newEdge.input);
 
 
         private void CreateConnectionFromEdge(EdgeView edge)
