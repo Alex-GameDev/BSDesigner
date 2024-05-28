@@ -1,3 +1,4 @@
+using BSDesigner.Core;
 using BSDesigner.Reflection;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,18 @@ namespace BSDesigner.Unity.VisualTool.Editor
             }
         }
 
+        protected override HashSet<Type> GetRequiredRootTypes() =>
+            new HashSet<Type>
+            {
+                typeof(Node),
+                typeof(BehaviourEngine),
+                typeof(Task)
+            };
+
         protected override IEnumerable<Type> GetTargetAssemblies()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var validAssemblies = assemblies.Where(a => a.FullName.StartsWith("BSDesigner")).ToList();
-
             return validAssemblies.SelectMany(a => a.GetTypes());
         }   
     }

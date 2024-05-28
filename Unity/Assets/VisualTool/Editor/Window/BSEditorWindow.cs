@@ -71,9 +71,6 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             {
                 root.styleSheets.Add(m_StyleSheet);
             }
-
-            ToolMetadata metadata = ToolMetadata.Instance;
-            Debug.Log("Loaded metadata");
         }
 
 
