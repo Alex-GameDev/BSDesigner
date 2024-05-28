@@ -64,7 +64,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.BehaviourTrees
             var node = view.Node;
             if (node == null || node.MaxInputConnections != 0)
             {
-                this.inputPort = view.InstantiatePort(Direction.Input, Vector2.up);
+                this.inputPort = view.InstantiatePort(Direction.Input, Vector2.down);
             }
             else
             {
@@ -73,7 +73,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.BehaviourTrees
 
             if (node == null || node.MaxOutputConnections != 0)
             {
-                this.outputPort = view.InstantiatePort(Direction.Output, Vector2.down);
+                this.outputPort = view.InstantiatePort(Direction.Output, Vector2.up);
             }
             else
             {

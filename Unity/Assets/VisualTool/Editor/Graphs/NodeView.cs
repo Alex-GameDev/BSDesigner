@@ -75,6 +75,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
             var type = direction == Direction.Input ? Node.GetType() : Node.ChildType;
             var port = new PortView(Orientation.Horizontal, direction, capacity, type, connector);
+            port.ConnectionDirection = connectionDirection;
 
             if (direction == Direction.Input)
             {
