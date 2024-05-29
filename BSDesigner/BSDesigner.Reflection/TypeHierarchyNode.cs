@@ -59,9 +59,9 @@ namespace BSDesigner.Reflection
             return subtypes;
         }
 
-        public override string ToString()
-        {
-            return $"{Name}\n{string.Join(", ", this.subTypes.Select(s => s.ToString()))}";
-        }
+        //public override string ToString()
+        //{
+        //    //return $"{Name}\n{string.Join(", ", this.subTypes.Select(s => s.ToString()))}";
+        //}
     }
 }
