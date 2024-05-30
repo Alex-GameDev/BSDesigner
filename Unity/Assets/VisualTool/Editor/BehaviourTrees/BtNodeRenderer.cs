@@ -1,5 +1,4 @@
 ﻿using BSDesigner.BehaviourTrees;
-using BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor.GraphView;
 using BSDesigner.Unity.VisualTool.Editor.Graphs;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -7,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace BSDesigner.Unity.VisualTool.Editor.BehaviourTrees
 {
-    [NodeRenderer(typeof(BehaviourTree))]
+    [NodeRendererOfType(typeof(BehaviourTree))]
     public class BtNodeRenderer : NodeRenderer
     {
         private PortView inputPort, outputPort;

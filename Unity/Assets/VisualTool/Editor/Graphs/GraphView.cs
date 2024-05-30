@@ -1,5 +1,4 @@
 using BSDesigner.Core;
-using BSDesigner.Unity.VisualTool.Editor.Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +41,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         private Dictionary<Node, NodeView> nodeViewMap = new Dictionary<Node, NodeView>();
 
+        private GraphRenderer renderer;
+
         /// <summary>
         /// Create a new graphView
         /// </summary>
@@ -71,10 +72,13 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public void Update(BehaviourEngine behaviourEngine)
         {
             Graph = behaviourEngine as BehaviourGraph;
-
             ClearView();
             if(Graph != null)
             {
+                var metadata = ToolMetadata.Instance;
+                var rendererType = metadata.GetRelatedTypeof<GraphRenderer>(this.Graph.GetType());
+                this.renderer = (GraphRenderer)Activator.CreateInstance(rendererType);
+
                 UpdateView();
             }
         }
@@ -82,6 +86,29 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public void ClearGraph() => ClearView();
 
         #region Override methods
+
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            base.BuildContextualMenu(evt);
+            evt.menu.AppendAction("AutoLayout", _ => ApplyAutoLayout(), ddma => DropdownMenuAction.Status.Normal);
+        }
+
+        private void ApplyAutoLayout()
+        {
+            var handler = this.renderer.GetLayoutHandler();
+            handler.Apply(this.Graph);
+
+            this.RefreshView();
+        }
+
+        private void RefreshView()
+        {
+            foreach (var node in Graph.Nodes)
+            {
+                var view = this.nodeViewMap[node];
+                view.RefreshView();
+            }
+        }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {

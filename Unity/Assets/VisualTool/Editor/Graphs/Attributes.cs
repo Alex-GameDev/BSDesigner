@@ -1,15 +1,21 @@
-﻿using System;
+﻿using BSDesigner.Reflection;
+using System;
 
-namespace BSDesigner.Unity.VisualTool.Editor.Assets.VisualTool.Editor.GraphView
+namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class NodeRendererAttribute : Attribute
+    public class NodeRendererOfTypeAttribute : TypeRelationAttribute
     {
-        public Type NodeType { get; set; }
-
-        public NodeRendererAttribute(Type nodeType)
+        public NodeRendererOfTypeAttribute(Type type) : base(type)
         {
-            NodeType = nodeType;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public class GraphRendererOfTypeAttribute : TypeRelationAttribute
+    {
+        public GraphRendererOfTypeAttribute(Type type) : base(type)
+        {
         }
     }
 }

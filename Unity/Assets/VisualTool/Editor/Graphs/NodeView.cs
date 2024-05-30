@@ -119,6 +119,13 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         public PortView GetPort(NodeView target, Direction input) => this.renderer.GetPort(target, input);
 
+        public void RefreshView()
+        {
+            var pos = this.Node.Position;
+            var unityPos = new Vector2(pos.X, pos.Y);
+            SetPosition(new Rect(unityPos, Vector2.zero));
+        }
+
         #endregion
     }
 }
