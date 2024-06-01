@@ -205,6 +205,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         {
             var nodeView = new NodeView(node, connector);
             nodeView.DataChanged += this.DataChanged;
+            nodeView.OnBuildContextualMenu += this.BuildNodeContextualMenu;
             this.AddElement(nodeView);
             this.nodeViewMap[node] = nodeView;
         }
@@ -342,6 +343,14 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             //targetView.OnConnected(edge);
 
             //DataChanged?.Invoke();
+        }
+
+        private void BuildNodeContextualMenu(object sender, ContextualMenuPopulateEvent evt)
+        {
+            if(sender is NodeView nodeView)
+            {
+                this.renderer.BuildNodeContextualMenu(nodeView, evt);
+            }
         }
 
         #endregion

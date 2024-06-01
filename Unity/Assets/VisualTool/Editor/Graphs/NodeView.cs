@@ -17,13 +17,13 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         public Node Node { get; }
 
-        public event System.Action DataChanged;
+        public event Action DataChanged;
+
+        public event EventHandler<ContextualMenuPopulateEvent> OnBuildContextualMenu;
 
         #endregion
 
         #region Private fields
-
-
 
         private readonly IEdgeConnectorListener connector;
 
@@ -114,6 +114,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             renderer?.BuildContextualMenu(evt);
+            this.OnBuildContextualMenu(this, evt);
             evt.StopPropagation();
         }
 
