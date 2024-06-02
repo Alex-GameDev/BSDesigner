@@ -62,7 +62,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             this.AddManipulator(new RectangleSelector());
             this.AddManipulator(new ClickSelector());
 
-            SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
+            SetupZoom(ContentZoomer.DefaultMinScale * 2, ContentZoomer.DefaultMaxScale * 2);
 
             this.nodeCreationRequest = HandleNodeCreationRequest;
             this.graphViewChanged = HandleMoveOrDeleteGraphElement;

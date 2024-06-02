@@ -1,30 +1,28 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/VisualTool/Editor/Graphs/UI/node.uss?fileID=7433441132597879392&amp;guid=2e048cacaa13dfb44a646256ad160193&amp;type=3#node" />
     <ui:VisualElement name="node-div">
-        <ui:VisualElement name="node-port-div" class="elem-stretchtoparent" style="left: 0; top: -20px; right: 0; bottom: -20px;">
+        <ui:VisualElement name="node-port-div" class="elem-stretchtoparent" style="left: 0; top: -20px; right: 0; bottom: -20px; position: absolute; justify-content: space-between;">
             <ui:VisualElement name="input" class="elem-stretchtoparent" style="align-items: center;" />
             <ui:VisualElement name="output" class="elem-stretchtoparent" style="justify-content: flex-end; align-items: center;" />
         </ui:VisualElement>
-        <ui:VisualElement name="node-border" class="border-corner-sml border-unselected" style="display: flex;">
-            <ui:VisualElement name="content" class="border-corner-sml border-line-default bg-color-default node-content-default">
-                <ui:VisualElement name="top" style="display: flex;">
-                    <ui:VisualElement name="node-header" class="align-h-centered node-header-disabled" style="background-color: rgb(170, 255, 153);" />
-                    <ui:VisualElement name="node-body" class="container-h">
-                        <ui:VisualElement name="node-icon" class="elem-w-sml" style="padding-left: 1px; padding-right: 1px; padding-top: 1px; padding-bottom: 1px;" />
-                        <ui:VisualElement name="node-type-div" tooltip="f:node_tooltip_definition" class="elem-expand align-v-centered align-h-centered">
-                            <ui:VisualElement name="node-type-icon" class="node-type-icon" style="width: 30px;" />
-                            <ui:Label text="Node" display-tooltip-when-elided="true" name="node-type-lbl" class="text-size-mid text-align-tag" style="display: none;" />
+        <ui:VisualElement name="node-border" class="border-corner-sml border-unselected" style="display: flex; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; background-color: rgba(0, 0, 0, 0);">
+            <ui:VisualElement name="content" class="border-corner-sml border-line-default bg-color-default node-content-default" style="border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px;">
+                <ui:VisualElement name="node-header" class="align-h-centered node-header-disabled" style="background-color: rgb(41, 41, 41); margin-bottom: 1px; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; display: none; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(140, 140, 140); border-right-color: rgb(140, 140, 140); border-top-color: rgb(140, 140, 140); border-bottom-color: rgb(140, 140, 140);">
+                    <ui:Label tabindex="-1" text="HEADER" parse-escape-sequences="true" display-tooltip-when-elided="true" name="node-header-lbl" style="-unity-text-align: upper-center; color: rgb(152, 152, 152); -unity-font-style: bold; display: flex;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="top" style="display: flex; background-color: rgb(41, 41, 41); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(140, 140, 140); border-right-color: rgb(140, 140, 140); border-top-color: rgb(140, 140, 140); border-bottom-color: rgb(140, 140, 140);">
+                    <ui:VisualElement name="node-body" class="container-h" style="flex-direction: row; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                        <ui:VisualElement name="node-icon" class="elem-w-sml" style="width: 30px; height: 30px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                            <ui:VisualElement name="node-icon" class="elem-w-sml" style="background-image: url(&quot;project://database/Assets/VisualTool/Editor/Icons/behaviourtree.png?fileID=2800000&amp;guid=d412a0c1d9a52854a90d3515c6639578&amp;type=3#behaviourtree&quot;); flex-grow: 1;" />
                         </ui:VisualElement>
-                        <ui:VisualElement name="node-status" class="elem-w-sml" style="padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;">
-                            <ui:VisualElement name="node-status-icon" style="background-color: rgba(0, 0, 0, 0); height: 100%; border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;" />
+                        <ui:Label text="Node Identifier" display-tooltip-when-elided="true" name="node-id-lbl" class="text-size-mid text-align-tag" style="flex-grow: 1; -unity-text-align: middle-center; color: rgb(154, 154, 154); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; white-space: normal; flex-shrink: 1;" />
+                        <ui:VisualElement name="node-status-icon-div" style="height: 30px; width: 30px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                            <ui:VisualElement name="node-status-icon" style="flex-grow: 1; background-color: rgb(61, 233, 69); border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; display: none;" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="divider" class="node-divider" />
-                    <ui:VisualElement name="node-name" class="elem-padding-mid">
-                        <ui:Label display-tooltip-when-elided="true" name="node-name-lbl" class="text-size-sml text-align-tag" />
+                    <ui:VisualElement name="node-info" class="elem-padding-mid" style="margin-top: 0; margin-right: 5px; margin-bottom: 5px; margin-left: 5px; border-left-color: rgb(70, 70, 70); border-right-color: rgb(70, 70, 70); border-top-color: rgb(70, 70, 70); border-bottom-color: rgb(70, 70, 70); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 1px; border-top-right-radius: 1px; border-bottom-right-radius: 1px; border-bottom-left-radius: 1px; background-color: rgb(56, 56, 56); display: flex;">
+                        <ui:Label tabindex="-1" text="Moves $agent to $targetPos" parse-escape-sequences="true" display-tooltip-when-elided="true" name="node-info-lbl" style="-unity-text-align: upper-center; color: rgb(195, 195, 195); font-size: 10px;" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="divider" class="node-divider" />
-                    <ui:VisualElement name="node-info" class="elem-padding-mid" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

@@ -16,6 +16,8 @@ MonoBehaviour:
     referencedObjects: []
     jsonData: '{"Engines":[{"Engine":{"$type":"BSDesigner.BehaviourTrees.BehaviourTree,
       BSDesigner.BehaviourTrees","Name":""},"Nodes":[{"$type":"BSDesigner.BehaviourTrees.ActionBtNode,
-      BSDesigner.BehaviourTrees","Position":{"X":123.0,"Y":216.0}},{"$type":"BSDesigner.BehaviourTrees.ConditionDecoratorNode,
-      BSDesigner.BehaviourTrees","Position":{"X":-100.0,"Y":200.0}},{"$type":"BSDesigner.BehaviourTrees.SequenceNode,
-      BSDesigner.BehaviourTrees","Position":{"X":8.0,"Y":11.0}}],"Connections":[{"SourceId":2,"TargetId":1},{"SourceId":2,"TargetId":0}]}]}'
+      BSDesigner.BehaviourTrees","Position":{"X":192.0,"Y":264.0}},{"$type":"BSDesigner.BehaviourTrees.ConditionDecoratorNode,
+      BSDesigner.BehaviourTrees","Position":{"X":-158.0,"Y":252.0}},{"$type":"BSDesigner.BehaviourTrees.SequenceNode,
+      BSDesigner.BehaviourTrees","Position":{"X":8.0,"Y":11.0}},{"$type":"BSDesigner.BehaviourTrees.ActionBtNode,
+      BSDesigner.BehaviourTrees","Position":{"X":-143.0,"Y":430.0}}],"Connections":[{"SourceId":1,"TargetId":3},{"SourceId":2,"TargetId":1},{"SourceId":2,"TargetId":0}]},{"Engine":{"$type":"BSDesigner.UtilitySystems.UtilitySystem,
+      BSDesigner.UtilitySystems","Name":"bw-enginecreation-name-tf"},"Nodes":[],"Connections":[]}]}'

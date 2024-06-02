@@ -1,6 +1,7 @@
 ﻿using BSDesigner.Core;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,7 +12,9 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
     public class NodeView : UnityEditor.Experimental.GraphView.Node
     {
         private static readonly string BORDER_ID = "node-border";
-        private static readonly string NAME_FIELD_ID = "node-name-lbl";
+        private static readonly string NAME_FIELD_ID = "node-id-lbl";
+
+        private static readonly Color SELECTED_COLOR = new Color(0.3f, 0.8f, 1f, 1f);
 
         #region Properties
 
@@ -49,7 +52,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             this.border = this.Q(BORDER_ID);
             this.nameLabel = this.Q<Label>(NAME_FIELD_ID);
 
-            this.nameLabel.text = node.Name;
+            this.nameLabel.text = string.IsNullOrEmpty(node.Name) ? node.GetType().Name : node.Name;
 
             SetPosition(new Rect(new Vector2(node.Position.X, node.Position.Y), Vector2.zero));
 
@@ -98,16 +101,14 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public override void OnSelected()
         {
             base.OnSelected();
-            this.border.AddToClassList("border-selected");
-            this.border.RemoveFromClassList("border-unselected");
+            this.border.style.backgroundColor = SELECTED_COLOR;
             renderer?.OnUIEvent(GraphUIEvent.Selected);
         }
 
         public override void OnUnselected()
         {
             base.OnUnselected();
-            this.border.RemoveFromClassList("border-selected");
-            this.border.AddToClassList("border-unselected");
+            this.border.style.backgroundColor = new Color(0, 0, 0, 0);
             renderer?.OnUIEvent(GraphUIEvent.Unselected);
         }
 
