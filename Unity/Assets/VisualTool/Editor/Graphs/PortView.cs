@@ -10,6 +10,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
         public PortView(Orientation portOrientation, Direction portDirection, Capacity portCapacity, Type type, IEdgeConnectorListener connector) :
                    base(portOrientation, portDirection, portCapacity, type)
         {
+            this.Q("type").style.display = DisplayStyle.None;
             m_EdgeConnector = new EdgeConnector<EdgeView>(connector);
             this.AddManipulator(m_EdgeConnector);
             portName = string.Empty;
