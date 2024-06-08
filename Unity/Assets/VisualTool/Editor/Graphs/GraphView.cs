@@ -307,6 +307,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
             foreach (var removedNode in removedNodes)
             {
                 var node = removedNode.Node;
+                this.nodeViewMap.Remove(node);
                 Graph.RemoveNode(node);
             }
         }
