@@ -85,7 +85,35 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         public void Render()
         {
             var newValue = cachedValue;
-            if(fieldInfo.FieldType == typeof(int))
+
+            if (fieldInfo.FieldType.IsArray)
+            {
+                //Si no tiene valor hay que inicializarlo (listas y arrays + strings)
+                if(fieldInfo.GetValue(parentObj) == null)
+                {
+                    fieldInfo.SetValue(this.parentObj, Activator.CreateInstance(fieldInfo.FieldType, 0));
+                }
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(this.fieldInfo.Name, this.fieldInfo.GetValue(parentObj).GetType().Name);
+                if (GUILayout.Button("+"))
+                {
+                    this.AddSubelementInList();
+                }
+                EditorGUILayout.EndHorizontal();
+                foreach (var item in this.subFields)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.BeginVertical();
+                    item.Render();
+                    EditorGUILayout.EndVertical();
+                    if (GUILayout.Button("-"))
+                    {
+                        Debug.Log("Eliminar elemento");
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+            else if (fieldInfo.FieldType == typeof(int))
             {
                 newValue = EditorGUILayout.IntField(this.fieldInfo.Name, (int)cachedValue);
             }
@@ -106,8 +134,9 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                 newValue = EditorGUILayout.EnumPopup(this.fieldInfo.Name, (Enum)cachedValue);
             }
             else if(!fieldInfo.FieldType.IsValueType)
-            {
-                if(fieldInfo.FieldType.IsAbstract)
+            {               
+
+                if (fieldInfo.FieldType.IsAbstract)
                 {
                     if(fieldInfo.GetValue(this.parentObj) != null)
                     {
@@ -137,13 +166,20 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                         EditorGUILayout.EndHorizontal();
                     }
                 }
-
             }
 
             if (newValue != cachedValue)
             {
                 this.cachedValue = newValue;
                 this.UpdateValue();
+            }
+        }
+
+        private void AddSubelementInList()
+        {
+            var t = this.fieldInfo.FieldType.GetElementType();
+            if(!t.IsAbstract)
+            {
             }
         }
 
