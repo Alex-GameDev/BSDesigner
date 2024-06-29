@@ -56,9 +56,13 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
         private static FieldInspector GetFieldFromPointer(IFieldPointer pointer, Type type)
         {
-            if (type.IsPrimitive || type.IsEnum || type == typeof(string))
+            if (type.IsPrimitive || type.IsEnum)
             {
                 return new SimpleFieldInspector(pointer);
+            }
+            else if(type == typeof(string))
+            {
+                return new TextInspector(pointer);
             }
             else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
             {
@@ -66,7 +70,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             }
             else if (type.IsArray)
             {
-                return new ArrayReflectionField(pointer);
+                return new ArrayInspector(pointer);
             }
             else
             {

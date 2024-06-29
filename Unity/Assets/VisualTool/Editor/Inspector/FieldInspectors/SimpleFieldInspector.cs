@@ -32,10 +32,6 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             {
                 value = EditorGUILayout.Toggle(this.fieldPointer.Name, (bool)value);
             }
-            else if (type == typeof(string))
-            {
-                value = EditorGUILayout.TextField(this.fieldPointer.Name, (string)value);
-            }
             else if (type.IsEnum)
             {
                 value = EditorGUILayout.EnumPopup(this.fieldPointer.Name, (Enum)value);

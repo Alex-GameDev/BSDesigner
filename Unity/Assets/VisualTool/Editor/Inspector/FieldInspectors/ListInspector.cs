@@ -57,7 +57,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                     {
                         field.Render();
                     }
-                    if (GUILayout.Button("-"))
+                    if (GUILayout.Button("-", GUILayout.Width(20)))
                     {
 
                     }

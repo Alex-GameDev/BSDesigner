@@ -6,12 +6,14 @@ using UnityEngine;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
-    internal class ArrayReflectionField : FieldInspector
+    internal class ArrayInspector : FieldInspector
     {
+        private static readonly int LIST_BUTTON_WIDTH = 20;
+
         private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
 
-        public ArrayReflectionField(IFieldPointer pointer, bool nullableElements = false)
+        public ArrayInspector(IFieldPointer pointer, bool nullableElements = false)
         {
             this.fieldPointer = pointer;
             this.subfields = new List<FieldInspector>();
@@ -40,7 +42,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             using (var h = new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField(this.fieldPointer.Name);
-                if(GUILayout.Button("+"))
+                if(GUILayout.Button("+", GUILayout.Width(LIST_BUTTON_WIDTH)))
                 {
                     AddArrayItem();
                 }
@@ -54,7 +56,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                     {
                         field.Render();
                     }
-                    if (GUILayout.Button("-"))
+                    if (GUILayout.Button("-", GUILayout.Width(LIST_BUTTON_WIDTH)))
                     {
                         RemoveArrayItem(i);
                     }
