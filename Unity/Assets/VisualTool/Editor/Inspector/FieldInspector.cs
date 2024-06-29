@@ -8,7 +8,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
     /// <summary>
     /// Base class for all the field inspector renderers
     /// </summary>
-    internal abstract class ReflectedField
+    internal abstract class FieldInspector
     {
         /// <summary>
         /// Render the field
@@ -21,7 +21,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         /// <param name="field"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        internal static ReflectedField CreateFromFieldInfo(FieldInfo field, object value)
+        internal static FieldInspector CreateFromFieldInfo(FieldInfo field, object value)
         {
             var type = field.FieldType;
             IFieldPointer pointer = new ReflectedFieldPointer(field, value);
@@ -34,7 +34,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         /// <param name="arrayValue"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        internal static ReflectedField CreateFromArrayElement(Array arrayValue, int i)
+        internal static FieldInspector CreateFromArrayElement(Array arrayValue, int i)
         {
             var type = arrayValue.GetType().GetElementType();
             IFieldPointer pointer = new ArrayElementPointer(arrayValue, i);
@@ -47,22 +47,22 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         /// <param name="listValue"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        internal static ReflectedField CreateFromListElement(IList listValue, int i)
+        internal static FieldInspector CreateFromListElement(IList listValue, int i)
         {
             var type = listValue.GetType().GetElementType();
             IFieldPointer pointer = new ListElementPointer(listValue, i);
             return GetFieldFromPointer(pointer, type);
         }
 
-        private static ReflectedField GetFieldFromPointer(IFieldPointer pointer, Type type)
+        private static FieldInspector GetFieldFromPointer(IFieldPointer pointer, Type type)
         {
             if (type.IsPrimitive || type.IsEnum || type == typeof(string))
             {
-                return new SimpleReflectionField(pointer);
+                return new SimpleFieldInspector(pointer);
             }
             else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
             {
-                return new ListReflectionField(pointer);
+                return new ListInspector(pointer);
             }
             else if (type.IsArray)
             {
@@ -70,7 +70,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             }
             else
             {
-                return new ClassInstanceReflectionField(pointer, type.IsAbstract);
+                return new ClassInstanceInspector(pointer, type.IsAbstract);
             }
         }
     }

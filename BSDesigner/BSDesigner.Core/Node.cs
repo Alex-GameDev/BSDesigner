@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BSDesigner.Core.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Numerics;
@@ -17,14 +18,9 @@ namespace BSDesigner.Core
         public string Name = string.Empty;
 
         /// <summary>
-        /// The description of the node behaviour or purpose
-        /// </summary>
-        [DefaultValue("")]
-        public string Description = string.Empty;
-
-        /// <summary>
         /// The position of the node (for editor tools)
         /// </summary>
+        [HideInspector]
         public Vector2 Position = Vector2.Zero;
 
         internal readonly List<Node> InternalParentList = new List<Node>();

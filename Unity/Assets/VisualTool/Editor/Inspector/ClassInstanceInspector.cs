@@ -5,21 +5,22 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using BSDesigner.Core.Attributes;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
-    internal class ClassInstanceReflectionField : ReflectedField
+    internal class ClassInstanceInspector : FieldInspector
     {
-        private readonly List<ReflectedField> subfields;
+        private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
         private readonly bool isNullable;
 
-        public ClassInstanceReflectionField(IFieldPointer fieldPointer, bool nullable)
+        public ClassInstanceInspector(IFieldPointer fieldPointer, bool nullable)
         {
             this.fieldPointer = fieldPointer;
             this.isNullable = nullable;
 
-            this.subfields = new List<ReflectedField>();
+            this.subfields = new List<FieldInspector>();
             this.GenerateSubFields();
         }
 
@@ -45,9 +46,12 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                 }
             }
 
-            foreach (var subField in subfields)
+            using (var v = new EditorGUILayout.VerticalScope("box"))
             {
-                subField.Render();
+                foreach (var subField in subfields)
+                {
+                    subField.Render();
+                }
             }
         }
 
@@ -70,10 +74,16 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             }
 
             var type = value.GetType();
-            foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public).OrderBy(field => field.MetadataToken))
+            foreach (var field in GetInspectorFields(type))
             {
                 this.subfields.Add(CreateFromFieldInfo(field, value));
             }
+        }
+
+        private List<FieldInfo> GetInspectorFields(Type type)
+        {
+            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public).Where(f => f.GetCustomAttribute<HideInspectorAttribute>() == null).OrderBy(field => field.MetadataToken);
+            return fields.ToList();
         }
     }
 }

@@ -3,11 +3,11 @@ using UnityEditor;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
-    internal class SimpleReflectionField : ReflectedField
+    internal class SimpleFieldInspector : FieldInspector
     {
         private readonly IFieldPointer fieldPointer;
 
-        internal SimpleReflectionField(IFieldPointer fieldPointer)
+        internal SimpleFieldInspector(IFieldPointer fieldPointer)
         {
             this.fieldPointer = fieldPointer;
         }

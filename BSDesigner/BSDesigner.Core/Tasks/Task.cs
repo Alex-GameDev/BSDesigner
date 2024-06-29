@@ -3,11 +3,6 @@
     public abstract class Task
     {
         /// <summary>
-        /// A custom description of the task.
-        /// </summary>
-        public string Description = string.Empty;
-
-        /// <summary>
         /// A summary of the task, generated depending on its configuration.
         /// </summary>
         /// <returns>The task summary</returns>

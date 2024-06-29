@@ -10,15 +10,15 @@ using UnityEngine;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
-    internal class ListReflectionField : ReflectedField
+    internal class ListInspector : FieldInspector
     {
-        private readonly List<ReflectedField> subfields;
+        private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
 
-        public ListReflectionField(IFieldPointer pointer)
+        public ListInspector(IFieldPointer pointer)
         {
             this.fieldPointer = pointer;
-            this.subfields = new List<ReflectedField>();
+            this.subfields = new List<FieldInspector>();
 
             this.GenerateElementFields();
         }
@@ -35,7 +35,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
             for (int i = 0; i < arrayValue.Count; i++)
             {
-                this.subfields.Add(ReflectedField.CreateFromListElement(arrayValue, i));
+                this.subfields.Add(FieldInspector.CreateFromListElement(arrayValue, i));
             }
         }
 
