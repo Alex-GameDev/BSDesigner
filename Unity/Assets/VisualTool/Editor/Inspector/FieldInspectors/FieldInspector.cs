@@ -13,7 +13,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         /// <summary>
         /// Render the field
         /// </summary>
-        public abstract void Render();
+        public abstract void Render(RenderInspectorSettings settings);
 
         /// <summary>
         /// Create a new field renderer from a member info.
@@ -64,7 +64,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             {
                 return new TextInspector(pointer);
             }
-            else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
+            else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
                 return new ListInspector(pointer);
             }

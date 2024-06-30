@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using BSDesigner.Core.Attributes;
 
@@ -24,7 +23,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             this.GenerateSubFields();
         }
 
-        public override void Render()
+        public override void Render(RenderInspectorSettings settings)
         {
             var value = this.fieldPointer.GetValue();
             using(var h = new EditorGUILayout.HorizontalScope()) 
@@ -41,7 +40,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                     }
                     if (value == null && GUILayout.Button("Set"))
                     {
-                        SearchWindow.Open(new SearchWindowContext(Vector2.zero), SearchWindowProvider.Create(this.fieldPointer.Type, this.OnSetType));
+                        settings.SearchMenuProvider.Create(this.fieldPointer.Type, this.OnSetType);                   
                     }
                 }
             }
@@ -50,7 +49,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             {
                 foreach (var subField in subfields)
                 {
-                    subField.Render();
+                    subField.Render(settings);
                 }
             }
         }

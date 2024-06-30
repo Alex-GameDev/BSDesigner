@@ -14,26 +14,31 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
     /// </summary>
     public class GraphEngineView : IEngineView
     {
-        private GraphView graphView;
+        private readonly ISearchMenuProvider searchMenuProvider;
 
+        private GraphView graphView;
         private CustomInspector inspector;
-        
         public event Action DataChanged;
+
+        public GraphEngineView(ISearchMenuProvider searchMenuProvider)
+        {
+            this.searchMenuProvider = searchMenuProvider;
+        }
 
         public void Clear()
         {
             graphView.ClearGraph();
         }
 
-        public void CreateUI(VisualElement parent, EditorWindow parentWindow)
+        public void CreateUI(VisualElement parent)
         {
-            this.graphView = new GraphView(parentWindow);
+            this.graphView = new GraphView(this.searchMenuProvider);
             this.graphView.DataChanged += this.DataChanged;
             this.graphView.NodeSelectionChanged += GraphView_SelectionChanged;
             parent.Add(this.graphView);
             this.graphView.StretchToParentSize();
 
-            this.inspector = new CustomInspector();
+            this.inspector = new CustomInspector(searchMenuProvider);
             this.inspector.style.top = 0;
             this.inspector.style.left = 0;
             this.inspector.style.position = Position.Absolute;

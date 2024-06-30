@@ -5,7 +5,12 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
     public class CustomInspector : VisualElement
     {
-        public CustomInspector()
+
+        private FieldInspector mainFieldRenderer;
+
+        private readonly ISearchMenuProvider searchMenuProvider;
+
+        public CustomInspector(ISearchMenuProvider searchMenuProvider)
         {
             var path = $"{ToolSettings.instance.EditorToolPath}/Editor/UI/custominspector.uxml";
             var asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(path);
@@ -14,10 +19,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             var imgui = new IMGUIContainer(Render);
             var element = this.Q<ScrollView>("bw-custominspector-content");
             element.Add(imgui);
+            this.searchMenuProvider = searchMenuProvider;
         }
-
-
-        private FieldInspector mainFieldRenderer;
 
         public void Update(object obj)
         {
@@ -27,7 +30,11 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
         private void Render()
         {
-            this.mainFieldRenderer?.Render();
+            var settings = new RenderInspectorSettings
+            {
+                SearchMenuProvider = searchMenuProvider
+            };
+            this.mainFieldRenderer?.Render(settings);
         }
     }
 

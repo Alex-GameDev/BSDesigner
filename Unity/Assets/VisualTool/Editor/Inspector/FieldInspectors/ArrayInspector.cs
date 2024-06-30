@@ -37,7 +37,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             }
         }
 
-        public override void Render()
+        public override void Render(RenderInspectorSettings settings)
         {
             using (var h = new EditorGUILayout.HorizontalScope())
             {
@@ -54,7 +54,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                 {
                     using (var v = new EditorGUILayout.VerticalScope())
                     {
-                        field.Render();
+                        field.Render(settings);
                     }
                     if (GUILayout.Button("-", GUILayout.Width(LIST_BUTTON_WIDTH)))
                     {

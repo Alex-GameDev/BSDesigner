@@ -16,7 +16,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             }
         }
 
-        public override void Render()
+        public override void Render(RenderInspectorSettings settings)
         {
             var value = this.fieldPointer.GetValue();
 

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,6 +8,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
     internal class ListInspector : FieldInspector
     {
+        private static readonly int LIST_BUTTON_WIDTH = 20;
+
         private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
 
@@ -19,7 +17,6 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         {
             this.fieldPointer = pointer;
             this.subfields = new List<FieldInspector>();
-
             this.GenerateElementFields();
         }
 
@@ -39,30 +36,47 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             }
         }
 
-        public override void Render()
+        public override void Render(RenderInspectorSettings settings)
         {
             using (var h = new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField(this.fieldPointer.Name);
-                if (GUILayout.Button("+"))
+                EditorGUILayout.LabelField(this.fieldPointer.Name);
+                if (GUILayout.Button("+", GUILayout.Width(LIST_BUTTON_WIDTH)))
                 {
-
+                    AddListElement();
                 }
             }
-            foreach (var field in this.subfields)
+            for (int i = 0; i < this.subfields.Count; i++)
             {
+                var field = this.subfields[i];
                 using (var h = new EditorGUILayout.HorizontalScope())
                 {
-                    using(var v = new EditorGUILayout.VerticalScope())
+                    using (var v = new EditorGUILayout.VerticalScope())
                     {
-                        field.Render();
+                        field.Render(settings);
                     }
-                    if (GUILayout.Button("-", GUILayout.Width(20)))
+                    if (GUILayout.Button("-", GUILayout.Width(LIST_BUTTON_WIDTH)))
                     {
-
+                        RemoveListElement(i);
                     }
                 }
             }
+        }
+
+        private void RemoveListElement(int i)
+        {
+            var list = (IList)this.fieldPointer.GetValue();
+            list.RemoveAt(i);
+            this.subfields.RemoveAt(i);
+        }
+
+        private void AddListElement()
+        {
+            var element = Activator.CreateInstance(this.fieldPointer.Type.GetGenericArguments()[0]);
+            var list = (IList)this.fieldPointer.GetValue();
+            list.Add(element);
+            this.subfields.Add(FieldInspector.CreateFromListElement(list, list.Count - 1));
         }
     }
 }

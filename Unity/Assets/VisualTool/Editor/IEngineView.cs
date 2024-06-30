@@ -9,7 +9,7 @@ namespace BSDesigner.Unity.VisualTool.Editor
     {
         public event Action DataChanged;
 
-        public void CreateUI(VisualElement parent, EditorWindow parentWindow);
+        public void CreateUI(VisualElement parent);
 
         public void Update(BehaviourEngine engine);
 

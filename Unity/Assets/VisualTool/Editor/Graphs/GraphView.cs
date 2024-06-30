@@ -35,20 +35,19 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         #endregion
 
-        private EditorWindow window;
-
         private IEdgeConnectorListener connector;
 
         private Dictionary<Node, NodeView> nodeViewMap = new Dictionary<Node, NodeView>();
 
         private GraphRenderer renderer;
+        private ISearchMenuProvider searchMenuProvider;
 
         /// <summary>
         /// Create a new graphView
         /// </summary>
-        public GraphView(EditorWindow parentWindow)
+        public GraphView(ISearchMenuProvider searchMenuProvider)
         {
-            this.window = parentWindow;
+            this.searchMenuProvider = searchMenuProvider;
             GridBackground background = new GridBackground();
             background.StretchToParentSize();
             Insert(0, background);
@@ -226,12 +225,11 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
 
         private void HandleNodeCreationRequest(NodeCreationContext context)
         {
-            var nodeCreationProvider = SearchWindowProvider.Create(this.Graph.NodeType, (t) => this.CreateNode(t, context));
-            SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), nodeCreationProvider);
+            this.searchMenuProvider.Create(this.Graph.NodeType, context.screenMousePosition, this.CreateNode);            
         }
 
-        private void CreateNode(Type type, NodeCreationContext ctx)
-        {           
+        private void CreateNode(Type type, Vector2 position)
+        {
             var node = (Node)Activator.CreateInstance(type);
 
             if(node == null)
@@ -240,7 +238,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Graphs
                 return;
             }
 
-            var pos = this.contentViewContainer.WorldToLocal(ctx.screenMousePosition - this.window.position.position);
+            var pos = this.contentViewContainer.WorldToLocal(position);
             node.Position = new System.Numerics.Vector2(pos.x, pos.y);
 
             this.Graph.AddNode(node);

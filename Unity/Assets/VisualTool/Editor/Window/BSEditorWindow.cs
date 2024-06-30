@@ -44,6 +44,10 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
 
         private void CreateGUI()
         {
+            // Dependency injection
+            var searchMenuProvider = new SearchMenuProvider(this);
+            //TODO: Metadata
+
             VisualElement root = rootVisualElement;
 
             if (!m_VisualTreeAsset)
@@ -62,9 +66,9 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             engineListView.CreateUI(main, dialogDisplay);
             engineListView.EngineSelected += EngineListView_EngineSelected;
 
-            engineView = new GenericEngineView();
+            engineView = new GenericEngineView(searchMenuProvider);
             engineView.DataChanged += EngineView_DataChanged;
-            engineView.CreateUI(main, this);
+            engineView.CreateUI(main);
             ///
 
             if (m_StyleSheet != null)

@@ -10,19 +10,24 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
         public event Action DataChanged;
 
         private IEngineView currentView;
-
         private IEngineView graphView;
+        private ISearchMenuProvider searchMenuProvider;
 
         private VisualElement content;
 
-        public void CreateUI(VisualElement parent, EditorWindow window)
+        public GenericEngineView(ISearchMenuProvider searchMenuProvider)
+        {
+            this.searchMenuProvider = searchMenuProvider;
+        }
+
+        public void CreateUI(VisualElement parent)
         {
             var asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(ToolSettings.instance.LayoutPath + "/bsengineview.uxml");
             asset.CloneTree(parent);
             this.content = parent.Q("bw-engineview-content");
-            this.graphView = new GraphEngineView();
+            this.graphView = new GraphEngineView(searchMenuProvider);
             this.graphView.DataChanged += this.DataChanged;
-            this.graphView.CreateUI(this.content, window);
+            this.graphView.CreateUI(this.content);
 
             this.graphView.Hide();
         }
