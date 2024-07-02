@@ -13,6 +13,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
 
+        public override bool IsSingleLine => false;
+
         public ArrayInspector(IFieldPointer pointer, bool nullableElements = false)
         {
             this.fieldPointer = pointer;
@@ -50,15 +52,23 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             for(int i = 0; i < this.subfields.Count; i++)
             {
                 var field = this.subfields[i];
-                using (var h = new EditorGUILayout.HorizontalScope())
+                if (field.IsSingleLine)
                 {
-                    using (var v = new EditorGUILayout.VerticalScope())
+                    using (var h = new EditorGUILayout.HorizontalScope())
                     {
                         field.Render(settings);
+                        if (GUILayout.Button("-", GUILayout.Width(LIST_BUTTON_WIDTH)))
+                        {
+                            this.RemoveArrayItem(i);
+                        }
                     }
-                    if (GUILayout.Button("-", GUILayout.Width(LIST_BUTTON_WIDTH)))
+                }
+                else
+                {
+                    field.Render(settings);
+                    if (GUILayout.Button("-"))
                     {
-                        RemoveArrayItem(i);
+                        this.RemoveArrayItem(i);
                     }
                 }
             }

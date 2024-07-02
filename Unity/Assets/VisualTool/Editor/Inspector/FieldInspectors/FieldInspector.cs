@@ -11,6 +11,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
     /// </summary>
     internal abstract class FieldInspector
     {
+        public abstract bool IsSingleLine { get; }
+
         /// <summary>
         /// Render the field
         /// </summary>

@@ -13,6 +13,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
 
+        public override bool IsSingleLine => false;
+
         public ClassInstanceInspector(IFieldPointer fieldPointer)
         {
             this.fieldPointer = fieldPointer;

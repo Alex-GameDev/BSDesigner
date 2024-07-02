@@ -16,6 +16,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             }
         }
 
+        public override bool IsSingleLine => true;
+
         public override void Render(RenderInspectorSettings settings)
         {
             var value = this.fieldPointer.GetValue();
