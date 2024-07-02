@@ -24,7 +24,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
         public void Update(object obj)
         {
-            mainFieldRenderer = obj != null ? new ClassInstanceInspector(new StaticReferencePointer("Node", obj), false) : null;
+            mainFieldRenderer = obj != null ? new ClassInstanceInspector(new StaticReferencePointer("Node", obj)) : null;
             Render();
         }
 

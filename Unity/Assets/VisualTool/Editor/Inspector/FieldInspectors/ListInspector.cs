@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,10 +43,9 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             using (var h = new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField(this.fieldPointer.Name);
-                EditorGUILayout.LabelField(this.fieldPointer.Name);
                 if (GUILayout.Button("+", GUILayout.Width(LIST_BUTTON_WIDTH)))
                 {
-                    AddListElement();
+                    this.AddListElement(settings);
                 }
             }
             for (int i = 0; i < this.subfields.Count; i++)
@@ -58,7 +59,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                     }
                     if (GUILayout.Button("-", GUILayout.Width(LIST_BUTTON_WIDTH)))
                     {
-                        RemoveListElement(i);
+                        this.RemoveListElement(i);
                     }
                 }
             }
@@ -68,14 +69,29 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         {
             var list = (IList)this.fieldPointer.GetValue();
             list.RemoveAt(i);
-            this.subfields.RemoveAt(i);
+            this.subfields.RemoveAt(list.Count);
         }
 
-        private void AddListElement()
+        private void AddListElement(RenderInspectorSettings settings)
         {
-            var element = Activator.CreateInstance(this.fieldPointer.Type.GetGenericArguments()[0]);
+            if(true) // Is polymorphic
+            {
+                settings.SearchMenuProvider.Create(this.fieldPointer.Type.GetGenericArguments().First(), this.OnSetType);
+            }
+            else
+            {
+                var element = Activator.CreateInstance(this.fieldPointer.Type.GetGenericArguments()[0]);
+                var list = (IList)this.fieldPointer.GetValue();
+                list.Add(element);
+                this.subfields.Add(FieldInspector.CreateFromListElement(list, list.Count - 1));
+            }
+        }
+
+        private void OnSetType(Type type)
+        {
+            var value = Activator.CreateInstance(type);
             var list = (IList)this.fieldPointer.GetValue();
-            list.Add(element);
+            list.Add(value);
             this.subfields.Add(FieldInspector.CreateFromListElement(list, list.Count - 1));
         }
     }

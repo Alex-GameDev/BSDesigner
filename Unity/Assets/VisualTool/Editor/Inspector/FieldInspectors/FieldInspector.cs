@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
@@ -49,7 +50,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         /// <returns></returns>
         internal static FieldInspector CreateFromListElement(IList listValue, int i)
         {
-            var type = listValue.GetType().GetElementType();
+            var type = listValue.GetType().GetGenericArguments().First();
             IFieldPointer pointer = new ListElementPointer(listValue, i);
             return GetFieldFromPointer(pointer, type);
         }
@@ -74,7 +75,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             }
             else
             {
-                return new ClassInstanceInspector(pointer, type.IsAbstract);
+                return new ClassInstanceInspector(pointer);
             }
         }
     }

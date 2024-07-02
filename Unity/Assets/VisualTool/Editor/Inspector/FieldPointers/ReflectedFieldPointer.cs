@@ -23,6 +23,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
         public Type Type => fieldInfo.FieldType;
 
+        public bool IsNullable => Type.IsAbstract;
+
         public object GetValue()
         {
             return this.cachedValue;

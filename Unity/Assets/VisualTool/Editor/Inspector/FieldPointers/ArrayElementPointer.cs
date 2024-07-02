@@ -10,9 +10,11 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         private readonly Array array;
         private readonly int index;
 
-        public string Name => $"Item {index}";
+        public string Name => $"{index}";
 
-        public Type Type => array.GetType();
+        public Type Type => array.GetType().GetElementType();
+
+        public bool IsNullable => false;
 
         public ArrayElementPointer(Array array, int index)
         {

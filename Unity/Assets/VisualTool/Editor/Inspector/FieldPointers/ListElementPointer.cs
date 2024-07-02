@@ -11,9 +11,11 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         private readonly IList list;
         private readonly int index;
 
-        public string Name => $"Item {index}";
+        public string Name => $"{index}";
 
         public Type Type => list.GetType();
+
+        public bool IsNullable => false;
 
         public ListElementPointer(IList list, int index)
         {

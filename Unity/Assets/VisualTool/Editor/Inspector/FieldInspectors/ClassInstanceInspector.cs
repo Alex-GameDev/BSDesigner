@@ -12,12 +12,10 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
     {
         private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
-        private readonly bool isNullable;
 
-        public ClassInstanceInspector(IFieldPointer fieldPointer, bool nullable)
+        public ClassInstanceInspector(IFieldPointer fieldPointer)
         {
             this.fieldPointer = fieldPointer;
-            this.isNullable = nullable;
 
             this.subfields = new List<FieldInspector>();
             this.GenerateSubFields();
@@ -30,7 +28,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             {
                 EditorGUILayout.LabelField(this.fieldPointer.Name, value?.GetType().Name);
 
-                if (this.isNullable)
+                if (this.fieldPointer.IsNullable)
                 {
                     if (value != null && GUILayout.Button("x"))
                     {
@@ -40,7 +38,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                     }
                     if (value == null && GUILayout.Button("Set"))
                     {
-                        settings.SearchMenuProvider.Create(this.fieldPointer.Type, this.OnSetType);                   
+                        settings.SearchMenuProvider.Create(this.fieldPointer.Type, this.OnSetType);
                     }
                 }
             }

@@ -20,6 +20,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
         public Type Type => value.GetType();
 
+        public bool IsNullable => false;
+
         public object GetValue()
         {
             return value;
