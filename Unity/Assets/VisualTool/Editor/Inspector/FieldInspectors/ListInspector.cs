@@ -28,7 +28,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         {
             this.subfields.Clear();
             var value = this.fieldPointer.GetValue();
-            if (value != null)
+            if (value == null)
             {
                 this.fieldPointer.SetValue(Activator.CreateInstance(this.fieldPointer.Type));
             }
