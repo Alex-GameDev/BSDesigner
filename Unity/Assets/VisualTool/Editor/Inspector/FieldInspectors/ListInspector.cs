@@ -10,8 +10,6 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
     internal class ListInspector : FieldInspector
     {
-        private static readonly int LIST_BUTTON_WIDTH = 20;
-
         private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
 
@@ -45,7 +43,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             using (var h = new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField(this.fieldPointer.Name);
-                if (GUILayout.Button("+", GUILayout.Width(LIST_BUTTON_WIDTH)))
+                if (GUILayout.Button("+", GUILayout.Width(settings.ActionButtonWidth)))
                 {
                     this.AddListElement(settings);
                 }
@@ -58,7 +56,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                     using(var h = new EditorGUILayout.HorizontalScope())
                     {
                         field.Render(settings);
-                        if (GUILayout.Button("-", GUILayout.Width(LIST_BUTTON_WIDTH)))
+                        if (GUILayout.Button("-", GUILayout.Width(settings.ActionButtonWidth)))
                         {
                             this.RemoveListElement(i);
                         }

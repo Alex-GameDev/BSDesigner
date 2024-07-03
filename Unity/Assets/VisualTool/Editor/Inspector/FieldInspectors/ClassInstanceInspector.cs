@@ -32,7 +32,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
                 if (this.fieldPointer.IsNullable)
                 {
-                    if (value != null && GUILayout.Button("x"))
+                    if (value != null && GUILayout.Button("x", GUILayout.Width(settings.ActionButtonWidth)))
                     {
                         this.fieldPointer.SetValue(default);
                         this.GenerateSubFields();

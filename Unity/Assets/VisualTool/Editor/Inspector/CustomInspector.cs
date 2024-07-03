@@ -5,6 +5,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
     public class CustomInspector : VisualElement
     {
+        private static readonly int BUTTON_WIDTH = 20;
 
         private FieldInspector mainFieldRenderer;
 
@@ -32,7 +33,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         {
             var settings = new RenderInspectorSettings
             {
-                SearchMenuProvider = searchMenuProvider
+                SearchMenuProvider = searchMenuProvider,
+                ActionButtonWidth = BUTTON_WIDTH,
             };
             this.mainFieldRenderer?.Render(settings);
         }
