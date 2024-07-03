@@ -43,5 +43,16 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             return fieldInfos;
         }
 
+        public static object CreateInstance(this Type type)
+        {
+            if(type == typeof(string))
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return Activator.CreateInstance(type);
+            }
+        }
     }
 }

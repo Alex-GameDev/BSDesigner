@@ -5,6 +5,7 @@
         public ISearchMenuProvider SearchMenuProvider { get; set; }
 
         public int ActionButtonWidth { get; set; }
+        public bool ChangeFlag { get; internal set; }
 
         //TODO: Lista de tipos abstractos manejables en el inspector (Tasks)
 

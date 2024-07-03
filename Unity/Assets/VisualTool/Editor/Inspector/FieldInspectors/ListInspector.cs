@@ -13,12 +13,14 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
 
+        private Type elementType;
         public override bool IsSingleLine => false;
 
         public ListInspector(IFieldPointer pointer)
         {
             this.fieldPointer = pointer;
             this.subfields = new List<FieldInspector>();
+            elementType = pointer.Type.GetGenericArguments()[0];
             this.GenerateElementFields();
         }
 
@@ -82,25 +84,23 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
         private void AddListElement(RenderInspectorSettings settings)
         {
-            if(true) // Is polymorphic
+            if(this.elementType.IsAbstract) // Is polymorphic
             {
-                settings.SearchMenuProvider.Create(this.fieldPointer.Type.GetGenericArguments().First(), this.OnSetType);
+                settings.SearchMenuProvider.Create(this.fieldPointer.Type.GetGenericArguments().First(), t => this.AddElement(t, settings));
             }
             else
             {
-                var element = Activator.CreateInstance(this.fieldPointer.Type.GetGenericArguments()[0]);
-                var list = (IList)this.fieldPointer.GetValue();
-                list.Add(element);
-                this.subfields.Add(FieldInspector.CreateFromListElement(list, list.Count - 1));
+                this.AddElement(this.elementType, settings);
             }
         }
 
-        private void OnSetType(Type type)
+        private void AddElement(Type type, RenderInspectorSettings settings)
         {
-            var value = Activator.CreateInstance(type);
+            var value = type.CreateInstance();
             var list = (IList)this.fieldPointer.GetValue();
             list.Add(value);
             this.subfields.Add(FieldInspector.CreateFromListElement(list, list.Count - 1));
+            settings.ChangeFlag = true;
         }
     }
 }

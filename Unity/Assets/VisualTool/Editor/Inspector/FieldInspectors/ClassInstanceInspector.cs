@@ -40,7 +40,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                     }
                     if (value == null && GUILayout.Button("Set"))
                     {
-                        settings.SearchMenuProvider.Create(this.fieldPointer.Type, this.OnSetType);
+                        settings.SearchMenuProvider.Create(this.fieldPointer.Type, t => this.OnSetType(t, settings));
                     }
                 }
             }
@@ -61,11 +61,13 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             EditorGUI.indentLevel--;
         }
 
-        private void OnSetType(Type type)
+        private void OnSetType(Type type, RenderInspectorSettings settings)
         {
-            var value = Activator.CreateInstance(type);
+            var value = type.CreateInstance();
             this.fieldPointer.SetValue(value);
+            settings.ChangeFlag = true;
             this.GenerateSubFields();
+           
         }
 
         private void GenerateSubFields()

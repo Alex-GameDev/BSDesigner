@@ -42,6 +42,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Window
             this.inspector.style.top = 0;
             this.inspector.style.left = 0;
             this.inspector.style.position = Position.Absolute;
+            this.inspector.DataChanged += this.DataChanged;
             parent.Add(this.inspector);
         }
 

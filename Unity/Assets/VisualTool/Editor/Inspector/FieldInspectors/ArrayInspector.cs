@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -11,13 +13,14 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         private readonly List<FieldInspector> subfields;
         private readonly IFieldPointer fieldPointer;
 
+        private readonly Type elementType;
         public override bool IsSingleLine => false;
 
         public ArrayInspector(IFieldPointer pointer, bool nullableElements = false)
         {
             this.fieldPointer = pointer;
             this.subfields = new List<FieldInspector>();
-
+            this.elementType = pointer.Type.GetElementType();
             this.GenerateElementFields();
         }
 
@@ -44,7 +47,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                 EditorGUILayout.LabelField(this.fieldPointer.Name);
                 if(GUILayout.Button("+", GUILayout.Width(settings.ActionButtonWidth)))
                 {
-                    AddArrayItem();
+                    AddArrayItem(settings);
                 }
             }
             for(int i = 0; i < this.subfields.Count; i++)
@@ -89,13 +92,30 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
             this.subfields.RemoveAt(index);
         }
 
-        private void AddArrayItem()
+        private void AddArrayItem(RenderInspectorSettings settings)
         {
+            if (this.elementType.IsAbstract) // Is polymorphic
+            {
+                settings.SearchMenuProvider.Create(this.fieldPointer.Type.GetElementType(), t => this.AddElement(t, settings));
+            }
+            else
+            {
+                var type = this.fieldPointer.Type.GetElementType();
+                this.AddElement(type, settings);
+            }
+        }
+
+
+        private void AddElement(Type type, RenderInspectorSettings settings)
+        {
+            var value = type.CreateInstance();
             var arrayValue = (Array)this.fieldPointer.GetValue();
             Array newArray = Array.CreateInstance(this.fieldPointer.Type.GetElementType(), arrayValue.Length + 1);
             Array.Copy(arrayValue, newArray, arrayValue.Length);
+            newArray.SetValue(value, newArray.Length - 1);
             this.fieldPointer.SetValue(newArray);
             this.subfields.Add(FieldInspector.CreateFromArrayElement(newArray, newArray.Length - 1));
+            settings.ChangeFlag = true;
         }
     }
 }

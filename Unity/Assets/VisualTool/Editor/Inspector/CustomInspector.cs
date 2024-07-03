@@ -1,5 +1,7 @@
 using UnityEditor;
 using UnityEngine.UIElements;
+using UnityEngine;
+using System;
 
 namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 {
@@ -10,6 +12,8 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
         private FieldInspector mainFieldRenderer;
 
         private readonly ISearchMenuProvider searchMenuProvider;
+
+        public event Action DataChanged;
 
         public CustomInspector(ISearchMenuProvider searchMenuProvider)
         {
@@ -36,7 +40,15 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                 SearchMenuProvider = searchMenuProvider,
                 ActionButtonWidth = BUTTON_WIDTH,
             };
-            this.mainFieldRenderer?.Render(settings);
+            using(var check = new EditorGUI.ChangeCheckScope())
+            {
+                this.mainFieldRenderer?.Render(settings);
+                if(check.changed || settings.ChangeFlag)
+                {
+                    this.DataChanged?.Invoke();
+                }
+            }
+
         }
     }
 
