@@ -45,13 +45,20 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
                 }
             }
 
-            using (var v = new EditorGUILayout.VerticalScope("box"))
+            if(subfields.Count == 0)
+            {
+                return;
+            }
+
+            EditorGUI.indentLevel++;
+            using (var v = new EditorGUILayout.VerticalScope())
             {
                 foreach (var subField in subfields)
                 {
                     subField.Render(settings);
                 }
             }
+            EditorGUI.indentLevel--;
         }
 
         private void OnSetType(Type type)
@@ -81,7 +88,7 @@ namespace BSDesigner.Unity.VisualTool.Editor.Inspector
 
         private List<FieldInfo> GetInspectorFields(Type type)
         {
-            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public).Where(f => f.GetCustomAttribute<HideInspectorAttribute>() == null).OrderBy(field => field.MetadataToken);
+            var fields = type.GetPublicFields().Where(f => f.GetCustomAttribute<HideInspectorAttribute>() == null);
             return fields.ToList();
         }
     }
