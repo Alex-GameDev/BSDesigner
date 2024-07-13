@@ -6,7 +6,7 @@ namespace BSDesigner.BehaviourTrees.Leafs
     /// <summary>
     /// Leaf BT node that can handle a nested behaviour engine.
     /// </summary>
-    public class SubsystemBtNode : LeafBtNode, ISubsystem
+    public class SubsystemBtNode : LeafBtNode
     {
         /// <summary>
         /// The nested behaviour engine.
@@ -18,7 +18,7 @@ namespace BSDesigner.BehaviourTrees.Leafs
             {
                 if (_nestedEngine != value && !(_nestedEngine?.IsNestedWith(this.Graph) ?? false))
                 {
-                    this.Subsystem = value;
+                    this._nestedEngine = value;
                 }
             }
         }

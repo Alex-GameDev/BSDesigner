@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core.Exceptions;
+using BSDesigner.Core.Utils;
 
 namespace BSDesigner.Core
 {
@@ -25,7 +26,7 @@ namespace BSDesigner.Core
             }
         }
 
-        private Blackboard _localBlackboard;
+        private Blackboard? _localBlackboard;
 
         /// <summary>
         /// The execution status of the behaviour engine
@@ -65,22 +66,7 @@ namespace BSDesigner.Core
         /// <returns>The list of nested subsystems.</returns>
         public IEnumerable<BehaviourEngine> GetAllNestedEngines()
         {
-            HashSet<BehaviourEngine> allNestedEngines = new HashSet<BehaviourEngine>();
-            var directlyNestedEngines = GetNestedEngines().ToList();
-            while (directlyNestedEngines.Count() > 0)
-            {
-                var subsystem = directlyNestedEngines.First();
-                directlyNestedEngines.RemoveAt(0);
-                allNestedEngines.Add(subsystem);
-                foreach (var nestedSubsystem in subsystem.GetNestedEngines())
-                {
-                    if (nestedSubsystem != this && !allNestedEngines.Contains(nestedSubsystem))
-                    {
-                        directlyNestedEngines.Add(nestedSubsystem);
-                    }
-                }
-            }
-            return allNestedEngines.ToList();
+            return this.GetNestedElements((g) => g.GetNestedEngines());
         }
 
         /// <summary>

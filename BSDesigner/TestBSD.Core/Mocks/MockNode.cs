@@ -20,7 +20,11 @@ namespace TestBSD.Core.Mocks
 
         public ExecutionContext Context { get; private set; } = null!;
 
-        public BehaviourEngine? Subsystem { get; set; }
+        public BehaviourEngine? Subsystem => subGraph;
+
+        public BehaviourGraph? subGraph;
+
+
 
         public MockNode() { }
 

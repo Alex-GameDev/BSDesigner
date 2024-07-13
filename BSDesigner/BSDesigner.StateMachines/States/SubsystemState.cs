@@ -11,8 +11,8 @@ namespace BSDesigner.StateMachines.States
         /// <summary>
         /// The nested behaviour engine.
         /// </summary>
-        public BehaviourEngine? Subsystem 
-        { 
+        public BehaviourEngine? Subsystem
+        {
             get => _nestedEngine;
             set
             {

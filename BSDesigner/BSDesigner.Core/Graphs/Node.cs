@@ -33,11 +33,6 @@ namespace BSDesigner.Core.Graphs
         public BehaviourGraph? Graph { get; internal set; }
 
         /// <summary>
-        /// The subgraph that this node contains.
-        /// </summary>
-        public virtual BehaviourGraph? Subgraph { get; }
-
-        /// <summary>
         /// A collection with all the nodes connected to this one as output.
         /// </summary>
         public IReadOnlyList<Node> Children => InternalChildList;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core.Exceptions;
+using BSDesigner.Core.Utils;
 
 namespace BSDesigner.Core.Graphs
 {
@@ -205,7 +206,7 @@ namespace BSDesigner.Core.Graphs
         /// </summary>
         /// <param name="connection">The checked connection.</param>
         /// <returns>True if a path between the nodes exists.</returns>
-        public bool AreNodesConnected(Connection connection) => AreNodesConnected(connection.Source, connection.Target);
+        public bool HasConnection(Connection connection) => AreNodesConnected(connection.Source, connection.Target);
 
         /// <summary>
         /// Returns if graph has a connection path between <paramref name="source"/> and <paramref name="target"/>.
@@ -213,27 +214,7 @@ namespace BSDesigner.Core.Graphs
         /// <param name="source">The source node.</param>
         /// <param name="target">The target node.</param>
         /// <returns>True if a path between the nodes exists.</returns>
-        public bool AreNodesConnected(Node source, Node target)
-        {
-            var unvisitedNodes = new HashSet<Node>();
-            var visitedNodes = new HashSet<Node>();
-
-            unvisitedNodes.Add(target);
-            while (unvisitedNodes.Count > 0)
-            {
-                var n = unvisitedNodes.First();
-                unvisitedNodes.Remove(n);
-                visitedNodes.Add(n);
-                foreach (var parent in n.Parents)
-                {
-                    if (parent == source)
-                        return true;
-                    if (!visitedNodes.Contains(parent))
-                        unvisitedNodes.Add(parent);
-                }
-            }
-            return false;
-        }
+        public bool AreNodesConnected(Node source, Node target) => source.IsNestedWith(target, n => n.Children);
 
         /// <summary>
         /// Find all the nested behaviour engines in its nodes.
@@ -244,9 +225,9 @@ namespace BSDesigner.Core.Graphs
             List<BehaviourEngine> nestedEngines = new List<BehaviourEngine>();
             foreach(var node in Nodes)
             {
-                if(node.Subgraph != null)
+                if(node is ISubsystem subsystem && subsystem.Subsystem != null)
                 {
-                    nestedEngines.Add(node.Subgraph);
+                    nestedEngines.Add(subsystem.Subsystem);
                 }
             }
             return nestedEngines;

@@ -410,7 +410,7 @@ namespace TestBSD.Core
             var graph = new MockGraph();
             var subgraph = new MockGraph();
             var node = graph.CreateNode(-1, -1);
-            node.Subsystem = subgraph;
+            node.subGraph = subgraph;
             Assert.That(graph.GetNestedEngines().ToList(), Has.Count.EqualTo(1));
             Assert.That(graph.GetNestedEngines().First(), Is.EqualTo(subgraph));
         }
@@ -422,8 +422,8 @@ namespace TestBSD.Core
             var graph2 = new MockGraph();
             var node1 = graph1.CreateNode(-1, -1);
             var node2 = graph2.CreateNode(-1, -1);
-            node1.Subsystem = graph2;
-            node2.Subsystem = graph1;
+            node1.subGraph = graph2;
+            node2.subGraph = graph1;
             Assert.That(graph1.GetAllNestedEngines().ToList(), Has.Count.EqualTo(1));
             Assert.That(graph1.GetAllNestedEngines().First(), Is.EqualTo(graph2));
             Assert.That(graph2.GetAllNestedEngines().ToList(), Has.Count.EqualTo(1));
