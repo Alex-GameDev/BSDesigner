@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core;
+using BSDesigner.Core.Graphs;
 using BSDesigner.Core.Exceptions;
 
 namespace BSDesigner.StateMachines

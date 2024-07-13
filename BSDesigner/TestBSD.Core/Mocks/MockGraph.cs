@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using BSDesigner.Core;
+using BSDesigner.Core.Graphs;
 
 namespace TestBSD.Core.Mocks
 {

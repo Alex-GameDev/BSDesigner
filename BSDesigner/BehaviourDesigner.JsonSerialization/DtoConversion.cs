@@ -2,6 +2,7 @@
 using System.Linq;
 using BehaviourDesigner.JsonSerialization.Model;
 using BSDesigner.Core;
+using BSDesigner.Core.Graphs;
 
 namespace BehaviourDesigner.JsonSerialization
 {

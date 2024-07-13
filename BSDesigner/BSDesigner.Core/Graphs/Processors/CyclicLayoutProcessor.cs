@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 
-namespace BSDesigner.LayoutProcessing
+namespace BSDesigner.Core.Graphs.Processors
 {
     internal class CyclicLayoutProcessor : LayoutProcessor
     {

@@ -1,4 +1,4 @@
-﻿namespace BSDesigner.Core
+﻿namespace BSDesigner.Core.Graphs
 {
     /// <summary>
     /// Element that represents a connection between two nodes in a graph.

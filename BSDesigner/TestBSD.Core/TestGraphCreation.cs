@@ -1,4 +1,4 @@
-using BSDesigner.Core;
+using BSDesigner.Core.Graphs;
 using BSDesigner.Core.Exceptions;
 using TestBSD.Core.Mocks;
 

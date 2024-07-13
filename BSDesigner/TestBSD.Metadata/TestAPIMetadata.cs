@@ -1,4 +1,5 @@
 using BSDesigner.BehaviourTrees;
+using BSDesigner.Core.Graphs;
 using BSDesigner.Core;
 using BSDesigner.Reflection;
 using BSDesigner.StateMachines;

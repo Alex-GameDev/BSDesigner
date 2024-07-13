@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace BSDesigner.LayoutProcessing
+namespace BSDesigner.Core.Graphs.Processors
 {
     /// <summary>
     /// Layout processor for layered/directed acyclic graphs.

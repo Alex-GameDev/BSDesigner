@@ -1,4 +1,4 @@
-﻿namespace BSDesigner.Core
+﻿namespace BSDesigner.Core.Graphs
 {
     /// <summary>
     /// Defines an element that can process a behaviour graph

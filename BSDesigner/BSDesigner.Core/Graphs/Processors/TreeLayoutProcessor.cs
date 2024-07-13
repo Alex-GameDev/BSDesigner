@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace BSDesigner.LayoutProcessing
+namespace BSDesigner.Core.Graphs.Processors
 {
     /// <summary>
     /// Layout processor that creates a tree layout

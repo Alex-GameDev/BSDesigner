@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core.Exceptions;
 
-namespace BSDesigner.Core
+namespace BSDesigner.Core.Graphs
 {
     /// <summary>
     /// Behaviour system formed by nodes connected to each other forming a directed graph.
@@ -244,9 +244,9 @@ namespace BSDesigner.Core
             List<BehaviourEngine> nestedEngines = new List<BehaviourEngine>();
             foreach(var node in Nodes)
             {
-                if(node is ISubsystem subsystemNode && subsystemNode.Subsystem != null)
+                if(node.Subgraph != null)
                 {
-                    nestedEngines.Add(subsystemNode.Subsystem);
+                    nestedEngines.Add(node.Subgraph);
                 }
             }
             return nestedEngines;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BSDesigner.Core;
+using BSDesigner.Core.Graphs;
 
 namespace BehaviourDesigner.JsonSerialization.Model
 {

@@ -1,8 +1,6 @@
-﻿using BSDesigner.Core;
-using System;
-using System.Numerics;
+﻿using System.Numerics;
 
-namespace BSDesigner.LayoutProcessing
+namespace BSDesigner.Core.Graphs.Processors
 {
     /// <summary>
     /// Graph processor that modify the position of the nodes to create a specific layout.

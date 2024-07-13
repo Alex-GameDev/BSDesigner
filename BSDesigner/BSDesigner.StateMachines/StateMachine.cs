@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BSDesigner.Core;
 using BSDesigner.Core.Exceptions;
-using BSDesigner.Core.Actions;
-using BSDesigner.Core.Perceptions;
+using BSDesigner.Core.Graphs;
 using BSDesigner.StateMachines.States;
 
 namespace BSDesigner.StateMachines

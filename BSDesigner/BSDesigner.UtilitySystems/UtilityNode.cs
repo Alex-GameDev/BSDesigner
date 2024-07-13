@@ -1,5 +1,5 @@
 ﻿using System;
-using BSDesigner.Core;
+using BSDesigner.Core.Graphs;
 
 namespace BSDesigner.UtilitySystems
 {

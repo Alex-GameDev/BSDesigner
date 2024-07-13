@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Numerics;
 
-namespace BSDesigner.Core
+namespace BSDesigner.Core.Graphs
 {
     /// <summary>
     /// The main element of the behaviour graphs.
@@ -31,6 +31,11 @@ namespace BSDesigner.Core
         /// The graph to which this node belongs.
         /// </summary>
         public BehaviourGraph? Graph { get; internal set; }
+
+        /// <summary>
+        /// The subgraph that this node contains.
+        /// </summary>
+        public virtual BehaviourGraph? Subgraph { get; }
 
         /// <summary>
         /// A collection with all the nodes connected to this one as output.
