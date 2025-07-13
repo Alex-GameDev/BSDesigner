@@ -101,7 +101,7 @@ namespace BSDesigner.Core.Serialization
             var dto = new BehaviourGraphSerializableData
             {
                 Graph = graph,
-                Nodes = graph.Nodes,
+                Nodes = graph.Nodes.Count > 0 ? graph.Nodes : null,
                 Connections = GetConnections(graph.Nodes),
             };
             return dto;
@@ -110,22 +110,29 @@ namespace BSDesigner.Core.Serialization
         private static BehaviourGraph ConvertToGraph(BehaviourGraphSerializableData dto)
         {
             var graph = dto.Graph;
-            foreach (var node in dto.Nodes)
+            if (dto.Nodes != null)
             {
-                graph.AddNode(node);
+                foreach (var node in dto.Nodes)
+                {
+                    graph.AddNode(node);
+                }
+
             }
 
-            foreach (var connection in dto.Connections)
+            if (dto.Connections != null)
             {
-                var source = graph.Nodes[connection.SourceId];
-                var target = graph.Nodes[connection.TargetId];
-                graph.ConnectNodes(source, target);
+                foreach (var connection in dto.Connections)
+                {
+                    var source = graph.Nodes[connection.SourceId];
+                    var target = graph.Nodes[connection.TargetId];
+                    graph.ConnectNodes(source, target);
+                }
             }
 
             return graph;
         }
 
-        private static List<ConnectionSerializableData> GetConnections(IEnumerable<Node> nodes)
+        private static List<ConnectionSerializableData>? GetConnections(IEnumerable<Node> nodes)
         {
             var i = 0;
             var nodeIndexMap = nodes.ToDictionary(n => n, _ => i++);
@@ -139,7 +146,7 @@ namespace BSDesigner.Core.Serialization
                     connections.Add(new ConnectionSerializableData { SourceId = sourceId, TargetId = targetId });
                 }
             }
-            return connections;
+            return connections.Count > 0 ? connections : null;
         }
 
         #endregion

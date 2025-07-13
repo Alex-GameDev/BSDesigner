@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using BSDesigner.Core.Exceptions;
 using BSDesigner.Core.Utils;
@@ -11,6 +12,7 @@ namespace BSDesigner.Core
         /// <summary>
         /// The name of the behaviour engine
         /// </summary>
+        [DefaultValue("")]
         public string Name = string.Empty;
 
         /// <summary>

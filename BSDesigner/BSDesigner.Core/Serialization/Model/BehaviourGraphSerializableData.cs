@@ -13,16 +13,16 @@ namespace BSDesigner.Core.Serialization.Model
         /// <summary>
         /// The behaviour engine
         /// </summary>
-        public BehaviourGraph Graph;
+        public BehaviourGraph Graph = null!;
 
         /// <summary>
         /// The list of nodes
         /// </summary>
-        public IEnumerable<Node> Nodes;
+        public IEnumerable<Node>? Nodes;
 
         /// <summary>
         /// The list of connections
         /// </summary>
-        public IEnumerable<ConnectionSerializableData> Connections;
+        public IEnumerable<ConnectionSerializableData>? Connections;
     }
 }
