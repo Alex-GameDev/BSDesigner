@@ -1,0 +1,37 @@
+﻿{
+  "graphs": [
+    {
+      "name": "G1",
+      "nodes": [
+        {
+          "$type": "LoopNode",
+          "name": "TOP",
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "iterations": 2
+        },
+        {
+          "$type": "LeafNode",
+          "name": "ROOT",
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "action": {
+            "$type": "FleeAction",
+            "maxDistance": 2,
+            "maxTime": 5
+          }
+        }
+      ],
+      "connections": [
+        {
+          "parentIdx": 0,
+          "childIdx": 1
+        }
+      ]
+    }
+  ]
+}
