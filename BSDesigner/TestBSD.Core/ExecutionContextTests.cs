@@ -4,7 +4,7 @@ using ExecutionContext = BSDesigner.Core.ExecutionContext;
 namespace TestBSD.Core
 {
     [TestFixture]
-    public class TestExecutionContext
+    public class ExecutionContextTests
     {
         [Test]
         public void SetContext_GraphWithNodes_PropagateInNodes()

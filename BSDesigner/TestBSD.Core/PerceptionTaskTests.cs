@@ -5,7 +5,7 @@ using TestBSD.Core.Mocks;
 namespace TestBSD.Core
 {
     [TestFixture]
-    public class TestPerceptionTasks
+    public class PerceptionTaskTests
     {
         [Test]
         public void CustomPerception_ExecuteOnRunning_InvokeEvents()

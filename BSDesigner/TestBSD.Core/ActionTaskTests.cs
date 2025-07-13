@@ -6,7 +6,7 @@ using TestBSD.Core.Mocks;
 namespace TestBSD.Core
 {
     [TestFixture]
-    public class TestActionTasks
+    public class ActionTaskTests
     {
         [Test]
         public void CustomAction_ExecuteOnRunning_InvokeEvents()

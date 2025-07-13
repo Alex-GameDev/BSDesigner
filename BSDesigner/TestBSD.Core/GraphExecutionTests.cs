@@ -5,7 +5,7 @@ using TestBSD.Core.Mocks;
 namespace TestBSD.Core
 {
     [TestFixture]
-    public class TestGraphExecution
+    public class GraphExecutionTests
     {
         private MockGraph _behaviourEngine = null!;
         private string _eventName = string.Empty;
