@@ -50,13 +50,6 @@ namespace BSDesigner.Core.Perceptions
             SubPerceptions.ForEach(p => p.Pause());
         }
 
-        /// <summary>
-        /// Don't do nothing (sub perceptions are resumed from update).
-        /// </summary>
-        protected override void OnResumeTask()
-        {
-        }
-
         public override void SetContext(ExecutionContext context)
         {
             SubPerceptions.ForEach(p => p.SetContext(context));

@@ -2,7 +2,6 @@
 using BSDesigner.Core.Graphs;
 using BSDesigner.Core.Serialization;
 
-
 namespace TestBSD.Core
 {
 
@@ -18,31 +17,35 @@ namespace TestBSD.Core
                 textField = "test",
             };
             string json = JsonUtilities.SerializeNode(node);
-            string expectedJson = "{\"numericField\":1,\"textField\":\"test\"}";
-            Assert.That(json, Is.Not.Null);
-            Assert.That(json, Is.EqualTo(expectedJson));
+            var generatedNode = JsonUtilities.DeserializeNode<TestSerializableNode>(json);
+            
+            Assert.IsNotNull(generatedNode);
+            Assert.That(generatedNode.numericField, Is.EqualTo(node.numericField));
+            Assert.That(generatedNode.textField, Is.EqualTo(node.textField));
+            Assert.That(generatedNode.Name, Is.Empty);
         }
 
         [Test]
         public void SerializeNode_WithActionTask_ValidResult()
         {
+            var action = new TestActionTask()
+            {
+                numericField = 1,
+                textField = "test",
+            };
             var node = new TestSerializableNode()
             {
-                action = new TestActionTask()
-                {
-                    numericField = 1,
-                    textField = "test",
-                }
+                action = action,
             };
             string json = JsonUtilities.SerializeNode(node);
-            string expectedJson = "{" +
-                "\"action\":{" +
-                "\"$type\":\"TestBSD.Core.TestActionTask, TestBSD.Core\"," +
-                "\"numericField\":1," +
-                "\"textField\":\"test\"}}";
+            var generatedNode = JsonUtilities.DeserializeNode<TestSerializableNode>(json);
+            var generatedAction = generatedNode?.action as TestActionTask;
 
-            Assert.That(json, Is.Not.Null);
-            Assert.That(json, Is.EqualTo(expectedJson));
+            Assert.IsNotNull(generatedNode);
+
+            Assert.IsNotNull(generatedAction);
+            Assert.That(generatedAction.numericField, Is.EqualTo(action.numericField));
+            Assert.That(generatedAction.textField, Is.EqualTo(action.textField));
         }
 
         [Test]
@@ -54,18 +57,11 @@ namespace TestBSD.Core
                 textField = "test_graph",
             };
             string json = JsonUtilities.Serialize(graph);
-            string expectedJson =
-                "{" +
-                    "\"Graph\":" +
-                    "{" +
-                        "\"$type\":\"TestBSD.Core.TestSerializableGraph, TestBSD.Core\"," +
-                        "\"numericField\":1," +
-                        "\"textField\":\"test_graph\"" +
-                    "}" +
-                "}";
+            var generatedGraph = JsonUtilities.Deserialize(json) as TestSerializableGraph;
 
-            Assert.That(json, Is.Not.Null);
-            Assert.That(json, Is.EqualTo(expectedJson));
+            Assert.IsNotNull(generatedGraph);
+            Assert.That(generatedGraph.numericField, Is.EqualTo(graph.numericField));
+            Assert.That(generatedGraph.textField, Is.EqualTo(graph.textField));
         }
 
         [Test]
@@ -83,25 +79,15 @@ namespace TestBSD.Core
             };
             graph.AddNode(node);
             string json = JsonUtilities.Serialize(graph);
-            string expectedJson =
-                "{" +
-                    "\"Graph\":" +
-                    "{" +
-                        "\"$type\":\"TestBSD.Core.TestSerializableGraph, TestBSD.Core\"," +
-                        "\"numericField\":1," +
-                        "\"textField\":\"test_graph\"" +
-                    "}," +
-                    "\"Nodes\":[" +
-                        "{" +
-                                "\"$type\":\"TestBSD.Core.TestSerializableNode, TestBSD.Core\"," +
-                                "\"numericField\":1," +
-                                "\"textField\":\"test\"" +
-                         "}" +
-                    "]" +
-                "}";
 
-            Assert.That(json, Is.Not.Null);
-            Assert.That(json, Is.EqualTo(expectedJson));
+            var generatedGraph = JsonUtilities.Deserialize(json) as TestSerializableGraph;
+            Assert.IsNotNull(generatedGraph);
+            Assert.That(generatedGraph.numericField, Is.EqualTo(graph.numericField));
+            Assert.That(generatedGraph.textField, Is.EqualTo(graph.textField));
+            var generatedNode = generatedGraph?.Nodes.FirstOrDefault() as TestSerializableNode;
+            Assert.IsNotNull(generatedNode);
+            Assert.That(generatedNode.numericField, Is.EqualTo(node.numericField));
+            Assert.That(generatedNode.textField, Is.EqualTo(node.textField));
         }
     }
 

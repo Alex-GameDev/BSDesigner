@@ -11,6 +11,8 @@ namespace BSDesigner.Core.Graphs
     /// </summary>
     public abstract class Node
     {
+        #region FIELDS
+
         /// <summary>
         /// The name of the node used to identify it.
         /// </summary>
@@ -23,9 +25,9 @@ namespace BSDesigner.Core.Graphs
         [HideInspector]
         public Vector2 Position = Vector2.Zero;
 
-        internal readonly List<Node> InternalParentList = new List<Node>();
+        #endregion
 
-        internal readonly List<Node> InternalChildList = new List<Node>();
+        #region PROPERTIES
 
         /// <summary>
         /// The graph to which this node belongs.
@@ -62,6 +64,13 @@ namespace BSDesigner.Core.Graphs
         /// </summary>
         public abstract int MaxOutputConnections { get; }
 
+        internal readonly List<Node> InternalParentList = new List<Node>();
+
+        internal readonly List<Node> InternalChildList = new List<Node>();
+
+        #endregion
+
+        #region PUBLIC METHODS
         /// <summary>
         /// Checks if there is a connection from <paramref name="otherNode"/> to this node.
         /// </summary>
@@ -89,5 +98,7 @@ namespace BSDesigner.Core.Graphs
         public virtual void SetContext(ExecutionContext context)
         {
         }
+
+        #endregion
     }
 }

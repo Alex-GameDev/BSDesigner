@@ -7,13 +7,22 @@ using BSDesigner.Core.Utils;
 
 namespace BSDesigner.Core
 {
-    public abstract class BehaviourEngine : IStatusHandler, IBehaviour
+    /// <summary>
+    /// Base class for all behaviour engines
+    /// </summary>
+    public abstract class BehaviourEngine : IBehaviour, IStatusHandler
     {
+        #region FIELDS
+
         /// <summary>
         /// The name of the behaviour engine
         /// </summary>
         [DefaultValue("")]
         public string Name = string.Empty;
+
+        #endregion
+
+        #region PROPERTIES
 
         /// <summary>
         /// The local blackboard for this engine
@@ -55,6 +64,10 @@ namespace BSDesigner.Core
         /// Event called when the status changes
         /// </summary>
         public event Action<Status>? StatusChanged;
+
+        #endregion
+
+        #region PUBLIC METHODS
 
         /// <summary>
         /// Gets the directly nested sub behaviour systems
@@ -192,5 +205,7 @@ namespace BSDesigner.Core
             }
             return false;
         }
+
+        #endregion
     }
 }

@@ -48,12 +48,12 @@
             return;
         }
 
-        protected abstract void OnBeginTask();
+        protected virtual void OnBeginTask() { }
 
-        protected abstract void OnEndTask();
+        protected virtual void OnEndTask() { }
 
-        protected abstract void OnPauseTask();
+        protected virtual void OnPauseTask() { }
 
-        protected abstract void OnResumeTask();
+        protected virtual void OnResumeTask() { }
     }
 }
