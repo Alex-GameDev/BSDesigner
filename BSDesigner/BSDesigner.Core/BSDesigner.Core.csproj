@@ -4,6 +4,15 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <SignAssembly>False</SignAssembly>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>BS Designer Core</Title>
+    <Description>Framework to design and execute behaviour systems in different .NET environments</Description>
+    <PackageReleaseNotes>Initial version</PackageReleaseNotes>
+    <IncludeSymbols>True</IncludeSymbols>
+    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BSDesigner.Reflection
+namespace BSDesigner.Core.Metadata
 {
     /// <summary>
     /// Defines an attribute that relates a type to another.

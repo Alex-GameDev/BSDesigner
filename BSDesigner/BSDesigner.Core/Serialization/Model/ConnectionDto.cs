@@ -5,7 +5,7 @@ namespace BSDesigner.Core.Serialization.Model
     /// <summary>
     /// Represent a connection between two nodes in a graph
     /// </summary>
-    public class ConnectionSerializableData
+    public class ConnectionDto
     {
         /// <summary>
         /// The index of the source node in the graph node list

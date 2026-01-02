@@ -1,10 +1,10 @@
 using BSDesigner.BehaviourTrees;
 using BSDesigner.Core.Graphs;
 using BSDesigner.Core;
-using BSDesigner.Reflection;
 using BSDesigner.StateMachines;
 using BSDesigner.UtilitySystems;
 using Task = BSDesigner.Core.Task;
+using BSDesigner.Core.Metadata;
 
 namespace TestBSD.Metadata
 {

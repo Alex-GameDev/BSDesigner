@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BSDesigner.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace BehaviourDesigner.JsonSerialization.Converters
+namespace BSDesigner.Core.Serialization.Converters
 {
     public class ParameterConverter : ContextConverter<Parameter>
     {

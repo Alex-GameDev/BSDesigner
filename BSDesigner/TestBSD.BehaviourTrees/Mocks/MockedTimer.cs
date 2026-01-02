@@ -1,4 +1,5 @@
 ﻿using BSDesigner.Core;
+using ITimer = BSDesigner.Core.ITimer;
 
 namespace TestBSD.BehaviourTrees.Mocks
 {

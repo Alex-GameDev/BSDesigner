@@ -1,4 +1,5 @@
 ﻿using BSDesigner.Core.Graphs;
+using BSDesigner.Core.Serialization.Converters;
 using BSDesigner.Core.Serialization.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -9,79 +10,131 @@ namespace BSDesigner.Core.Serialization
     public static class JsonUtilities
     {
         /// <summary>
-        /// Serialize a behaviour graph to a string in json format
+        /// Serialize a behaviour graph in json format
         /// </summary>
-        /// <param name="graph">Serialized graph</param>
-        /// <returns>Json generated</returns>
-        public static string Serialize(BehaviourGraph graph)
+        /// <param name="graph">The serialized graph</param>
+        /// <returns>The json string</returns>
+        public static string Serialize(BehaviourEngine graph)
         {
-            var serializableData = ConvertToDto(graph);
-            var settings = CreateSerializerSettings();
-            return JsonConvert.SerializeObject(serializableData, settings);
+            var engines = new List<BehaviourEngine> { graph };
+            return Serialize(engines);
         }
 
         /// <summary>
-        /// Serialize a node to a string in json format
+        /// Serialize a collection of behaviour engines in json format
         /// </summary>
-        /// <param name="node">Serialized node</param>
-        /// <returns>Json generated</returns>
+        /// <param name="engines">The serialized engines</param>
+        /// <returns>The json string</returns>
+        public static string Serialize(IEnumerable<BehaviourEngine> engines)
+        {
+            var dto = new BehaviourSystemDto
+            {
+                Engines = engines.Select(DtoConversion.FromEngineToDto).ToList()
+            };
+
+            var context = new JsonSerializationContext
+            {
+                Engines = engines.ToList()
+            };
+            return SerializeDto(dto, context);
+        }
+
+        /// <summary>
+        /// Serialize a node in json format
+        /// </summary>
+        /// <param name="node">The serialized node</param>
+        /// <returns>The json string</returns>
         public static string SerializeNode(Node node)
         {
-            var settings = CreateSerializerSettings();
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
             return JsonConvert.SerializeObject(node, settings);
         }
 
         /// <summary>
-        /// Serialize a behaviour graph to a string in json format
+        /// Deserialize a collection of behaviour engines
         /// </summary>
-        /// <param name="json">Serialized graph string</param>
-        /// <returns>Json generated</returns>
-        public static BehaviourGraph? Deserialize(string json)
+        /// <param name="jsonData">The json string deserialized.</param>
+        /// <returns>The list of behaviour engines deserialized</returns>
+        public static BehaviourEngine? Deserialize(string jsonData)
         {
-            var settings = CreateSerializerSettings();
-            var data = JsonConvert.DeserializeObject<BehaviourGraphSerializableData>(json, settings);
-            
-            if (data == null) return null;
-            return ConvertToGraph(data);
+            var context = new JsonSerializationContext();
+            var dto = DeserializeDto(jsonData, context);
+            if (dto == null) return null;
+
+            var engine = dto.Engines[0];
+            return DtoConversion.FromDtoToEngine(engine);
         }
 
         /// <summary>
-        /// Serialize a behaviour graph to a string in json format
+        /// Deserialize a collection of behaviour engines
         /// </summary>
-        /// <param name="json">Serialized graph string</param>
-        /// <returns>Json generated</returns>
-        public static T? Deserialize<T>(string json) where T: BehaviourGraph
+        /// <param name="jsonData">The json string deserialized.</param>
+        /// <returns>The list of behaviour engines deserialized</returns>
+        public static List<BehaviourEngine> DeserializeList(string jsonData)
         {
-            var settings = CreateSerializerSettings();
-            var data = JsonConvert.DeserializeObject<BehaviourGraphSerializableData>(json, settings);
+            var context = new JsonSerializationContext();
+            var dto = DeserializeDto(jsonData, context);
 
-            if (data == null) return null;
-            return (T?) ConvertToGraph(data);
+            if (dto == null) return new List<BehaviourEngine>();
+
+            var engines = dto.Engines.Select(DtoConversion.FromDtoToEngine).ToList();
+
+            foreach (var (subsystem, index) in context.SubsystemMap)
+            {
+                subsystem.Value = engines[index];
+            }
+
+            return engines;
         }
+
+
 
         /// <summary>
-        /// Serialize a node to a string in json format
+        /// Deserialize a node
         /// </summary>
-        /// <param name="json">Serialized graph string</param>
-        /// <returns>Json generated</returns>
-        public static Node? DeserializeNode(string json)
+        /// <param name="jsonData">The json string deserialized.</param>
+        /// <returns>The list of behaviour engines deserialized</returns>
+        public static T? DeserializeNode<T>(string jsonData) where T: Node
         {
-            var settings = CreateSerializerSettings();
-            return JsonConvert.DeserializeObject<Node>(json, settings);
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+            return JsonConvert.DeserializeObject<T>(jsonData, settings);
         }
 
-        /// <summary>
-        /// Serialize a node to a string in json format
-        /// </summary>
-        /// <param name="json">Serialized node string</param>
-        /// <returns>Json generated</returns>
-        public static T? DeserializeNode<T>(string json) where T: Node
+        public static string Serialize(Blackboard blackboard)
         {
-            var settings = CreateSerializerSettings();
-            return JsonConvert.DeserializeObject<T>(json, settings);
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+
+            var fields = blackboard.GetAllFields();
+            return JsonConvert.SerializeObject(fields, settings);
         }
 
-        private static JsonSerializerSettings CreateSerializerSettings()
+
+        public static Blackboard DeserializeBlackboard(string jsonData)
+        {
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+
+            var fields = JsonConvert.DeserializeObject<List<BlackboardField>>(jsonData, settings);
+
+            return fields != null ? new Blackboard(fields) : new Blackboard();
+        }
+
+        private static string SerializeDto(BehaviourSystemDto? dto, JsonSerializationContext context)
+        {
+            var settings = CreateSerializerSettings(context);
+            return JsonConvert.SerializeObject(dto, settings);
+        }
+
+        private static BehaviourSystemDto? DeserializeDto(string jsonData, JsonSerializationContext context)
+        {
+            var settings = CreateSerializerSettings(context);
+            return JsonConvert.DeserializeObject<BehaviourSystemDto>(jsonData, settings);
+        }
+
+        private static JsonSerializerSettings CreateSerializerSettings(JsonSerializationContext context)
         {
             var settings = new JsonSerializerSettings
             {
@@ -91,64 +144,12 @@ namespace BSDesigner.Core.Serialization
                 DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
+            //settings.Converters.Add(new NodeConnectionConverter());
+            settings.Converters.Add(new SubsystemConverter { Context = context });
+            settings.Converters.Add(new ParameterConverter { Context = context });
+            settings.Converters.Add(new BlackboardConverter { Context = context });
             return settings;
         }
 
-        #region Model conversion
-
-        private static BehaviourGraphSerializableData ConvertToDto(BehaviourGraph graph)
-        {
-            var dto = new BehaviourGraphSerializableData
-            {
-                Graph = graph,
-                Nodes = graph.Nodes.Count > 0 ? graph.Nodes : null,
-                Connections = GetConnections(graph.Nodes),
-            };
-            return dto;
-        }
-
-        private static BehaviourGraph ConvertToGraph(BehaviourGraphSerializableData dto)
-        {
-            var graph = dto.Graph;
-            if (dto.Nodes != null)
-            {
-                foreach (var node in dto.Nodes)
-                {
-                    graph.AddNode(node);
-                }
-
-            }
-
-            if (dto.Connections != null)
-            {
-                foreach (var connection in dto.Connections)
-                {
-                    var source = graph.Nodes[connection.SourceId];
-                    var target = graph.Nodes[connection.TargetId];
-                    graph.ConnectNodes(source, target);
-                }
-            }
-
-            return graph;
-        }
-
-        private static List<ConnectionSerializableData>? GetConnections(IEnumerable<Node> nodes)
-        {
-            var i = 0;
-            var nodeIndexMap = nodes.ToDictionary(n => n, _ => i++);
-            var connections = new List<ConnectionSerializableData>();
-            foreach (var node in nodes)
-            {
-                var sourceId = nodeIndexMap.GetValueOrDefault(node, -1);
-                foreach (var child in node.Children)
-                {
-                    var targetId = nodeIndexMap.GetValueOrDefault(child, -1);
-                    connections.Add(new ConnectionSerializableData { SourceId = sourceId, TargetId = targetId });
-                }
-            }
-            return connections.Count > 0 ? connections : null;
-        }
-
-        #endregion
     }
 }
