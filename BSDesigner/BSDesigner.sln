@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1DC6CCEC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BSDesigner.Reflection", "BSDesigner.Reflection\BSDesigner.Reflection.csproj", "{FC4C5D55-DABC-4B50-8C68-51EA8CE11779}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.Metadata", "TEstBSD.Metadata\TestBSD.Metadata.csproj", "{7E2F0E29-3328-4567-B3C2-5F787B944B43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.Metadata", "TestBSD.Metadata\TestBSD.Metadata.csproj", "{7E2F0E29-3328-4567-B3C2-5F787B944B43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
