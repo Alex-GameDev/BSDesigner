@@ -4,15 +4,16 @@
 name: .NET
 
 on:
-  push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+  workflow_dispatch:
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
     - uses: actions/checkout@v4
@@ -33,6 +34,7 @@ jobs:
       working-directory: BSDesigner
       run: dotnet pack --no-build -c Release -o ./nupkgs
     - name: Publish
+      if: github.event_name == 'workflow_dispatch'
       working-directory: BSDesigner
       run: |
         dotnet nuget push "./nupkgs/*.nupkg" \
