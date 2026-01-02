@@ -1,7 +1,9 @@
-﻿using BSDesigner.Core;
-
-namespace BSDesigner.SmartObjects
+﻿namespace BSDesigner.Core.SmartObjects
 {
+    /**
+     * Defines an smart object that generates an ActionTask for the given
+     * context or agent.
+     */
     public interface ISmartObject
     {
         /// <summary>

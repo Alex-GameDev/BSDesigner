@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using BSDesigner.Core;
 
-namespace BehaviourDesigner.JsonSerialization.Model
+namespace BSDesigner.Core.Serialization.Model
 {
     /// <summary>
     /// A serializable representation of a behaviour system

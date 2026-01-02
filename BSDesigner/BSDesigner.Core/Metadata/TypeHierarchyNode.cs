@@ -2,10 +2,9 @@
 using BSDesigner.Core.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
-namespace BSDesigner.Reflection
+namespace BSDesigner.Core.Metadata
 {
     /// <summary>
     /// Defines an element of the domain type hierarchy

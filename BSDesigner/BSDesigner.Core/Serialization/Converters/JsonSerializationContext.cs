@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using BSDesigner.Core;
+﻿using System.Collections.Generic;
 
-namespace BehaviourDesigner.JsonSerialization.Converters
+namespace BSDesigner.Core.Serialization.Converters
 {
     /// <summary>
     /// Class that allows json converters to read and write data during the serialization / deserialization.
