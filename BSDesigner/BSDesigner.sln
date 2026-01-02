@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.UtilitySystems", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.JsonSerialization", "TestBSD.JsonSerialization\TestBSD.JsonSerialization.csproj", "{1FC33EB7-795D-489E-B8C6-121DD9AD96FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1DC6CCEC-A2C9-4F96-9935-314C62846C3B}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBSD.Metadata", "TestBSD.Metadata\TestBSD.Metadata.csproj", "{7E2F0E29-3328-4567-B3C2-5F787B944B43}"
 EndProject
 Global
