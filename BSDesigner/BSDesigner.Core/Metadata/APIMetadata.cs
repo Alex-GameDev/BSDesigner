@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BSDesigner.Reflection
+namespace BSDesigner.Core.Metadata
 {
     public abstract class APIMetadata
     {
@@ -109,6 +109,23 @@ namespace BSDesigner.Reflection
             }
 
             return false;
+        }
+
+        private struct TypeRelation
+        {
+            public Type SourceType { get; }
+            public Type targetType { get; }
+
+            public TypeRelation(Type sourceType, Type targetType)
+            {
+                this.SourceType = sourceType;
+                this.targetType = targetType;
+            }
+
+            public override int GetHashCode()
+            {
+                return this.SourceType.GetHashCode() ^ this.targetType.GetHashCode();
+            }
         }
     }
 }

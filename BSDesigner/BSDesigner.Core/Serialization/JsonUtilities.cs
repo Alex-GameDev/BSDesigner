@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BehaviourDesigner.JsonSerialization.Converters;
-using BehaviourDesigner.JsonSerialization.Model;
-using BSDesigner.Core;
-using BSDesigner.JsonSerialization.Converters;
+﻿using BSDesigner.Core.Graphs;
+using BSDesigner.Core.Serialization.Converters;
+using BSDesigner.Core.Serialization.Model;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace BehaviourDesigner.JsonSerialization
+namespace BSDesigner.Core.Serialization
 {
     public static class JsonUtilities
     {
-        private static readonly string Version = "1.0.0";
-        private static readonly string Target = ".NET Standard 2.1";
-
         /// <summary>
         /// Serialize a behaviour graph in json format
         /// </summary>
@@ -42,16 +38,46 @@ namespace BehaviourDesigner.JsonSerialization
             };
             return SerializeDto(dto, context);
         }
-        
+
+        /// <summary>
+        /// Serialize a node in json format
+        /// </summary>
+        /// <param name="node">The serialized node</param>
+        /// <returns>The json string</returns>
+        public static string SerializeNode(Node node)
+        {
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+            return JsonConvert.SerializeObject(node, settings);
+        }
+
         /// <summary>
         /// Deserialize a collection of behaviour engines
         /// </summary>
         /// <param name="jsonData">The json string deserialized.</param>
         /// <returns>The list of behaviour engines deserialized</returns>
-        public static List<BehaviourEngine> Deserialize(string jsonData)
+        public static BehaviourEngine? Deserialize(string jsonData)
         {
             var context = new JsonSerializationContext();
             var dto = DeserializeDto(jsonData, context);
+            if (dto == null) return null;
+
+            var engine = dto.Engines[0];
+            return DtoConversion.FromDtoToEngine(engine);
+        }
+
+        /// <summary>
+        /// Deserialize a collection of behaviour engines
+        /// </summary>
+        /// <param name="jsonData">The json string deserialized.</param>
+        /// <returns>The list of behaviour engines deserialized</returns>
+        public static List<BehaviourEngine> DeserializeList(string jsonData)
+        {
+            var context = new JsonSerializationContext();
+            var dto = DeserializeDto(jsonData, context);
+
+            if (dto == null) return new List<BehaviourEngine>();
+
             var engines = dto.Engines.Select(DtoConversion.FromDtoToEngine).ToList();
 
             foreach (var (subsystem, index) in context.SubsystemMap)
@@ -62,6 +88,19 @@ namespace BehaviourDesigner.JsonSerialization
             return engines;
         }
 
+
+
+        /// <summary>
+        /// Deserialize a node
+        /// </summary>
+        /// <param name="jsonData">The json string deserialized.</param>
+        /// <returns>The list of behaviour engines deserialized</returns>
+        public static T? DeserializeNode<T>(string jsonData) where T: Node
+        {
+            var context = new JsonSerializationContext();
+            var settings = CreateSerializerSettings(context);
+            return JsonConvert.DeserializeObject<T>(jsonData, settings);
+        }
 
         public static string Serialize(Blackboard blackboard)
         {

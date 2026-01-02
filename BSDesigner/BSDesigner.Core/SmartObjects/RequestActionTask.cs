@@ -1,14 +1,13 @@
-﻿using BSDesigner.Core;
-
-namespace BSDesigner.SmartObjects
+﻿
+namespace BSDesigner.Core.SmartObjects
 {
     /// <summary>
-    /// Action that request a behaviour to a smart object. 
+    /// Action that request a behaviour to a smart object.
     /// </summary>
     public abstract class RequestActionTask : ActionTask
     {
-        /// <summary> 
-        /// The current interaction that this action is executing. 
+        /// <summary>
+        /// The current interaction that this action is executing.
         /// </summary>
         ActionTask? currentInteraction;
 
@@ -35,7 +34,7 @@ namespace BSDesigner.SmartObjects
             if(smartObject != null)
             {
                 var interaction = smartObject.RequestInteraction(Context);
-                this.currentInteraction = interaction;
+                currentInteraction = interaction;
                 interaction.Start();
             }
         }
@@ -55,8 +54,7 @@ namespace BSDesigner.SmartObjects
         {
             if (currentInteraction != null)
             {
-                var status = currentInteraction.Update();
-                return status;
+                return currentInteraction.Update(); ;
             }
             else
             {

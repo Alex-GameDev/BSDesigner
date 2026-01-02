@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using BSDesigner.Core;
 using Newtonsoft.Json;
 
-namespace BehaviourDesigner.JsonSerialization.Converters
+namespace BSDesigner.Core.Serialization.Converters
 {
     /// <summary>
     /// <para>SERIALIZATION: Find the subsystem identifier in a dictionary. </para>

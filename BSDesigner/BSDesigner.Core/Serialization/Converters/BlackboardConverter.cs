@@ -1,11 +1,9 @@
-﻿using BehaviourDesigner.JsonSerialization.Converters;
-using BSDesigner.Core;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BSDesigner.JsonSerialization.Converters
+namespace BSDesigner.Core.Serialization.Converters
 {
     public class BlackboardConverter : ContextConverter<Blackboard>
     {

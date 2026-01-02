@@ -1,7 +1,6 @@
-using BehaviourDesigner.JsonSerialization;
 using BSDesigner.BehaviourTrees;
-using BSDesigner.Core;
 using BSDesigner.Core.Actions;
+using BSDesigner.Core.Serialization;
 
 namespace TestBSD.JsonSerialization
 {
@@ -28,7 +27,7 @@ namespace TestBSD.JsonSerialization
             bt.ChangeRootNode(dec);
             var jsonData = JsonUtilities.Serialize(bt);
 
-            var graphs = JsonUtilities.Deserialize(jsonData);
+            var graphs = JsonUtilities.DeserializeList(jsonData);
 
             Assert.That(graphs.Count, Is.EqualTo(1));
             var graph1 = graphs[0];

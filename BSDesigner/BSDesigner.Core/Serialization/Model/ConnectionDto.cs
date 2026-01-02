@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace BehaviourDesigner.JsonSerialization.Model
+namespace BSDesigner.Core.Serialization.Model
 {
     /// <summary>
     /// Represent a connection between two nodes in a graph

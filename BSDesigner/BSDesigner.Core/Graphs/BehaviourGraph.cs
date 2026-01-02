@@ -11,11 +11,12 @@ namespace BSDesigner.Core.Graphs
     /// </summary>
     public abstract class BehaviourGraph : BehaviourEngine
     {
+        #region PROPERTIES
+
         /// <summary>
         /// A collection with all the nodes in this graph.
         /// </summary>
         public IReadOnlyList<Node> Nodes => _nodeList;
-
         private readonly List<Node> _nodeList = new List<Node>();
 
         /// <summary>
@@ -27,6 +28,10 @@ namespace BSDesigner.Core.Graphs
         /// This graph allows loops when connections are created?
         /// </summary>
         public abstract bool CanCreateLoops { get; }
+
+        #endregion
+
+        #region PUBLIC METHODS
 
         /// <summary>
         /// Add a new node to the graph.
@@ -280,6 +285,10 @@ namespace BSDesigner.Core.Graphs
             return connections;
         }
 
+        #endregion
+
+        #region PROTECTED METHODS
+
         /// <summary>
         /// Create a default instance of <typeparamref name="T"/> and add it to the graph.
         /// Is used from the derived types of the graph to create their custom methods.
@@ -314,10 +323,6 @@ namespace BSDesigner.Core.Graphs
             _nodeList.Insert(index, node);
         }
 
-        /// <summary>
-        /// Apply a processor in the graph
-        /// </summary>
-        /// <param name="processor">The processor applied.</param>
-        public void ApplyProcessor(IGraphProcessor processor) => processor.Apply(this);
+        #endregion
     }
 }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BSDesigner.BehaviourTrees\BSDesigner.BehaviourTrees.csproj" />
     <ProjectReference Include="..\BSDesigner.Core\BSDesigner.Core.csproj" />
-    <ProjectReference Include="..\BSDesigner.Reflection\BSDesigner.Reflection.csproj" />
     <ProjectReference Include="..\BSDesigner.StateMachines\BSDesigner.StateMachines.csproj" />
     <ProjectReference Include="..\BSDesigner.UtilitySystems\BSDesigner.UtilitySystems.csproj" />
   </ItemGroup>

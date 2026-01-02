@@ -32,6 +32,6 @@
         /// Event called when the action updates.
         /// </summary>
         /// <returns>The result of the action execution.</returns>
-        protected abstract Status OnUpdateTask();
+        protected virtual Status OnUpdateTask() => Status.Success;
     }
 }
