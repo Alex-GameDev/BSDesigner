@@ -3,6 +3,22 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <SignAssembly>False</SignAssembly>
+    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>BSDesigner.StateMachines</PackageId>
+    <Title>BS Designer State Machines</Title>
+    <Version>1.0.0</Version>
+    <Authors>AlexGameDev</Authors>
+    <RepositoryUrl>https://github.com/Alex-GameDev/BSDesigner</RepositoryUrl>
+    <PackageReleaseNotes>Initial version</PackageReleaseNotes>
+    <Description>Framework to design and execute finite state machines as a behaviour systems.</Description>
+    <IncludeSymbols>True</IncludeSymbols>
   </PropertyGroup>
 
   <ItemGroup>

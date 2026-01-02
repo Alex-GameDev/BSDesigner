@@ -7,13 +7,20 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <SignAssembly>False</SignAssembly>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>BS Designer Core</Title>
-    <Description>Framework to design and execute behaviour systems in different .NET environments</Description>
-    <PackageReleaseNotes>Initial version</PackageReleaseNotes>
-    <IncludeSymbols>True</IncludeSymbols>
     <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>BSDesigner.Core</PackageId>
+    <Title>BS Designer Core</Title>
+    <Version>1.0.0</Version>
+    <Authors>AlexGameDev</Authors>
+    <RepositoryUrl>https://github.com/Alex-GameDev/BSDesigner</RepositoryUrl>
+    <PackageReleaseNotes>Initial version</PackageReleaseNotes>
+    <Description>Framework to design and execute behaviour systems in different .NET environments</Description>
+    <IncludeSymbols>True</IncludeSymbols>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
